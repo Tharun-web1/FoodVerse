@@ -1,0 +1,102 @@
+.bottom-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 65px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    z-index: 10001;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 10px;
+}
+
+@media (max-width: 768px) {
+    .bottom-nav {
+        display: flex;
+    }
+}
+
+.bottom-nav-item {
+    background: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #686b78;
+    text-decoration: none;
+    padding: 8px 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 64px;
+    max-width: 80px;
+}
+
+.bottom-nav-item span {
+    width: 100%;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 11px;
+}
+
+.bottom-nav-item svg {
+    font-size: 20px;
+    margin-bottom: 2px;
+}
+
+.bottom-nav-item.active {
+    color: #D4AF37;
+    font-weight: 700;
+}
+
+.bottom-nav-item:active {
+    transform: scale(0.9);
+}
+
+.cart-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff3359;
+    color: white;
+    font-size: 9px;
+    min-width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    border: 1px solid white;
+}
+
+/* For Dark Mode Support if needed */
+[data-theme='dark'] .bottom-nav {
+    background: rgba(18, 18, 18, 0.85);
+    border-top-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .bottom-nav-item {
+    color: #ccc;
+}
+
+[data-theme='dark'] .bottom-nav-item.active {
+    color: #D4AF37;
+}

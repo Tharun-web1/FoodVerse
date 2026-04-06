@@ -1,0 +1,187 @@
+.view-item-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 15px 40px;
+  background-color: #f4f6f9;
+}
+
+/* Card */
+.view-item-card {
+  width: 100%;
+  max-width: 450px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+/* Image Section */
+.view-item-image {
+  width: 100%;
+  height: 250px;
+  background-color: #eee;
+  position: relative;
+}
+
+.item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-weight: 500;
+  background-color: #e9ecef;
+}
+
+/* Status Badge */
+.status-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.status-badge.available {
+  background-color: #2ecc71;
+}
+
+.status-badge.unavailable {
+  background-color: #e74c3c;
+}
+
+/* Body */
+.view-item-body {
+  padding: 25px;
+}
+
+.item-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.item-price {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #27ae60;
+  background: #eaffee;
+  padding: 5px 12px;
+  border-radius: 10px;
+}
+
+/* Badges Row */
+.item-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge-pill {
+  font-size: 0.85rem;
+  padding: 5px 12px;
+  border-radius: 50px;
+  font-weight: 600;
+}
+
+.badge-pill.category {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.badge-pill.type {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.badge-pill.serves {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+/* Divider */
+.divider {
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
+
+/* Description */
+.section-title {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #888;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.item-description p {
+  color: #555;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Actions */
+.view-actions .btn {
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 10px 24px;
+  transition: all 0.2s;
+}
+
+.view-actions .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@media (max-width: 576px) {
+  .view-item-image {
+    height: 200px;
+  }
+
+  .item-title {
+    font-size: 1.5rem;
+  }
+
+  .item-price {
+    font-size: 1.2rem;
+  }
+
+  .view-item-card {
+    border-radius: 0;
+    max-width: none;
+    box-shadow: none;
+  }
+
+  .view-item-wrapper {
+    padding: 56px 0 0;
+    align-items: flex-start;
+    background: white;
+  }
+  .view-actions .btn {
+    padding: 4px;
+    font-weight: 400;
+  }
+}

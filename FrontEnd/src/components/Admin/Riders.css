@@ -1,0 +1,107 @@
+/* ======================================================
+   🛵 Riders.css — Premium Modern Overhaul
+   ====================================================== */
+
+.riders-page .premium-card {
+  background: white;
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  padding: 40px !important;
+  transition: all 0.3s ease;
+}
+
+.riders-page h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+}
+
+.riders-page .table {
+  border-spacing: 0 12px !important;
+  border-collapse: separate !important;
+}
+
+.riders-page .table thead th {
+  border: none !important;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 16px 20px;
+}
+
+.riders-page .table tbody tr {
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+}
+
+.riders-page .table tbody tr:hover {
+  transform: translateY(-3px) scale(1.002);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.04);
+  background: #f8fafc;
+}
+
+.riders-page .table td {
+  padding: 20px;
+  border: none !important;
+  vertical-align: middle;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.riders-page .table td:first-child { border-radius: 16px 0 0 16px; }
+.riders-page .table td:last-child { border-radius: 0 16px 16px 0; }
+
+.search-form-compact .input-group-text {
+  border: 2px solid #e2e8f0;
+  border-right: none;
+  background: white;
+  color: #94a3b8;
+}
+
+.search-form-compact .form-control {
+  border: 2px solid #e2e8f0;
+  border-left: none;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.search-form-compact .form-control:focus {
+  border-color: #f43f5e;
+  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.1);
+}
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-content1 {
+  background: white;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 24px !important;
+  padding: 30px !important;
+  animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalIn {
+  from { transform: scale(0.9) translateY(20px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
+}

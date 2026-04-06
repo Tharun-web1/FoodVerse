@@ -1,0 +1,114 @@
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10000;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--primary);
+  top: -20px;
+  opacity: 0;
+  animation: confettiFall 3s ease-out infinite;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Success Modal */
+.order-success-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20000;
+  backdrop-filter: blur(8px);
+  padding: 20px;
+}
+
+.success-modal-content {
+  background: white;
+  padding: 40px;
+  border-radius: 30px;
+  text-align: center;
+  max-width: 450px;
+  width: 100%;
+  animation: modalPop 0.5s cubic-bezier(0.17, 0.89, 0.32, 1.49);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.success-icon-wrapper {
+  width: 100px;
+  height: 100px;
+  background: #e6f7ef;
+  color: var(--success);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 3rem;
+  animation: iconBounce 1s infinite alternate;
+}
+
+@keyframes iconBounce {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+.success-modal-content h2 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  color: var(--text-main);
+}
+
+.success-modal-content p {
+  color: var(--text-muted);
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.success-close-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.success-close-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(252, 128, 25, 0.3);
+}
+
+[data-theme='dark'] .success-modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}

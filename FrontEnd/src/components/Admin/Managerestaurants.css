@@ -1,0 +1,215 @@
+/* ======================================================
+   🍽️ Managerestaurants.css — Premium Fleet Aesthetics
+   ====================================================== */
+
+.restaurants-page .premium-card {
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  padding: 40px !important;
+  transition: all 0.3s ease;
+}
+
+.restaurants-page h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+}
+
+/* ── METRIC BADGES ── */
+.header-metric-badge {
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.badge-pending {
+  background: #fff1f2;
+  color: #e11d48;
+  border: 1px solid rgba(225, 29, 72, 0.1);
+}
+
+.badge-rating-premium {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid rgba(217, 119, 6, 0.1);
+}
+
+/* ── TABS ── */
+.restaurants-page .nav-pills .nav-link {
+  color: #64748b;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary-premium {
+  background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%) !important;
+  color: white !important;
+  border: none !important;
+}
+
+/* ── SEARCH & FILTER ── */
+.search-form-compact .input-group-text {
+  border: 2px solid #e2e8f0;
+  border-right: none;
+  background: white;
+  color: #94a3b8;
+}
+
+.search-form-compact .form-control {
+  border: 2px solid #e2e8f0;
+  border-left: none;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.search-form-compact .form-control:focus, 
+.restaurants-page .form-select:focus {
+  border-color: #f43f5e;
+  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.1);
+}
+
+/* ── TABLE AESTHETICS ── */
+.restaurants-page .table {
+  border-spacing: 0 12px !important;
+  border-collapse: separate !important;
+}
+
+.restaurants-page .table thead th {
+  border: none !important;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 16px 20px;
+}
+
+.restaurants-page .table tbody tr {
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+}
+
+.restaurants-page .table tbody tr:hover {
+  transform: translateY(-3px) scale(1.002);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.04);
+  background: #f8fafc;
+}
+
+.restaurants-page .table td {
+  padding: 20px;
+  border: none !important;
+  vertical-align: middle;
+}
+
+.restaurant-thumb-box {
+  width: 48px;
+  height: 48px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f43f5e;
+  font-size: 1.2rem;
+}
+
+.badge-cuisine-tag {
+  background: #f8fafc;
+  color: #475569;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border: 1px solid #e2e8f0;
+}
+
+.rating-pill-static {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #fffbeb;
+  color: #b45309;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+/* ── MODAL REDESIGN ── */
+.premium-compact-card {
+  padding: 24px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 2px solid #f1f5f9;
+  transition: all 0.3s ease;
+}
+
+.premium-compact-card:hover {
+  border-color: #f43f5e;
+  transform: translateY(-2px);
+}
+
+.badge-cuisine {
+  background: rgba(244, 63, 94, 0.05);
+  color: #f43f5e;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  border: 1px solid rgba(244, 63, 94, 0.1);
+}
+
+.btn-icon-manage {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  background: #f1f5f9;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-icon-manage:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.btn-delete-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  background: #fff1f2;
+  color: #e11d48;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-delete-icon:hover {
+  background: #ffe4e6;
+  transform: scale(1.05);
+}
+
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal.show .modal-content {
+  animation: fadeInScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}

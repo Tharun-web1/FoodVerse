@@ -1,0 +1,157 @@
+/* ======================================================
+   👥 Userdetails.css — Premium Modern Overhaul
+   ====================================================== */
+
+.userdetails-page .premium-card {
+  background: white;
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  padding: 40px !important;
+  transition: all 0.3s ease;
+}
+
+.userdetails-page h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.03em;
+}
+
+.userdetails-page .table {
+  border-spacing: 0 12px !important;
+  border-collapse: separate !important;
+}
+
+.userdetails-page .table thead th {
+  border: none !important;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 16px 20px;
+}
+
+.userdetails-page .table tbody tr {
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.01);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+}
+
+.userdetails-page .table tbody tr:hover {
+  transform: translateY(-3px) scale(1.002);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.04);
+  background: #f8fafc;
+}
+
+.userdetails-page .table td {
+  padding: 20px;
+  border: none !important;
+  vertical-align: middle;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.userdetails-page .table td:first-child { border-radius: 16px 0 0 16px; }
+.userdetails-page .table td:last-child { border-radius: 0 16px 16px 0; }
+
+.id-badge {
+  background: #f1f5f9;
+  color: #64748b;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+}
+
+.avatar-mini {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.status-pill {
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-pill.active {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid rgba(22, 163, 74, 0.1);
+}
+
+.status-pill.inactive {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.1);
+}
+
+.btn-status-toggle {
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.btn-status-toggle.suspend {
+  background: rgba(239, 68, 68, 0.05);
+  color: #ef4444;
+}
+
+.btn-status-toggle.suspend:hover {
+  background: #ef4444;
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-status-toggle.activate {
+  background: rgba(16, 185, 129, 0.05);
+  color: #10b981;
+}
+
+.btn-status-toggle.activate:hover {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+/* Pagination */
+.pagination .page-link {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-weight: 700;
+  transition: all 0.2s;
+  background: #f1f5f9;
+}
+
+.pagination .page-item.active .page-link {
+  background: var(--brand-gradient);
+  color: white;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
+}
+
+.extra-small {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

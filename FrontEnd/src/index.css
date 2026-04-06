@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    /* Brand Colors */
+    --primary: #D4AF37;
+    --primary-dark: #B8860B;
+    --primary-light: #FBF1D3;
+
+    /* Neutral Colors */
+    --text-main: #1c1c1c;
+    --text-heading: #111111;
+    --text-sub: #696969;
+    --text-muted: #93959f;
+    --bg-main: #ffffff;
+    --bg-sub: #f8f8f8;
+    --border: #e9e9eb;
+
+    /* Semantic Colors */
+    --success: #60b246;
+    --error: #e23744;
+    --warning: #ffcc00;
+
+    /* Effects */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+    --glass: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.1);
+
+    /* Transitions */
+    --transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    --transition-fast: all 0.2s ease-in-out;
+    --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Radius */
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --radius-pill: 9999px;
+
+    /* Admin Specific / Premium Gradients */
+    --primary-rose: #D4AF37;
+    --brand-gradient: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+    --brand-gradient-soft: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(184, 134, 11, 0.05) 100%);
+}
+
+[data-theme='dark'] {
+    /* Neutral Colors - Dark Mode Overrides */
+    --text-main: #e1e1e1;
+    --text-heading: #ffffff;
+    --text-sub: #a0a0a0;
+    --text-muted: #707070;
+    --bg-main: #121212;
+    --bg-sub: #1e1e1e;
+    --border: #333333;
+
+    /* Effects - Dark Mode Overrides */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.6);
+    --glass: rgba(30, 30, 30, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.05);
+
+    /* Skeleton - Dark Mode */
+    --skeleton-base: #222;
+    --skeleton-highlight: #333;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-main);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-heading);
+    letter-spacing: -0.02em;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-sub);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+}
+
+/* Glassmorphism Utility */
+.glass {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+}
+
+/* Backdrop Blur Utilities */
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.backdrop-blur-md {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.backdrop-blur-lg {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* Skeleton Loading Animation */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #f7f7f7 25%, #fbf1d3 50%, #f7f7f7 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Slide Up Animation */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-up {
+    animation: slideUp 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Smooth Hover Lift */
+.hover-lift {
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+}
+
+/* Card Shadow Utilities */
+.card-shadow-sm {
+    box-shadow: var(--shadow-sm);
+}
+
+.card-shadow-md {
+    box-shadow: var(--shadow-md);
+}
+
+.card-shadow-lg {
+    box-shadow: var(--shadow-lg);
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Focus Visible for Accessibility */
+*:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Bootstrap Overrides for Gold Branding */
+.text-primary { color: var(--primary) !important; }
+.btn-primary { 
+    background-color: var(--primary) !important; 
+    border-color: var(--primary) !important; 
+    color: white !important;
+}
+.btn-primary:hover {
+    background-color: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+}
+.btn-outline-primary {
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+.btn-outline-primary:hover {
+    background-color: var(--primary) !important;
+    color: white !important;
+}
+.spinner-border.text-primary, .spinner-grow.text-primary {
+    color: var(--primary) !important;
+}
+.border-primary { border-color: var(--primary) !important; }
+.bg-primary { background-color: var(--primary) !important; }
+.text-info { color: #B8860B !important; } /* Re-purposing info for contrast-gold */

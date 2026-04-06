@@ -1,0 +1,405 @@
+.orders-page-container {
+    max-width: 1000px;
+    margin: 120px auto 60px;
+    padding: 0 40px;
+    min-height: auto;
+}
+
+.orders-page-container.profile-view {
+    margin: 0;
+    padding: 0;
+    max-width: none;
+}
+
+.my-orders-page-wrapper.profile-view {
+    padding: 0;
+    background: transparent;
+}
+
+.orders-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: var(--text-heading);
+    letter-spacing: -1px;
+}
+
+.orders-title.profile-view {
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.order-card {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.order-card.clickable-card {
+    cursor: pointer;
+}
+
+.order-card.clickable-card:hover {
+    transform: translateY(-6px) scale(1.005);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    border-color: var(--primary);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed var(--border);
+}
+
+.order-restaurant-name {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-heading);
+    margin-bottom: 4px;
+}
+
+.order-id {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.order-date {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-sub);
+    margin-top: 4px;
+}
+
+.order-address {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+}
+
+.order-address svg {
+    color: var(--primary);
+    min-width: 14px;
+}
+
+.order-status {
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-pending { background: rgba(255, 171, 0, 0.1); color: #ffab00; }
+.status-placed { background: rgba(0, 184, 217, 0.1); color: #00b8d9; }
+.status-delivered { background: rgba(54, 179, 126, 0.1); color: #36b37e; }
+.status-cancelled { background: rgba(255, 86, 48, 0.1); color: #ff5630; }
+
+.order-items-summary {
+    background: var(--bg-sub);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.order-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.order-item-detail-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.order-item-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.item-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.order-item-qty {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.item-price1 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-total-amount {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.rate-order-btn {
+    padding: 8px 20px;
+    background: white;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rate-order-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* ================= NO ORDERS EMPTY STATE ================= */
+.no-orders-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    text-align: center;
+    background: white;
+    border-radius: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    margin-top: 20px;
+}
+
+.no-orders-img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin-bottom: 30px;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.05));
+}
+
+.no-orders-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-heading);
+    margin-bottom: 12px;
+}
+
+.no-orders-text {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 320px;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .no-orders-container {
+        padding: 40px 20px;
+        margin: 0 10px;
+    }
+
+    .no-orders-img {
+        max-width: 280px;
+        margin-bottom: 20px;
+    }
+
+    .no-orders-title {
+        font-size: 20px;
+    }
+
+    .no-orders-text {
+        font-size: 14px;
+    }
+}
+
+/* Delivery Partner Section Refinement */
+.delivery-info-card {
+    margin-top: 20px;
+    padding: 18px;
+    background: #f8f9fa;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    transition: var(--transition);
+}
+
+.dp-profile-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.dp-avatar {
+    width: 46px;
+    height: 46px;
+    background: var(--primary);
+    color: white;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(252, 128, 25, 0.25);
+}
+
+.dp-main-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.dp-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.8px;
+    margin-bottom: 2px;
+}
+
+.dp-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-heading);
+}
+
+.dp-call-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: white;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.dp-call-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(252, 128, 25, 0.2);
+}
+
+/* View summary button removed - card is now clickable */
+
+@media (max-width: 768px) {
+    .orders-page-container {
+        padding: 0 16px;
+        margin: 80px auto 40px; /* Reduced top margin */
+        padding-bottom: 80px; /* Added bottom padding for BottomNav */
+    }
+
+    .orders-title {
+        font-size: 24px;
+        margin-left: 4px;
+        margin-bottom: 20px;
+    }
+
+    .order-card {
+        margin-left: 0;
+        margin-right: 0;
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .order-restaurant-name {
+        font-size: 18px;
+    }
+
+    .order-total-amount {
+        font-size: 19px;
+    }
+}
+
+@media (max-width: 480px) {
+    .order-header {
+        flex-direction: row; /* Keep row for main header on small mobile if it fits */
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .order-meta {
+        max-width: 65%;
+    }
+
+    .order-status {
+        padding: 4px 10px;
+        font-size: 10px;
+    }
+
+    .order-footer {
+        flex-direction: row; /* Try to keep row for total if space allows */
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .rate-order-btn {
+        width: 100%;
+        text-align: center;
+        margin-top: 12px;
+    }
+
+    .delivery-info-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dp-profile-group {
+        width: 100%;
+        margin-bottom: 4px;
+    }
+
+
+    .dp-call-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

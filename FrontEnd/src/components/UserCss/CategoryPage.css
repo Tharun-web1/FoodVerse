@@ -1,0 +1,126 @@
+.category-page-container {
+  max-width: 1200px;
+  margin: 100px auto 60px;
+  padding: 0 40px;
+}
+
+.category-header-section {
+  margin-bottom: 40px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 24px;
+}
+
+.category-title-main {
+  font-family: 'Inter', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 850;
+  color: #111;
+  letter-spacing: -1.5px;
+  text-transform: capitalize;
+  margin-bottom: 8px;
+}
+
+.category-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.restaurant-grid-container {
+  padding-top: 10px;
+}
+
+/* Override horizontal scroll if needed, or use vertical grid */
+.restaurant-grid-container .restaurant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 40px 32px;
+  overflow: visible;
+  /* Standard grid */
+  padding: 0;
+}
+
+.restaurant-grid-container .restaurant-card1 {
+  flex: none;
+  width: 100%;
+}
+
+.no-restaurants {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.no-restaurants img {
+  width: 250px;
+  margin-bottom: 24px;
+  opacity: 0.8;
+}
+
+.no-restaurants h3 {
+  font-size: 20px;
+  color: var(--text-heading);
+  margin-bottom: 16px;
+}
+
+.no-restaurants button {
+  background: var(--nav-bg);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.no-restaurants button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(231, 128, 18, 0.3);
+}
+
+.category-page-loader {
+  max-width: 1200px;
+  margin: 120px auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 40px;
+}
+
+.shimmer-card1 {
+  height: 300px;
+  background: #f0f0f0;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .category-page-container {
+    padding: 0 20px;
+    margin-top: 80px;
+  }
+
+  .category-title-main {
+    font-size: 2rem;
+  }
+
+  .restaurant-grid-container .restaurant-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}

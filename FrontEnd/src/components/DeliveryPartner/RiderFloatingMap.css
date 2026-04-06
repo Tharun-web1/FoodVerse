@@ -1,0 +1,149 @@
+.rider-floating-map {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    z-index: 2000;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.rider-floating-map.expanded {
+    width: 290px;
+}
+
+.rider-floating-map.minimized {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    cursor: pointer;
+    background: #00d2ff;
+}
+
+.map-header {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+.minimized .map-header {
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    color: white;
+}
+
+.minimized .order-summary-mini, .minimized .controls button:last-child {
+    display: none;
+}
+
+.minimized .controls button {
+    color: white;
+    font-size: 20px;
+}
+
+.order-summary-mini {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pin-icon {
+    color: #fc8019;
+    font-size: 18px;
+}
+
+.dest-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.dest-info .label {
+    font-size: 9px;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.dest-info .value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #222;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.controls {
+    display: flex;
+    gap: 5px;
+}
+
+.controls button {
+    background: none;
+    border: none;
+    color: #555;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.controls button:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.map-body {
+    height: 240px;
+}
+
+.mini-rider-map {
+    width: 100%;
+    height: 180px;
+}
+
+.map-actions {
+    padding: 10px;
+    background: #fff;
+}
+
+.navigate-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.navigate-btn:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .rider-floating-map {
+        bottom: 90px;
+        right: 16px;
+    }
+}

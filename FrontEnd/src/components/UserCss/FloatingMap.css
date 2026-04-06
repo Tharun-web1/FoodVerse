@@ -1,0 +1,145 @@
+.floating-map-widget {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    z-index: 1001;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.floating-map-widget.expanded {
+    width: 280px;
+}
+
+.floating-map-widget.minimized {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.floating-map-header {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fdfbf7;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.minimized .floating-map-header {
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    padding: 0;
+    background: #D4AF37;
+    color: white;
+}
+
+.minimized .order-info-mini, .minimized .controls button:last-child {
+    display: none;
+}
+
+.minimized .controls button {
+    color: white;
+}
+
+.order-info-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.truck-icon {
+    color: #D4AF37;
+    font-size: 18px;
+}
+
+.status-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.status-text .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #999;
+    font-weight: 700;
+}
+
+.status-text .value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    max-width: 140px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.controls {
+    display: flex;
+    gap: 4px;
+}
+
+.controls button {
+    background: none;
+    border: none;
+    color: #666;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.controls button:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.floating-map-body {
+    height: 200px;
+}
+
+.mini-track-map {
+    width: 100%;
+    height: 140px;
+}
+
+.map-footer {
+    padding: 12px;
+    background: #fff;
+}
+
+.track-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #D4AF37;
+    color: white;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+
+.track-button:hover {
+    transform: translateY(-2px);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .floating-map-widget {
+        bottom: 10px; /* Above potential mobile nav */
+        right: 16px;
+    }
+}

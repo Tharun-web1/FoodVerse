@@ -1,0 +1,461 @@
+:root {
+    --nav-bg: #D4AF37;
+    --nav-bg-glass: rgba(212, 175, 55, 0.82);
+    --nav-backdrop: blur(12px) saturate(160%);
+    --nav-border: 1px solid rgba(255, 255, 255, 0.2);
+    --nav-text: #ffffff;
+    --nav-accent: #ffffff;
+    --nav-height: 60px;
+    /* Slightly more compact as per reference feel */
+    --link-inactive: #ffffff;
+    --link-active-bg: rgba(255, 255, 255, 0.25);
+    --logout-bg: #ef4444;
+    --logout-hover: #dc2626;
+}
+
+.navbar1 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    background: var(--nav-bg-glass);
+    backdrop-filter: var(--nav-backdrop);
+    -webkit-backdrop-filter: var(--nav-backdrop);
+    border-bottom: var(--nav-border);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* If you ever want the sidebar-shift effect */
+.navbar1.shifted1 {
+    left: 320px;
+}
+
+.navbar-container1 {
+    width: 100%;
+    max-width: 1550px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.navbar-brand1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-heading);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    letter-spacing: -0.5px;
+}
+
+.navbar-brand1:hover {
+    transform: scale(1.02);
+}
+
+.brand-icon1 {
+    font-size: 32px;
+    color: var(--nav-accent);
+}
+
+.brand-text-accent1 {
+    color: var(--nav-text);
+}
+
+/* Location Selector in Navbar */
+.navbar-location1 {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.navbar-location1 .location-display-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 14px;
+    height: 40px;
+    backdrop-filter: blur(8px);
+}
+
+.navbar-location1 .location-display-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: white;
+}
+
+.navbar-location1 .location-display-btn svg {
+    color: white;
+}
+
+.navbar-location1 .location-text1 {
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .navbar-location1 {
+        display: none;
+    }
+}
+
+.navbar-menu1 {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.nav-link1 {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start;
+    gap: 10px;
+    color: var(--link-inactive) !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    width: auto;
+}
+
+.nav-link1 svg {
+    font-size: 18px;
+    color: inherit;
+    flex-shrink: 0;
+}
+
+.nav-link1:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff !important;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.nav-link1.active-link1 {
+    background: var(--link-active-bg);
+    color: #ffffff !important;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Cart Badge Styles */
+.cart-icon-wrapper1 {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.cart-text1 {
+    display: inline-block;
+    flex: 0 0 auto;
+}
+
+.cart-badge1 {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff3359;
+    /* Vibrant Red/Pink */
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    border: 2px solid var(--nav-bg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: badgePulse1 2s infinite;
+}
+
+@keyframes badgePulse1 {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.logout-btn1 {
+    background: var(--logout-bg);
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 12px;
+}
+
+.logout-btn1:hover {
+    background: var(--logout-hover);
+}
+
+/* Mobile Toggle */
+.navbar-toggler1 {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 10006;
+    animation: fadeIn 0.3s ease;
+}
+
+.navbar-toggler1:focus {
+    outline: none;
+}
+
+.bar1 {
+    display: block;
+    width: 24px;
+    height: 2.5px;
+    margin: 5px auto;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.navbar-toggler1.active1 .bar1:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar-toggler1.active1 .bar1:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
+}
+
+.navbar-toggler1.active1 .bar1:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+    .navbar-container1 {
+        padding: 0 20px;
+    }
+
+    /* Hide drawer menu and toggler on mobile since we use BottomNav */
+    .navbar-toggler1, 
+    .navbar-menu1,
+    .nav-menu-overlay1 {
+        display: none !important;
+    }
+}
+
+.nav-menu-overlay1 {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+}
+
+/* Navbar Search */
+.navbar-search1 {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 40px;
+    position: relative;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.12); /* Glass look for search too */
+    backdrop-filter: blur(4px);
+    border-radius: 12px;
+    padding: 2px 0;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-search1:hover {
+    background: #eef0f5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.nav-search-icon1 {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    pointer-events: none;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.nav-search-input-fake1 {
+    width: 100%;
+    padding: 10px 48px;
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    cursor: pointer;
+    outline: none;
+}
+
+.nav-search-input-fake1::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+
+.nav-filter-btn-desktop1 {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-filter-btn-desktop1:hover,
+.nav-filter-btn-desktop1.active1 {
+    background: white;
+    color: var(--primary);
+}
+
+.nav-filter-btn-mobile1 {
+    display: none;
+}
+
+.nav-search-icon1 {
+    position: absolute;
+    left: 14px;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+@media (max-width: 992px) {
+    .navbar-search1 {
+        max-width: none;
+        margin: 0 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-container1 {
+        padding: 0 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .navbar-location1 {
+        display: flex;
+        order: 1;
+        margin-right: auto;
+    }
+
+    .navbar-brand1 {
+        order: 3;
+        margin-left: 8px;
+    }
+
+    .brand-name1 {
+        display: none !important;
+    }
+
+    .navbar-search1 {
+        display: none !important;
+    }
+
+    .nav-search-btn-mobile1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        order: 2;
+        margin-left: 10px;
+    }
+
+    .nav-search-btn-mobile1 svg {
+        font-size: 18px;
+    }
+
+    .nav-search-btn-mobile1:active {
+        background: white;
+        color: var(--nav-bg);
+    }
+
+    .nav-lang-btn-mobile1 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        order: 4;
+        margin-left: 8px;
+    }
+
+    .nav-lang-btn-mobile1:active {
+        background: white;
+        color: var(--nav-bg);
+    }
+
+    .navbar-toggler1 {
+        order: 5;
+        margin-left: 8px;
+        display: none !important; /* Kept hidden as per BottomNav current behavior */
+    }
+}
+
+/* Ensure mobile search icon is hidden on desktop */
+@media (min-width: 769px) {
+    .nav-search-btn-mobile1 {
+        display: none !important;
+    }
+}
+
+/* Hide mobile-only language button on desktop */
+@media (min-width: 769px) {
+    .nav-lang-btn-mobile1 {
+        display: none !important;
+    }
+}

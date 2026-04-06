@@ -1,0 +1,193 @@
+.delivery-body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.delivery-body .auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('/src/assets/images/rider-bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    padding: 20px;
+    position: relative;
+}
+
+/* Overlay to darken background */
+.delivery-body .auth-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%);
+    z-index: 1;
+}
+
+.delivery-body .auth-card1 {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    width: 100%;
+    max-width: 420px;
+    animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.delivery-body .auth-title {
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-size: 2rem;
+    letter-spacing: -1px;
+}
+
+.delivery-body .auth-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+/* OTP Toggle Styles */
+.delivery-body .otp-toggle {
+    display: flex;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 5px;
+    border-radius: 14px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.delivery-body .otp-btn {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    background: transparent;
+    border-radius: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.delivery-body .otp-btn.active {
+    background: rgba(255, 255, 255, 1);
+    color: #1a202c;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Input Fields */
+.delivery-body .input-group-custom {
+    position: relative;
+    margin-bottom: 1.2rem;
+}
+
+.delivery-body .input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.1rem;
+}
+
+.delivery-body .auth-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08); /* Increased for usability */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 14px 14px 14px 44px; /* Space for icon */
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.delivery-body .auth-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.delivery-body .auth-input:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #00d2ff;
+    box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.15);
+    outline: none;
+}
+
+/* Login Button */
+.delivery-body .auth-btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-top: 10px;
+    box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2);
+}
+
+.delivery-body .auth-btn:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 210, 255, 0.4);
+}
+
+.delivery-body .auth-btn:active {
+    transform: scale(0.98);
+}
+
+.delivery-body .auth-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #4a5568;
+}
+
+/* Timer and Resend */
+.delivery-body .otp-timer {
+    display: block;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #fc8181;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+/* Signup Link */
+.delivery-body .auth-link {
+    text-align: center;
+    margin-top: 2rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.delivery-body .auth-link a {
+    color: #00d2ff;
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 5px;
+    transition: color 0.3s;
+}
+
+.delivery-body .auth-link a:hover {
+    color: #63b3ed;
+    text-decoration: underline;
+}
