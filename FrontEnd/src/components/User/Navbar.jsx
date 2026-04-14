@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FiHome, FiUser, FiLogIn, FiShoppingBag, FiList, FiLogOut, FiSearch, FiGlobe } from "react-icons/fi";
+import { FiHome, FiUser, FiLogIn, FiShoppingBag, FiList, FiLogOut, FiSearch, FiGlobe, FiCreditCard } from "react-icons/fi";
+import axios from "axios";
+import { API_BASE_URL } from "../../api/api";
 import logo from "../../assets/images/logo2.jpeg";
 import ProfileSidebar from "../User/ProfileSidebar";
 import LanguagePicker from "../User/LanguagePicker";
@@ -19,10 +21,9 @@ const Navbar = ({ onSearch, onOpenSearch }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [isLangPickerOpen, setIsLangPickerOpen] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [signupOpen, setSignupOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [navbarUserLocation, setNavbarUserLocation] = useState("");
+  const [walletBalance, setWalletBalance] = useState(0);
 
   const { cartItems } = useCart();
   const cartItemCount = cartItems.reduce((total, item) => total + item.qty, 0);
@@ -32,6 +33,22 @@ const Navbar = ({ onSearch, onOpenSearch }) => {
   };
 
   const isLoggedIn = !!localStorage.getItem("token");
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const fetchWallet = async () => {
+        try {
+          const res = await axios.get(`${API_BASE_URL}/users/me`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+          });
+          setWalletBalance(res.data.walletBalance || 0);
+        } catch (err) {
+          console.error("Error fetching wallet in navbar", err);
+        }
+      };
+      fetchWallet();
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -56,22 +73,26 @@ const Navbar = ({ onSearch, onOpenSearch }) => {
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
   const isActive = (path) => location.pathname === path ? 'active-link1' : '';
+  const isHome = location.pathname === '/' || location.pathname === '/user' || location.pathname === '/user-home' || location.pathname === '/user/';
 
   return (
     <>
-      <nav className={`navbar1 fixed-top ${menuOpen ? 'menu-open1' : ''} ${profileOpen ? 'shifted1' : ''}`}>
+      <nav className={`navbar1 fixed-top ${menuOpen ? 'menu-open1' : ''} ${profileOpen ? 'shifted1' : ''} ${!isHome ? 'mobile-hidden1' : ''}`}>
         <div className="navbar-container1 ">
           <div className="navbar-location1">
             <LocationSelector onLocationChange={handleLocationChange} autoDetectOnMobile={true} />
           </div>
 
-          <button
-            className="nav-search-btn-mobile1"
-            onClick={onOpenSearch}
-            aria-label="Search food"
-          >
-            <FiSearch />
-          </button>
+          {isLoggedIn && (
+            <button
+              className="nav-wallet-btn-mobile1"
+              onClick={() => navigate("/profile")}
+              aria-label="View Wallet"
+            >
+              <FiCreditCard className="wallet-mini-icon1" />
+              <span className="wallet-balance-text1">₹{walletBalance.toFixed(2)}</span>
+            </button>
+          )}
 
           <div
             className="navbar-brand1"
@@ -185,7 +206,7 @@ const Navbar = ({ onSearch, onOpenSearch }) => {
                     className="nav-link1"
                     onClick={() => {
                       closeMenu();
-                      setLoginOpen(true);
+                      navigate("/login/user");
                     }}
                   >
                     <FiLogIn /> {t("login")}
@@ -197,7 +218,7 @@ const Navbar = ({ onSearch, onOpenSearch }) => {
                     className="nav-link1"
                     onClick={() => {
                       closeMenu();
-                      setSignupOpen(true);
+                      navigate("/signup/user");
                     }}
                   >
                     <FiUser /> {t("signup")}

@@ -171,7 +171,6 @@ const CategoryPage = () => {
                       <span className="res-card-rating">
                         <FiStar className="star-filled" style={{ fill: "var(--success)", color: "var(--success)" }} /> {r.rating > 0 ? Number(r.rating).toFixed(1) : t("new")}
                       </span>
-                      <span className="res-card-dot">•</span>
                       <span className="res-card-time">
                         {(r.r_min ?? 25)}-{(r.r_max ?? 30)} {t("mins") || "MINS"}
                       </span>

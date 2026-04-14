@@ -15,6 +15,9 @@ public class OtpService {
     private OtpRepo otpRepo;
 
     @Autowired
+    private com.user.repo.UserRepo userRepo;
+
+    @Autowired
     private EmailService emailService;
 
     @Autowired
@@ -32,11 +35,26 @@ public class OtpService {
         OtpEntity otpEntity = new OtpEntity(identifier, otp, expiry);
         otpRepo.save(otpEntity);
 
-        // Route to Email or SMS
-        if (identifier.contains("@")) {
-            emailService.sendOtpEmail(identifier, otp);
+        // Try to find the user to send to both Email and SMS
+        com.user.entity.UserEntity user = userRepo.findByUsername(identifier);
+        if (user == null) user = userRepo.findByMail(identifier);
+        if (user == null) user = userRepo.findByPhnno(identifier);
+
+        if (user != null) {
+            // Send to both if user found
+            if (user.getMail() != null && !user.getMail().isEmpty()) {
+                emailService.sendOtpEmail(user.getMail(), otp);
+            }
+            if (user.getPhnno() != null && !user.getPhnno().isEmpty()) {
+                smsService.sendOtpSms(user.getPhnno(), otp);
+            }
         } else {
-            smsService.sendOtpSms(identifier, otp);
+            // Fallback to routing based on identifier format if no user record found (e.g. initial signup step)
+            if (identifier.contains("@")) {
+                emailService.sendOtpEmail(identifier, otp);
+            } else {
+                smsService.sendOtpSms(identifier, otp);
+            }
         }
         return otp;
     }

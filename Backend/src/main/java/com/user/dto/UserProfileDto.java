@@ -8,6 +8,8 @@ public class UserProfileDto {
     private String phnno;
     private String mail;
     private String profileImageUrl;
+    private Double pendingCancellationFee;
+    private Double walletBalance;
 
     public String getUsername() {
         return username;
@@ -41,6 +43,21 @@ public class UserProfileDto {
         this.profileImageUrl = profileImageUrl;
     }
 
+    public Double getPendingCancellationFee() {
+        return pendingCancellationFee;
+    }
+
+    public void setPendingCancellationFee(Double pendingCancellationFee) {
+        this.pendingCancellationFee = pendingCancellationFee;
+    }
+
+    public Double getWalletBalance() {
+        return walletBalance;
+    }
+
+    public void setWalletBalance(Double walletBalance) {
+        this.walletBalance = walletBalance;
+    }
 
     public static UserProfileDto from(UserEntity user) {
         UserProfileDto dto = new UserProfileDto();
@@ -48,6 +65,8 @@ public class UserProfileDto {
         dto.setMail(user.getMail());
         dto.setPhnno(user.getPhnno());
         dto.setProfileImageUrl("/users/" + user.getId() + "/profile-image");
+        dto.setPendingCancellationFee(user.getPendingCancellationFee());
+        dto.setWalletBalance(user.getWalletBalance());
         return dto;
     }
 

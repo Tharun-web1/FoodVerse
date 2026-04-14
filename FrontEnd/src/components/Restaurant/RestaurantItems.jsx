@@ -124,7 +124,7 @@ export default function RestaurantItems() {
               <p className="text-muted small mb-0">Customize and manage your restaurant's offerings</p>
             </div>
             <button
-              className="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm"
+              className="btn btn-warning rounded-pill px-4 py-2 fw-bold shadow-sm"
               onClick={() => setShowForm(!showForm)}
             >
               {showForm ? "✕ Close" : "+ Add New Item"}
@@ -206,12 +206,12 @@ export default function RestaurantItems() {
 
           <div className="mb-4 position-relative">
             <i className="fa fa-search position-absolute text-muted" style={{ left: '15px', top: '15px' }}></i>
-            <input 
-              type="text" 
-              className="form-control ps-5 py-3 border-0 bg-light rounded-4 shadow-sm" 
-              placeholder="Search your menu items..." 
-              value={search} 
-              onChange={(e) => setSearch(e.target.value)} 
+            <input
+              type="text"
+              className="form-control ps-5 py-3 border-0 bg-light rounded-4 shadow-sm"
+              placeholder="Search your menu items..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
@@ -242,9 +242,9 @@ export default function RestaurantItems() {
                     <tr key={i.id} className={!i.available ? "out-of-stock-row" : ""}>
                       <td className="ps-4">
                         <div className="d-flex align-items-center">
-                          <img 
-                            src={`http://localhost:8082/restaurants/${i.id}/itemimg`} 
-                            alt={i.itemName} 
+                          <img
+                            src={`http://localhost:8082/restaurants/${i.id}/itemimg`}
+                            alt={i.itemName}
                             className="item-thumbnail"
                             onError={(e) => { e.target.src = "https://cdn-icons-png.flaticon.com/512/3132/3132693.png"; }}
                           />
@@ -259,9 +259,9 @@ export default function RestaurantItems() {
                       <td className="text-center">
                         <div className="d-flex flex-column align-items-center gap-2">
                           <label className="availability-switch">
-                            <input 
-                              type="checkbox" 
-                              checked={i.available} 
+                            <input
+                              type="checkbox"
+                              checked={i.available}
                               onChange={() => handleToggleAvailability(i)}
                             />
                             <span className="slider-premium"></span>

@@ -41,7 +41,7 @@ const FloatingOrder = () => {
             // Find the most recent active order (not DELIVERED or CANCELLED)
             const active = res.data.find(order => 
                 order.status && 
-                !['delivered', 'cancelled', 'completed'].includes(order.status.toLowerCase())
+                order.status && ['placed', 'paid', 'accepted', 'preparing', 'out_for_delivery'].includes(order.status.toLowerCase())
             );
             
             if (active) {

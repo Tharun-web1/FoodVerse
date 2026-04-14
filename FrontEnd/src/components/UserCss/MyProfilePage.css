@@ -1,7 +1,7 @@
 .my-profile-page {
   display: flex;
   max-width: 1200px;
-  margin: 100px auto 60px;
+  margin: 70px auto 60px;
   gap: 40px;
   padding: 0 40px;
   min-height: calc(100vh - 160px);
@@ -19,7 +19,7 @@
   height: fit-content;
   border: 1px solid var(--border);
   position: sticky;
-  top: 100px;
+  top: 70px;
 }
 
 .profile-menu .menu-item {
@@ -84,7 +84,7 @@
 @media (max-width: 1024px) {
   .my-profile-page {
     flex-direction: column;
-    margin-top: 80px;
+    margin-top: 65px;
     padding: 0 15px;
     gap: 20px;
     min-height: auto;

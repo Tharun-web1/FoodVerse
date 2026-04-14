@@ -165,6 +165,7 @@ public class RiderService {
         partner.setBankName(details.getBankName());
         partner.setAccountNumber(details.getAccountNumber());
         partner.setIfscCode(details.getIfscCode());
+        partner.setAccountHolderName(details.getAccountHolderName());
 
         return repo.save(partner);
     }

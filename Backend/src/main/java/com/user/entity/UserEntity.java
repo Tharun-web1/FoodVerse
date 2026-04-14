@@ -25,6 +25,8 @@ public class UserEntity {
 	private boolean active = true;
 	private java.time.LocalDateTime blockedFrom;
 	private java.time.LocalDateTime blockedUntil;
+	private Double pendingCancellationFee = 0.0;
+	private Double walletBalance = 0.0;
 
 	public UserEntity() {
         // JPA requirement
@@ -92,6 +94,18 @@ public class UserEntity {
 	}
 	public void setBlockedUntil(java.time.LocalDateTime blockedUntil) {
 		this.blockedUntil = blockedUntil;
+	}
+	public Double getPendingCancellationFee() {
+		return pendingCancellationFee;
+	}
+	public void setPendingCancellationFee(Double pendingCancellationFee) {
+		this.pendingCancellationFee = pendingCancellationFee;
+	}
+	public Double getWalletBalance() {
+		return walletBalance;
+	}
+	public void setWalletBalance(Double walletBalance) {
+		this.walletBalance = walletBalance;
 	}
 	
 

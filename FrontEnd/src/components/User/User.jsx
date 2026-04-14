@@ -134,6 +134,7 @@ const User = () => {
   // Combined filter logic
   useEffect(() => {
     let filtered = [...restaurants];
+    const hiddenRes = JSON.parse(localStorage.getItem("hiddenRestaurants") || "[]");
 
     // 1. Search Logic
     if (searchQuery) {
@@ -149,7 +150,10 @@ const User = () => {
 
         return nameMatch || descMatch || locationMatch || tagMatch;
       });
-
+      // In search mode, we DON'T filter hidden restaurants as per user request
+    } else {
+      // 1b. Filter out hidden restaurants when NOT searching
+      filtered = filtered.filter(r => !hiddenRes.includes(Number(r.id)));
     }
 
     // 2. Filter Logic

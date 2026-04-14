@@ -15,8 +15,10 @@ import com.user.dto.UserProfileDto;
 import com.user.entity.UserEntity;
 import com.user.service.FavoriteService;
 import com.user.service.MyUserService;
+import com.user.service.SignupService;
 import com.user.service.Principal;
 import com.user.service.ProfileImageService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RestController
 @CrossOrigin("*")
@@ -25,6 +27,10 @@ public class UserController {
     private MyUserService myUserService;
     @Autowired
     private ProfileImageService profileImageService;
+    @Autowired
+    private SignupService signupService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @GetMapping("/users/me")
     public ResponseEntity<UserProfileDto> getMyProfile(Authentication authentication) {
         Principal principal = (Principal) authentication.getPrincipal();
@@ -233,7 +239,13 @@ public class UserController {
             return ResponseEntity.badRequest().body("New password is required");
         }
 
-        user.setPassword(newPassword);
+        try {
+            signupService.validatePassword(newPassword);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
         myUserService.save(user);
         return ResponseEntity.ok("Password updated successfully");
     }

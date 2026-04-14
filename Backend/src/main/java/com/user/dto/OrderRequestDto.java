@@ -14,6 +14,7 @@ public class OrderRequestDto {
     private Double longitude;
     private String couponCode;
     private Double discountAmount;
+    private boolean useWallet;
 
     public OrderRequestDto() {}
 	public Long getRestaurantId() {
@@ -90,6 +91,12 @@ public class OrderRequestDto {
     }
     public void setDiscountAmount(Double discountAmount) {
         this.discountAmount = discountAmount;
+    }
+    public boolean isUseWallet() {
+        return useWallet;
+    }
+    public void setUseWallet(boolean useWallet) {
+        this.useWallet = useWallet;
     }
 
 }

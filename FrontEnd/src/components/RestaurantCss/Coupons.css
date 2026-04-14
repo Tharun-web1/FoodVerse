@@ -1,0 +1,136 @@
+/* Coupons.css - Premium Design System */
+
+.coupons-page {
+  background: #f8fafc;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.premium-title {
+  color: #1e293b;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.btn-primary-premium {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-primary-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, #B8860B 0%, #D4AF37 100%);
+  color: white;
+}
+
+.card-premium {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.form-control-premium {
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+}
+
+.form-control-premium:focus {
+  border-color: #D4AF37;
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+  outline: none;
+}
+
+/* Coupon Card */
+.coupon-card {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border-left: 6px solid #D4AF37;
+  transition: all 0.3s ease;
+}
+
+.coupon-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.coupon-top {
+  padding: 20px;
+  background: #fdfdfd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px dashed #eee;
+}
+
+.coupon-code {
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.delete-btn {
+  background: #fee2e2;
+  color: #ef4444;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.coupon-body {
+  padding: 25px;
+}
+
+.coupon-benefit {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #D4AF37;
+  margin-bottom: 12px;
+}
+
+.coupon-detail {
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.coupon-expiry {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.no-data-box {
+  background: white;
+  border-radius: 20px;
+  border: 3px dashed #cbd5e1;
+}
+
+.animate__animated {
+  animation-duration: 0.6s;
+}

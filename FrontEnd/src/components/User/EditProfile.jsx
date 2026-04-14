@@ -36,6 +36,7 @@ const EditProfile = () => {
           username: res.data.username || "",
           mail: res.data.mail || "",
           phnno: res.data.phnno || "",
+          walletBalance: res.data.walletBalance || 0,
         });
       } catch (err) {
         setMessage(t("failed_load_profile"));
@@ -82,6 +83,16 @@ const EditProfile = () => {
   return (
     <div className="edit-profile">
       <h2>{t("edit_profile")}</h2>
+
+      <div className="bitezy-wallet-card">
+        <div className="wallet-header">
+           <i className="fa-solid fa-wallet"></i>
+           <span>{t("bitezy_wallet")}</span>
+        </div>
+        <div className="wallet-balance">
+           <span className="balance-amount">₹{(form.walletBalance || 0).toFixed(2)}</span>
+        </div>
+      </div>
 
       <form onSubmit={handleSubmit} className="edit-profile-form">
 

@@ -120,7 +120,7 @@ public class OrderService {
         final double subtotal = total; 
         double discount = 0;
         if (request.getCouponCode() != null && !request.getCouponCode().isEmpty()) {
-            couponService.validateCoupon(request.getCouponCode(), subtotal, user.getId())
+            couponService.validateCoupon(request.getCouponCode(), subtotal, user.getId(), request.getRestaurantId())
                 .ifPresent(coupon -> {
                     double d = couponService.calculateDiscount(coupon, subtotal);
                     order.setCouponCode(coupon.getCode());
@@ -130,30 +130,74 @@ public class OrderService {
         }
 
         double dFee = request.getDeliveryFee() != null ? request.getDeliveryFee() : 0.0;
-        double tAmt = request.getTaxAmount() != null ? request.getTaxAmount() : 0.0;
         
-        order.setTotalAmount(total + dFee + tAmt - discount);
+        // 🚀 ENFORCE: Zero Delivery Fee for First Order
+        if (isFirstOrder(username)) {
+            System.out.println("First Order Detected for " + username + "! Setting delivery fee to 0.");
+            dFee = 0.0;
+        }
+
+        double tAmt = request.getTaxAmount() != null ? request.getTaxAmount() : 0.0;
+        double pendingFee = user.getPendingCancellationFee() != null ? user.getPendingCancellationFee() : 0.0;
+        
+        order.setTotalAmount(total + dFee + tAmt + pendingFee - discount);
         order.setDeliveryFee(dFee);
         order.setTaxAmount(tAmt);
  
-        // Handle Razorpay Order Creation
-        if (!"COD".equalsIgnoreCase(request.getPaymentMethod())) {
-            try {
-                RazorpayClient razorpay = new RazorpayClient(razorpayKeyId, razorpayKeySecret);
+        // Reset pending fee after applying it to the order
+        if (pendingFee > 0) {
+            user.setPendingCancellationFee(0.0);
+            userRepo.save(user);
+        }
  
-                JSONObject orderRequest = new JSONObject();
-                orderRequest.put("amount", (int) (order.getTotalAmount() * 100)); // amount in paise
-                orderRequest.put("currency", "INR");
-                orderRequest.put("receipt", "order_rcptid_" + System.currentTimeMillis());
- 
-                com.razorpay.Order razorpayOrder = razorpay.orders.create(orderRequest);
-                order.setRazorpayOrderId(razorpayOrder.get("id"));
-            } catch (RazorpayException e) {
-                throw new RuntimeException("Error creating Razorpay order: " + e.getMessage());
+        // Handle Payment Methods with Partial Wallet Support
+        double totalAmount = order.getTotalAmount();
+        double totalToPay = totalAmount;
+        double walletContribution = 0.0;
+
+        if (request.isUseWallet()) {
+            double walletBalance = user.getWalletBalance() != null ? user.getWalletBalance() : 0.0;
+            walletContribution = Math.min(walletBalance, totalAmount);
+            
+            if (walletContribution > 0) {
+                user.setWalletBalance(walletBalance - walletContribution);
+                userRepo.save(user);
+                order.setWalletAmountDeducted(walletContribution);
+                totalToPay = totalAmount - walletContribution;
+                System.out.println("Partial Wallet Payment: Deducting " + walletContribution + " from balance. Remaining: " + totalToPay);
+            }
+        }
+
+        if (totalToPay <= 0) {
+            order.setPaid(true);
+            order.setStatus("ACCEPTED");
+            order.setEstimatedPrepTime(30);
+        } else {
+            if ("COD".equalsIgnoreCase(request.getPaymentMethod())) {
+                order.setStatus("ACCEPTED");
+                order.setPaid(false);
+                order.setEstimatedPrepTime(30);
+            } else {
+                // Online Payment via Razorpay
+                try {
+                    RazorpayClient razorpay = new RazorpayClient(razorpayKeyId, razorpayKeySecret);
+                    JSONObject orderRequest = new JSONObject();
+                    orderRequest.put("amount", (int) (totalToPay * 100)); // amount in paise
+                    orderRequest.put("currency", "INR");
+                    orderRequest.put("receipt", "order_rcptid_" + System.currentTimeMillis());
+                    com.razorpay.Order razorpayOrder = razorpay.orders.create(orderRequest);
+                    order.setRazorpayOrderId(razorpayOrder.get("id"));
+                    System.out.println("Created Razorpay Order for remaining: " + totalToPay);
+                } catch (RazorpayException e) {
+                    throw new RuntimeException("Error creating Razorpay order: " + e.getMessage());
+                }
             }
         }
  
         Order savedOrder = orderRepo.save(order);
+        if ("ACCEPTED".equalsIgnoreCase(savedOrder.getStatus())) {
+            createDeliveryOrder(savedOrder);
+        }
         return convertToResponseDto(savedOrder);
     }
  
@@ -175,16 +219,16 @@ public class OrderService {
                 Order order = orderRepo.findByRazorpayOrderId(razorpayOrderId)
                         .orElseThrow(() -> new RuntimeException("Order not found with Razorpay ID: " + razorpayOrderId));
 
-                System.out.println("Payment Validated for Order ID: " + order.getId());
-                System.out.println("Setting Transaction ID: " + razorpayPaymentId);
-                
                 order.setRazorpayPaymentId(razorpayPaymentId);
                 order.setRazorpaySignature(razorpaySignature);
                 order.setTransactionId(razorpayPaymentId); // Set transactionId for display
                 order.setPaid(true);
-                order.setStatus("PAID");
+                order.setStatus("ACCEPTED");
+                order.setEstimatedPrepTime(30);
                 
                 Order updatedOrder = orderRepo.save(order);
+                createDeliveryOrder(updatedOrder);
+                System.out.println("Payment Validated for Order ID: " + order.getId() + ". Auto-accepted.");
                 System.out.println("Order saved successfully. New transactionId: " + updatedOrder.getTransactionId());
                 return convertToResponseDto(updatedOrder);
             } else {
@@ -203,6 +247,12 @@ public class OrderService {
  
         List<Order> orders = orderRepo.findByUserIdWithItems(user.getId());
         return orders.stream().map(this::convertToResponseDto).collect(Collectors.toList());
+    }
+
+    public boolean isFirstOrder(String username) {
+        UserEntity user = userRepo.findByUsername(username);
+        if (user == null) return true; // Treat as new if not found
+        return orderRepo.countByUserId(user.getId()) == 0;
     }
  
     public List<OrderResponseDto> fetchOrdersByRestaurant(Long restaurantId) {
@@ -234,6 +284,59 @@ public class OrderService {
             createDeliveryOrder(order);
         }
         return convertToResponseDto(updated);
+    }
+
+    public OrderResponseDto cancelOrder(Long orderId, String username) {
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        if (!order.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("Unauthorized to cancel this order");
+        }
+
+        String currentStatus = order.getStatus().toUpperCase();
+        if ("DELIVERED".equals(currentStatus) || "CANCELLED".equals(currentStatus)) {
+            throw new RuntimeException("Order cannot be cancelled in its current state: " + currentStatus);
+        }
+
+        // Check if delivery partner is assigned
+        int intOrderId = order.getId().intValue();
+        Optional<DeliveryOrder> doOpt = deliveryOrderRepo.findByOrderId(intOrderId);
+        
+        if (doOpt.isPresent()) {
+            DeliveryOrder deliveryOrder = doOpt.get();
+            // If partner is assigned or order is picked up, etc, apply fee
+            if (deliveryOrder.getPartner() != null) {
+                UserEntity user = order.getUser();
+                double currentFee = user.getPendingCancellationFee() != null ? user.getPendingCancellationFee() : 0.0;
+                user.setPendingCancellationFee(currentFee + 59.0);
+                userRepo.save(user);
+            }
+            
+            // Update DeliveryOrder status to CANCELLED
+            deliveryOrder.setStatus(DeliveryStatus.CANCELLED);
+            deliveryOrderRepo.save(deliveryOrder);
+        }
+
+        // Refund logic for cancelled orders
+        double refundAmount = 0.0;
+        if (order.getPaid() != null && order.getPaid()) {
+            refundAmount = order.getTotalAmount();
+        } else if (order.getWalletAmountDeducted() != null && order.getWalletAmountDeducted() > 0) {
+            refundAmount = order.getWalletAmountDeducted();
+        }
+
+        if (refundAmount > 0) {
+            UserEntity user = order.getUser();
+            double currentBalance = user.getWalletBalance() != null ? user.getWalletBalance() : 0.0;
+            user.setWalletBalance(currentBalance + refundAmount);
+            userRepo.save(user);
+            System.out.println("Refunded " + refundAmount + " to " + user.getUsername() + "'s wallet. (Paid: " + order.getPaid() + ")");
+        }
+
+        order.setStatus("CANCELLED");
+        Order cancelledOrder = orderRepo.save(order);
+        return convertToResponseDto(cancelledOrder);
     }
 
     private void createDeliveryOrder(Order order) {

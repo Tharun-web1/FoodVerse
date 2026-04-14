@@ -3,6 +3,7 @@ import './App.css'
 import Footer from './components/Footer'
 import Home from './components/HomePage/Home'
 import Login from './components/LoginPage/Login'
+import ForgotPassword from './components/LoginPage/ForgotPassword'
 import Contact from './components/Restaurant/Contact'
 import EditItem from './components/Restaurant/EditItem'
 import EditRestaurant from './components/Restaurant/EditRestaurant'
@@ -21,6 +22,7 @@ import OrderHistory from './components/Restaurant/OrderHistory'
 import ViewItem from './components/Restaurant/ViewItem'
 import Revenue from './components/Restaurant/Revenue'
 import TodayRevenue from './components/Restaurant/TodayRevenue'
+import RestaurantCoupons from './components/Restaurant/Coupons'
 import SignUp from './components/Singup/SignUp'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { CartProvider } from './components/User/CartContext'
@@ -86,6 +88,7 @@ function App() {
                     <Route path='/' element={<Home />} />
                     <Route path='/user' element={<User />} />
                     <Route path='/login/user' element={<Login />} />
+                    <Route path='/forgot-password' element={<ForgotPassword />} />
                     <Route path='/signup/user' element={<SignUp />} />
                     <Route path='/signup/res' element={<Restaurant />} />
                     <Route path='/res/menu' element={<RestaurantItems />} />
@@ -103,6 +106,7 @@ function App() {
                     <Route path='/res/orders/delivered' element={<DeliveredOrders />} />
                     <Route path='/res/orders/today' element={<TodayOrders />} />
                     <Route path='/res/order-history' element={<OrderHistory />} />
+                    <Route path='/res/coupons' element={<RestaurantCoupons />} />
 
                     <Route path="/restaurant/:id" element={<RestuarentInfo />} />
                     <Route path="/profile" element={<MyProfilePage />} />

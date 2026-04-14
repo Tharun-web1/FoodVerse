@@ -61,6 +61,29 @@ const MyOrders = ({ isProfile = false }) => {
         }
     };
 
+    const handleCancelOrder = async (orderId, hasPartner) => {
+        const confirmMsg = hasPartner 
+            ? t("cancel_fee_warning") 
+            : t("cancel_confirm_msg");
+            
+        if (!window.confirm(confirmMsg)) return;
+
+        try {
+            await axios.put(`${API_BASE_URL}/orders/${orderId}/cancel`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            alert(t("order_cancelled_success"));
+            // Refresh orders
+            const res = await axios.get(`${API_BASE_URL}/orders/my-orders`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setOrders(res.data.reverse());
+        } catch (err) {
+            console.error("Error cancelling order:", err);
+            alert(err.response?.data?.message || t("cancel_failed"));
+        }
+    };
+
     const getStatusIcon = (status) => {
         switch (status?.toLowerCase()) {
             case 'pending': return <FiClock />;
@@ -153,7 +176,26 @@ const MyOrders = ({ isProfile = false }) => {
                                         <span className="order-total-label">{t("amount_paid")} :</span>
                                         <span className="order-total-amount " style={{ "marginLeft": "5px" }}>₹{order.totalAmount}</span>
                                     </div>
-                                    {order.deliveryPartnerName && order.status?.toLowerCase() !== 'delivered' && (
+                                    <div className="order-actions-row">
+                                        {['placed', 'accepted', 'preparing', 'paid'].includes(order.status?.toLowerCase()) && (
+                                            <button className="cancel-order-btn" onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleCancelOrder(order.id, !!order.deliveryPartnerName);
+                                            }}>
+                                                {t("cancel_order")}
+                                            </button>
+                                        )}
+                                        {order.status?.toLowerCase() === 'delivered' && !ratedOrders.includes(order.id || order.transaction_id) && (
+                                            <button className="rate-order-btn" onClick={(e) => {
+                                                e.stopPropagation(); // Prevent navigating to summary
+                                                setSelectedOrderForReview(order);
+                                                setShowReviewModal(true);
+                                            }}>
+                                                {t("rate_order")}
+                                            </button>
+                                        )}
+                                    </div>
+                                    {order.deliveryPartnerName && !['delivered', 'cancelled'].includes(order.status?.toLowerCase()) && (
                                         <div className="delivery-info-card">
                                             <div className="dp-profile-group">
                                                 <div className="dp-avatar">
@@ -164,21 +206,10 @@ const MyOrders = ({ isProfile = false }) => {
                                                     <span className="dp-name">{order.deliveryPartnerName}</span>
                                                 </div>
                                             </div>
-                                            {order.status?.toLowerCase() !== 'delivered' && (
-                                                <a href={`tel:${order.deliveryPartnerPhone}`} className="dp-call-btn" onClick={(e) => e.stopPropagation()}>
-                                                    <FiTruck /> <span>{t("call_partner")}</span>
-                                                </a>
-                                            )}
+                                            <a href={`tel:${order.deliveryPartnerPhone}`} className="dp-call-btn" onClick={(e) => e.stopPropagation()}>
+                                                <FiTruck /> <span>{t("call_partner")}</span>
+                                            </a>
                                         </div>
-                                    )}
-                                    {order.status?.toLowerCase() === 'delivered' && !ratedOrders.includes(order.id || order.transaction_id) && (
-                                        <button className="rate-order-btn" onClick={(e) => {
-                                            e.stopPropagation(); // Prevent navigating to summary
-                                            setSelectedOrderForReview(order);
-                                            setShowReviewModal(true);
-                                        }}>
-                                            {t("rate_order")}
-                                        </button>
                                     )}
                                 </div>
                             </div>

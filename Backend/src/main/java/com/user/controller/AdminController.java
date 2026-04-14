@@ -26,6 +26,7 @@ import com.user.service.RestuarentService;
 import com.user.service.SignupService;
 import com.user.entity.Coupon;
 import com.user.repo.CouponRepo;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RestController
 @RequestMapping("/admin")
@@ -59,25 +60,27 @@ public class AdminController {
     @Autowired
     private CouponRepo couponRepo;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // --- STATS ---
 
     @GetMapping("/stats")
     public AdminStatsDto getStats() {
-        long totalUsers   = userRepo.countByRole(Role.USER);
-        long activeUsers  = userRepo.countByRoleAndActive(Role.USER, true);
-        long totalRiders  = riderRepo.count();
+        long totalUsers = userRepo.countByRole(Role.USER);
+        long activeUsers = userRepo.countByRoleAndActive(Role.USER, true);
+        long totalRiders = riderRepo.count();
         long activeRiders = riderRepo.countByStatus(com.user.enums.PartnerStatus.ACTIVE);
-        long totalRestaurants  = restuarentRepo.countByStatus("APPROVED");
+        long totalRestaurants = restuarentRepo.countByStatus("APPROVED");
         long activeRestaurants = restuarentRepo.countByActiveAndStatus(true, "APPROVED");
         long inactiveRestaurants = totalRestaurants - activeRestaurants;
-        long totalOrders  = orderRepo.count();
+        long totalOrders = orderRepo.count();
         double totalRevenue = orderService.getTotalRevenue();
 
         return new AdminStatsDto(
-            totalUsers, activeUsers, totalRiders, activeRiders,
-            totalRestaurants, activeRestaurants, inactiveRestaurants,
-            totalOrders, totalRevenue
-        );
+                totalUsers, activeUsers, totalRiders, activeRiders,
+                totalRestaurants, activeRestaurants, inactiveRestaurants,
+                totalOrders, totalRevenue);
     }
 
     // --- USERS ---
@@ -86,8 +89,7 @@ public class AdminController {
     public Page<UserAdminDto> getAllUsers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String search
-    ) {
+            @RequestParam(required = false) String search) {
         Pageable pageable = PageRequest.of(page, size);
         if (search != null && !search.trim().isEmpty()) {
             return userRepo.searchByRole(Role.USER, search, pageable)
@@ -100,11 +102,10 @@ public class AdminController {
     @PutMapping("/users/{id}/status")
     public ResponseEntity<UserAdminDto> toggleUserStatus(
             @PathVariable Long id,
-            @RequestParam boolean active
-    ) {
+            @RequestParam boolean active) {
         UserEntity user = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-      
+
         user.setActive(active);
         if (active) {
             user.setBlockedFrom(null);
@@ -118,15 +119,14 @@ public class AdminController {
     public ResponseEntity<UserAdminDto> blockUser(
             @PathVariable Long id,
             @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.LocalDateTime from,
-            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.LocalDateTime until
-    ) {
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME) java.time.LocalDateTime until) {
         UserEntity user = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        
+
         user.setActive(false);
         user.setBlockedFrom(from);
         user.setBlockedUntil(until);
-        
+
         UserEntity saved = userRepo.save(user);
         return ResponseEntity.ok(UserAdminDto.from(saved));
     }
@@ -135,11 +135,11 @@ public class AdminController {
     public ResponseEntity<UserAdminDto> approveUser(@PathVariable Long id) {
         UserEntity user = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        
+
         user.setActive(true);
         user.setBlockedFrom(null);
         user.setBlockedUntil(null);
-        
+
         UserEntity saved = userRepo.save(user);
         return ResponseEntity.ok(UserAdminDto.from(saved));
     }
@@ -150,8 +150,7 @@ public class AdminController {
     public Page<UserAdminDto> getAllRiders(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String search
-    ) {
+            @RequestParam(required = false) String search) {
         Pageable pageable = PageRequest.of(page, size);
         if (search != null && !search.trim().isEmpty()) {
             return userRepo.searchByRole(Role.RIDER, search, pageable)
@@ -168,8 +167,7 @@ public class AdminController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String search,
-            @RequestParam(required = false) Boolean active
-    ) {
+            @RequestParam(required = false) Boolean active) {
         Pageable pageable = PageRequest.of(page, size);
         boolean hasSearch = search != null && !search.trim().isEmpty();
         String status = "APPROVED";
@@ -191,8 +189,7 @@ public class AdminController {
     public ResponseEntity<Restuarent> toggleRestaurantStatus(
             @PathVariable Long id,
             @RequestParam boolean active,
-            @RequestParam(required = false) Integer hours
-    ) {
+            @RequestParam(required = false) Integer hours) {
         Restuarent updated = restuarentService.updateStatus(id, active, hours);
         return ResponseEntity.ok(updated);
     }
@@ -227,16 +224,14 @@ public class AdminController {
     @GetMapping("/orders")
     public Page<OrderResponseDto> getAllOrders(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "10") int size) {
         return orderService.getAllOrders(page, size);
     }
 
     @PutMapping("/orders/{id}/status")
     public ResponseEntity<OrderResponseDto> updateOrderStatus(
             @PathVariable Long id,
-            @RequestParam String status
-    ) {
+            @RequestParam String status) {
         OrderResponseDto updated = orderService.updateOrderStatus(id, status, null);
         return ResponseEntity.ok(updated);
     }
@@ -261,7 +256,7 @@ public class AdminController {
     @GetMapping("/recent-activity")
     public List<java.util.Map<String, Object>> getRecentActivities() {
         List<java.util.Map<String, Object>> activities = new java.util.ArrayList<>();
-        
+
         // Latest 3 Users
         Pageable pageable = PageRequest.of(0, 3, org.springframework.data.domain.Sort.by("id").descending());
         userRepo.findAll(pageable).forEach(user -> {
@@ -277,7 +272,8 @@ public class AdminController {
         restuarentRepo.findAll(pageable).forEach(res -> {
             java.util.Map<String, Object> activity = new java.util.HashMap<>();
             activity.put("type", "RESTAURANT");
-            activity.put("title", res.getStatus().equals("PENDING") ? "New Onboarding Request" : "New Restaurant Partner");
+            activity.put("title",
+                    res.getStatus().equals("PENDING") ? "New Onboarding Request" : "New Restaurant Partner");
             activity.put("subtitle", res.getName() + " in " + res.getLocation());
             activity.put("time", "Recently");
             activities.add(activity);
@@ -325,16 +321,21 @@ public class AdminController {
 
         // Ensure we are only updating admins
         if (admin.getRole() != Role.ADMIN) {
-             throw new RuntimeException("User is not an admin");
+            throw new RuntimeException("User is not an admin");
         }
 
         admin.setUsername(userDetails.getUsername());
         admin.setMail(userDetails.getMail());
         admin.setPhnno(userDetails.getPhnno());
-        
+
         // Only update password if provided
         if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
-             admin.setPassword(userDetails.getPassword());
+            try {
+                signupService.validatePassword(userDetails.getPassword());
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+            admin.setPassword(passwordEncoder.encode(userDetails.getPassword()));
         }
 
         UserEntity updatedAdmin = userRepo.save(admin);
@@ -347,7 +348,7 @@ public class AdminController {
                 .orElseThrow(() -> new RuntimeException("Admin not found with id: " + id));
 
         if (admin.getRole() != Role.ADMIN) {
-             throw new RuntimeException("User is not an admin");
+            throw new RuntimeException("User is not an admin");
         }
 
         userRepo.delete(admin);

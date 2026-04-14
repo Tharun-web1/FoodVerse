@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "../RestaurantCss/Navbar.css";
 import Profile from "./Profile";
-import { FiGrid, FiLayers, FiClipboard, FiUser, FiLogOut, FiMenu } from "react-icons/fi";
+import { FiGrid, FiLayers, FiClipboard, FiUser, FiLogOut, FiMenu, FiTag } from "react-icons/fi";
 import { IoRestaurantOutline } from "react-icons/io5";
 import logo from "../../assets/images/logo2.jpeg";
 export default function Navbar() {
@@ -73,6 +73,12 @@ export default function Navbar() {
               <li className="nav-item">
                 <NavLink className="nav-link-premium" to="/res/orders">
                   <FiClipboard size={18} /> <span>Orders</span>
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
+                <NavLink className="nav-link-premium" to="/res/coupons">
+                  <FiTag size={18} /> <span>Coupons</span>
                 </NavLink>
               </li>
 

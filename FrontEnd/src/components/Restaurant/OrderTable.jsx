@@ -17,9 +17,9 @@ export default function OrderTable({ orders, updateStatus, showActions = true })
 
     if (!orders || orders.length === 0) {
         return (
-            <div className="text-center mt-5 py-5 border-0 rounded-4 bg-white bg-opacity-5">
-                <i className="bi bi-cart-x text-muted" style={{ fontSize: "3rem" }}></i>
-                <h5 className="mt-3">No orders found</h5>
+            <div className="text-center mt-5 py-5 border rounded-4 bg-white shadow-sm">
+                <i className="bi bi-cart-x text-muted" style={{ fontSize: "3rem", color: "#94a3b8 !important" }}></i>
+                <h5 className="mt-3 fw-bold" style={{ color: "#1e293b" }}>No orders found</h5>
                 <p className="text-muted small">New orders matching this status will appear here.</p>
             </div>
         );
@@ -124,7 +124,7 @@ export default function OrderTable({ orders, updateStatus, showActions = true })
                                             {order.status === "OUT_FOR_DELIVERY" ? "OUT FOR DELIVERY" : order.status}
                                         </span>
                                         {order.estimatedPrepTime && (
-                                            <small className="text-muted mt-1 fw-bold">🕒 {order.estimatedPrepTime}m</small>
+                                            <small className="mt-1 fw-bold" style={{ color: "#64748b" }}>🕒 {order.estimatedPrepTime}m</small>
                                         )}
                                     </div>
                                 </td>
@@ -179,7 +179,7 @@ export default function OrderTable({ orders, updateStatus, showActions = true })
                                     {order.status === "OUT_FOR_DELIVERY" ? "ON WAY" : order.status}
                                 </span>
                                 {order.estimatedPrepTime && (
-                                    <small className="text-muted mt-1 fw-bold">🕒 {order.estimatedPrepTime}m</small>
+                                    <small className="mt-1 fw-bold" style={{ color: "#64748b" }}>🕒 {order.estimatedPrepTime}m</small>
                                 )}
                             </div>
                         </div>

@@ -393,27 +393,34 @@
         display: none !important;
     }
 
-    .nav-search-btn-mobile1 {
+    .nav-wallet-btn-mobile1 {
         display: flex;
         align-items: center;
         justify-content: center;
         background: rgba(255, 255, 255, 0.2);
-        border: none;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 100px;
+        padding: 6px 12px;
         color: white;
-        width: 36px;
         height: 36px;
-        border-radius: 50%;
         cursor: pointer;
         transition: all 0.2s ease;
         order: 2;
         margin-left: 10px;
+        gap: 6px;
     }
 
-    .nav-search-btn-mobile1 svg {
-        font-size: 18px;
+    .wallet-mini-icon1 {
+        font-size: 16px;
     }
 
-    .nav-search-btn-mobile1:active {
+    .wallet-balance-text1 {
+        font-size: 13px;
+        font-weight: 800;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .nav-wallet-btn-mobile1:active {
         background: white;
         color: var(--nav-bg);
     }
@@ -448,7 +455,7 @@
 
 /* Ensure mobile search icon is hidden on desktop */
 @media (min-width: 769px) {
-    .nav-search-btn-mobile1 {
+    .nav-wallet-btn-mobile1 {
         display: none !important;
     }
 }
@@ -457,5 +464,13 @@
 @media (min-width: 769px) {
     .nav-lang-btn-mobile1 {
         display: none !important;
+    }
+}
+
+/* CONDITIONAL MOBILE VISIBILITY */
+@media (max-width: 768px) {
+    .navbar1.mobile-hidden1 {
+        display: none !important;
+        pointer-events: none;
     }
 }

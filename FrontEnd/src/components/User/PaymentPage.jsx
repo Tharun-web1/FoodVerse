@@ -20,8 +20,11 @@ const PaymentPage = () => {
     const [processing, setProcessing] = useState(false);
     const [orderData, setOrderData] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [walletBalance, setWalletBalance] = useState(0);
+    const [useWallet, setUseWallet] = useState(false);
 
     useEffect(() => {
+        const token = localStorage.getItem("token");
         // Load Razorpay Script
         const script = document.createElement("script");
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
@@ -34,21 +37,38 @@ const PaymentPage = () => {
             navigate("/cart");
         }
 
+        // Fetch wallet balance
+        if (token) {
+            axios.get(`${API_BASE_URL}/users/me`, {
+                headers: { Authorization: `Bearer ${token}` }
+            }).then(res => {
+                setWalletBalance(res.data.walletBalance || 0);
+            }).catch(err => console.error("Error fetching wallet balance", err));
+        }
+
         return () => {
-            document.body.removeChild(script);
+            if (document.body.contains(script)) {
+                document.body.removeChild(script);
+            }
         };
     }, [location.state, navigate]);
+
+    // Calculations for partial payment
+    const walletContribution = useWallet ? Math.min(walletBalance, orderData?.totalAmount || 0) : 0;
+    const remainingToPay = (orderData?.totalAmount || 0) - walletContribution;
 
     const handlePayment = async () => {
         setProcessing(true);
         const token = localStorage.getItem("token");
+
+        const finalPaymentMethod = remainingToPay <= 0 ? "WALLET" : paymentMethod;
 
         try {
             // 1. Create Order in Backend
             const orderPayload = {
                 restaurantId: orderData.restaurantId,
                 addressId: orderData.addressId,
-                paymentMethod: paymentMethod === "COD" ? "COD" : "ONLINE",
+                paymentMethod: finalPaymentMethod,
                 items: orderData.items.map(item => ({
                     itemId: item.itemId,
                     qty: item.qty
@@ -58,8 +78,9 @@ const PaymentPage = () => {
                 deliveryAddress: orderData.manualAddress || null,
                 latitude: orderData.latitude,
                 longitude: orderData.longitude,
-                couponCode: orderData.couponCode,
-                discountAmount: orderData.discountAmount
+                couponCode: orderData.couponCode || null,
+                discountAmount: orderData.discountAmount || 0,
+                useWallet: useWallet
             };
 
             const response = await axios.post(`${API_BASE_URL}/orders/place`, orderPayload, {
@@ -69,10 +90,10 @@ const PaymentPage = () => {
             const orderResponse = response.data;
 
             // 2. Handle Online Payment with Razorpay
-            if (paymentMethod !== "COD") {
+            if (finalPaymentMethod === "ONLINE") {
                 const options = {
-                    key: "rzp_test_SHxVDW9HWqLy3b", //key ID
-                    amount: (orderData.totalAmount * 100).toString(),
+                    key: "rzp_live_S2zMP8KB5nUyga", //key ID
+                    amount: (remainingToPay * 100).toString(),
                     currency: "INR",
                     name: "Food App",
                     description: "Order Payment",
@@ -110,7 +131,7 @@ const PaymentPage = () => {
                 const rzp = new window.Razorpay(options);
                 rzp.open();
             } else {
-                // 4. Handle COD Success
+                // 4. Handle COD or Full Wallet Success
                 clearCart();
                 setShowSuccess(true);
             }
@@ -191,8 +212,34 @@ const PaymentPage = () => {
                             <h2 className="section-title">Select Payment Method</h2>
 
                             <div
-                                className={`payment-card ${paymentMethod === "ONLINE" ? "selected" : ""}`}
-                                onClick={() => setPaymentMethod("ONLINE")}
+                                className={`payment-card wallet-toggle-card ${useWallet ? "selected" : ""} ${walletBalance <= 0 ? "disabled" : ""}`}
+                                onClick={() => walletBalance > 0 && setUseWallet(!useWallet)}
+                            >
+                                <div className="card-icon wallet">
+                                    {useWallet ? <FiCheckCircle className="checked" /> : <FiSmartphone />}
+                                </div>
+                                <div className="card-info">
+                                    <div className="wallet-label-row">
+                                        <h3>Use Bitezy Wallet</h3>
+                                        <span className="wallet-balance-tag">Balance: ₹{walletBalance.toFixed(2)}</span>
+                                    </div>
+                                    <p>{walletBalance <= 0 
+                                        ? "No balance available in your wallet" 
+                                        : `Apply ₹${Math.min(walletBalance, orderData.totalAmount).toFixed(2)} to this order`}
+                                    </p>
+                                </div>
+                                <div className={`toggle-switch ${useWallet ? "on" : ""}`}></div>
+                            </div>
+
+                            {remainingToPay > 0 && (
+                                <div className="secondary-payment-hint animate__animated animate__fadeIn">
+                                    Pay the remaining ₹{remainingToPay.toFixed(2)} via:
+                                </div>
+                            )}
+
+                            <div
+                                className={`payment-card ${paymentMethod === "ONLINE" ? "selected" : ""} ${remainingToPay <= 0 ? "disabled-faded" : ""}`}
+                                onClick={() => remainingToPay > 0 && setPaymentMethod("ONLINE")}
                             >
                                 <div className="card-icon">
                                     <FiCreditCard />
@@ -202,13 +249,13 @@ const PaymentPage = () => {
                                     <p>Pay securely via Razorpay (UPI, Card, NetBanking)</p>
                                 </div>
                                 <div className="selection-indicator">
-                                    {paymentMethod === "ONLINE" && <FiCheckCircle />}
+                                    {paymentMethod === "ONLINE" && remainingToPay > 0 && <FiCheckCircle />}
                                 </div>
                             </div>
 
                             <div
-                                className={`payment-card ${paymentMethod === "COD" ? "selected" : ""}`}
-                                onClick={() => setPaymentMethod("COD")}
+                                className={`payment-card ${paymentMethod === "COD" ? "selected" : ""} ${remainingToPay <= 0 ? "disabled-faded" : ""}`}
+                                onClick={() => remainingToPay > 0 && setPaymentMethod("COD")}
                             >
                                 <div className="card-icon">
                                     <FiHome />
@@ -218,7 +265,7 @@ const PaymentPage = () => {
                                     <p>Pay when you receive the order</p>
                                 </div>
                                 <div className="selection-indicator">
-                                    {paymentMethod === "COD" && <FiCheckCircle />}
+                                    {paymentMethod === "COD" && remainingToPay > 0 && <FiCheckCircle />}
                                 </div>
                             </div>
                         </div>
@@ -241,18 +288,38 @@ const PaymentPage = () => {
                                     <span>Taxes & Charges</span>
                                     <span>₹{orderData.taxes}</span>
                                 </div>
+                                {orderData.pendingCancellationFee > 0 && (
+                                    <div className="summary-row" style={{ color: '#ff5630', fontWeight: '600' }}>
+                                        <span>Late Cancellation Fee</span>
+                                        <span>₹{orderData.pendingCancellationFee}</span>
+                                    </div>
+                                )}
                                 <div className="summary-row total">
                                     <span>Total Amount</span>
                                     <span>₹{orderData.totalAmount}</span>
                                 </div>
+                                {useWallet && (
+                                    <div className="summary-row wallet-deduction animate__animated animate__fadeIn">
+                                        <span>Wallet Balance Applied</span>
+                                        <span className="negative">-₹{walletContribution.toFixed(2)}</span>
+                                    </div>
+                                )}
+                                {useWallet && (
+                                    <div className="summary-row final-payable">
+                                        <span>Payable Amount</span>
+                                        <span>₹{Math.max(0, remainingToPay).toFixed(2)}</span>
+                                    </div>
+                                )}
                             </div>
 
                             <button
-                                className="pay-btn"
+                                className={`pay-btn ${processing ? "processing" : ""}`}
                                 onClick={handlePayment}
                                 disabled={processing}
                             >
-                                {processing ? "Processing..." : `Pay ₹${orderData.totalAmount}`}
+                                {processing ? "Processing..." : 
+                                 remainingToPay <= 0 ? `Pay ₹${orderData.totalAmount} with Wallet` : 
+                                 `Pay ₹${remainingToPay.toFixed(2)}`}
                             </button>
                         </div>
                     </div>

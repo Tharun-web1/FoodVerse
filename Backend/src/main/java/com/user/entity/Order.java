@@ -51,6 +51,7 @@ public class Order {
     private Double deliveryLongitude;
     private String couponCode;
     private Double discountAmount = 0.0;
+    private Double walletAmountDeducted = 0.0;
 
     private LocalDateTime createdAt = LocalDateTime.now();
     private Integer estimatedPrepTime;
@@ -214,6 +215,12 @@ public class Order {
     }
     public void setDiscountAmount(Double discountAmount) {
         this.discountAmount = discountAmount;
+    }
+    public Double getWalletAmountDeducted() {
+        return walletAmountDeducted;
+    }
+    public void setWalletAmountDeducted(Double walletAmountDeducted) {
+        this.walletAmountDeducted = walletAmountDeducted;
     }
     public Integer getEstimatedPrepTime() {
         return estimatedPrepTime;

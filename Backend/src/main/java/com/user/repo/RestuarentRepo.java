@@ -20,7 +20,7 @@ public interface RestuarentRepo extends JpaRepository<Restuarent, Long> {
     Restuarent findByPhnno(@Param("phnno") String phnno);
 
     @EntityGraph(attributePaths = {"items"})
-    java.util.List<Restuarent> findDistinctByNameContainingIgnoreCaseOrDiscriptionContainingIgnoreCase(String name, @Param("discription") String discription);
+    java.util.List<Restuarent> findDistinctByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, @Param("description") String description);
 
     @EntityGraph(attributePaths = {"items"})
     @Query("select r from Restuarent r")
@@ -52,7 +52,7 @@ public interface RestuarentRepo extends JpaRepository<Restuarent, Long> {
     Page<Restuarent> findActiveWithItems(Pageable pageable);
 
     @EntityGraph(attributePaths = {"items"})
-    @Query("SELECT r FROM Restuarent r WHERE r.active = true AND r.status = 'APPROVED' AND (LOWER(r.name) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(r.discription) LIKE LOWER(CONCAT('%', :query, '%')))")
+    @Query("SELECT r FROM Restuarent r WHERE r.active = true AND r.status = 'APPROVED' AND (LOWER(r.name) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(r.description) LIKE LOWER(CONCAT('%', :query, '%')))")
     java.util.List<Restuarent> searchActiveRestaurants(@Param("query") String query);
 }
 

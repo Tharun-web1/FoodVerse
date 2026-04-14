@@ -142,3 +142,47 @@
     display: none;
   }
 }
+
+/* Password Refinements */
+.input-group-custom {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+  color: #888;
+  font-size: 1.1rem;
+  transition: color 0.2s;
+  z-index: 5;
+}
+
+.password-toggle:hover {
+  color: #ff6b6b;
+}
+
+.strength-meter-container {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.strength-meter-bar {
+  flex-grow: 1;
+  height: 6px;
+  background-color: #eee;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.strength-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 50px;
+  text-transform: uppercase;
+}

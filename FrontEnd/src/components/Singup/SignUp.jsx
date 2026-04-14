@@ -17,6 +17,9 @@ export default function SignUp() {
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -25,8 +28,53 @@ export default function SignUp() {
     });
   };
 
+  const validatePassword = (password) => {
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < minLength) return "Password must be at least 8 characters long";
+    if (!hasUpperCase) return "Password must contain at least one uppercase letter";
+    if (!hasLowerCase) return "Password must contain at least one lowercase letter";
+    if (!hasNumber) return "Password must contain at least one number";
+    if (!hasSpecialChar) return "Password must contain at least one special character (!@#$%^&*)";
+    return null;
+  };
+
+  const getStrength = (password) => {
+    let strength = 0;
+    if (password.length >= 8) strength += 20;
+    if (/[A-Z]/.test(password)) strength += 20;
+    if (/[a-z]/.test(password)) strength += 20;
+    if (/[0-9]/.test(password)) strength += 20;
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength += 20;
+    return strength;
+  };
+
+  const getStrengthColor = (strength) => {
+    if (strength <= 40) return "#ff4d4d"; // Red
+    if (strength <= 80) return "#ffa500"; // Orange
+    return "#2ecc71"; // Green
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const passwordError = validatePassword(formData.password);
+    if (passwordError) {
+      alert("❌ " + passwordError);
+      setMessage(passwordError);
+      return;
+    }
+
+    if (formData.password !== confirmPassword) {
+      alert("❌ Passwords do not match!");
+      setMessage("Passwords do not match");
+      return;
+    }
+
     setLoading(true);
     setMessage("");
 
@@ -97,14 +145,54 @@ export default function SignUp() {
 
             <div className="form-group mb-3">
               <label className="form-label">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                name="password"
-                placeholder="Enter Password"
-                required
-                onChange={handleChange}
-              />
+              <div className="input-group-custom">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-control"
+                  name="password"
+                  placeholder="Enter Password"
+                  required
+                  onChange={handleChange}
+                />
+                <i 
+                  className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'} password-toggle`} 
+                  onClick={() => setShowPassword(!showPassword)}
+                ></i>
+              </div>
+              
+              {/* Strength Meter */}
+              {formData.password && (
+                <div className="strength-meter-container mt-2">
+                  <div 
+                    className="strength-meter-bar" 
+                    style={{ 
+                      width: `${getStrength(formData.password)}%`, 
+                      backgroundColor: getStrengthColor(getStrength(formData.password)) 
+                    }}
+                  ></div>
+                  <span className="strength-text" style={{ color: getStrengthColor(getStrength(formData.password)) }}>
+                    {getStrength(formData.password) <= 40 ? "Weak" : getStrength(formData.password) <= 80 ? "Medium" : "Strong"}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="form-group mb-3">
+              <label className="form-label">Confirm Password</label>
+              <div className="input-group-custom">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  className="form-control"
+                  placeholder="Confirm Password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <i 
+                  className={`fa-solid ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'} password-toggle`} 
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                ></i>
+              </div>
             </div>
 
             <button type="submit" className="btn-signup w-100" disabled={loading}>

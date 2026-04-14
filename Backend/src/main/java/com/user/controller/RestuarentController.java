@@ -69,6 +69,9 @@ public class RestuarentController {
     @Autowired
     private ContactService contactService;
 
+    @Autowired
+    private com.user.repo.CouponRepo couponRepo;
+
     @PostMapping("/contactform")
 	public String contactform(@RequestBody Contact contact) {
 		contactService.Contactform(contact);
@@ -217,6 +220,11 @@ public class RestuarentController {
     public List<RestuarentItems> getItemsByRestaurant(@PathVariable("id") Long id) {
         return service.getItemsByRestaurant(id);
     }
+
+    @GetMapping("/{id}/coupons")
+    public List<com.user.entity.Coupon> getRestaurantCoupons(@PathVariable("id") Long id) {
+        return couponRepo.findAvailableCoupons(id, java.time.LocalDateTime.now());
+    }
     @GetMapping("/category/{category}")
     public List<ItemCategoryResponseDTO> getItemsByCategory(
             @PathVariable("category") String category) {
@@ -285,6 +293,48 @@ public class RestuarentController {
         
         service.deleteItem(itemId);
         return ResponseEntity.ok("Item deleted successfully");
+    }
+
+    // --- COUPON MANAGEMENT ---
+
+    @GetMapping("/my-coupons")
+    public List<com.user.entity.Coupon> getMyCoupons() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Restuarent current = restuarentService.getRestuarentByUsername(username);
+        if (current == null) throw new RuntimeException("Restaurant profile not found");
+        return couponRepo.findByRestuarentId(current.getId());
+    }
+
+    @PostMapping("/add-coupon")
+    public ResponseEntity<com.user.entity.Coupon> addCoupon(@RequestBody com.user.entity.Coupon coupon) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Restuarent current = restuarentService.getRestuarentByUsername(username);
+        if (current == null) throw new RuntimeException("Restaurant profile not found");
+
+        if (couponRepo.findByCodeAndRestuarentId(coupon.getCode(), current.getId()).isPresent()) {
+            throw new RuntimeException("Coupon code already exists for this restaurant");
+        }
+
+        coupon.setRestuarent(current);
+        com.user.entity.Coupon saved = couponRepo.save(coupon);
+        return ResponseEntity.ok(saved);
+    }
+
+    @DeleteMapping("/coupons/{id}")
+    public ResponseEntity<String> deleteCoupon(@PathVariable Long id) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Restuarent current = restuarentService.getRestuarentByUsername(username);
+        if (current == null) throw new RuntimeException("Restaurant profile not found");
+
+        com.user.entity.Coupon coupon = couponRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Coupon not found"));
+
+        if (!coupon.getRestuarent().getId().equals(current.getId())) {
+            throw new RuntimeException("Unauthorised: You do not own this coupon");
+        }
+
+        couponRepo.delete(coupon);
+        return ResponseEntity.ok("Coupon deleted successfully");
     }
 }
 

@@ -23,8 +23,8 @@ public class CouponService {
     @Autowired
     private OrderRepo orderRepo;
 
-    public Optional<Coupon> validateCoupon(String code, double orderTotal, Long userId) {
-        Optional<Coupon> couponOpt = couponRepo.findByCode(code);
+    public Optional<Coupon> validateCoupon(String code, double orderTotal, Long userId, Long restaurantId) {
+        Optional<Coupon> couponOpt = couponRepo.findByCodeAndActiveTrue(code);
         
         Coupon coupon;
         if (couponOpt.isEmpty()) {
@@ -53,6 +53,11 @@ public class CouponService {
         // Check if active
         if (!coupon.getActive()) return Optional.empty();
         
+        // Ownership Check: Coupon must be global (null) or match the provided restaurantId
+        if (coupon.getRestuarent() != null && (restaurantId == null || !coupon.getRestuarent().getId().equals(restaurantId))) {
+            return Optional.empty();
+        }
+
         // Check expiry
         if (coupon.getExpiryDate() != null && coupon.getExpiryDate().isBefore(LocalDateTime.now())) {
             return Optional.empty();
@@ -73,7 +78,7 @@ public class CouponService {
         return Optional.of(coupon);
     }
 
-    public List<Map<String, Object>> getAvailableCoupons(Long userId, double orderTotal) {
+    public List<Map<String, Object>> getAvailableCoupons(Long userId, double orderTotal, Long restaurantId) {
         List<Map<String, Object>> available = new ArrayList<>();
         boolean showAll = (orderTotal <= 0);
         
@@ -97,7 +102,7 @@ public class CouponService {
         
         // DB Coupons
         deleteExpiredCoupons(); // Lazy Cleanup
-        List<Coupon> dbCoupons = couponRepo.findAll();
+        List<Coupon> dbCoupons = couponRepo.findAvailableCoupons(restaurantId, LocalDateTime.now());
         for (Coupon c : dbCoupons) {
             if (Boolean.TRUE.equals(c.getActive())) {
                 if (c.getExpiryDate() != null && c.getExpiryDate().isBefore(LocalDateTime.now())) continue;
@@ -106,7 +111,7 @@ public class CouponService {
                 Map<String, Object> map = new HashMap<>();
                 map.put("code", c.getCode());
                 map.put("discountAmount", showAll ? ( "FIXED".equals(c.getDiscountType()) ? c.getDiscountValue() : 0.0 ) : calculateDiscount(c, orderTotal));
-                map.put("description", c.getDiscountType() + " " + c.getDiscountValue() + (c.getMinOrderAmount() != null ? " on ₹" + c.getMinOrderAmount() + "+" : ""));
+                map.put("description", c.getDiscountType() + " " + ( "PERCENTAGE".equals(c.getDiscountType()) ? (c.getDiscountValue() + "%") : ("₹" + c.getDiscountValue()) ) + (c.getMinOrderAmount() != null ? " on ₹" + c.getMinOrderAmount() + "+" : ""));
                 available.add(map);
             }
         }

@@ -28,6 +28,10 @@ public class Coupon {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime expiryDate;
 
+    @ManyToOne
+    @JoinColumn(name = "restuarent_id")
+    private Restuarent restuarent;
+
     public Coupon() {}
 
     public Long getId() {
@@ -84,5 +88,13 @@ public class Coupon {
 
     public void setExpiryDate(LocalDateTime expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public Restuarent getRestuarent() {
+        return restuarent;
+    }
+
+    public void setRestuarent(Restuarent restuarent) {
+        this.restuarent = restuarent;
     }
 }

@@ -1,6 +1,6 @@
 .category-page-container {
   max-width: 1200px;
-  margin: 100px auto 60px;
+  margin: 70px auto 60px;
   padding: 0 40px;
 }
 
@@ -83,7 +83,7 @@
 
 .category-page-loader {
   max-width: 1200px;
-  margin: 120px auto;
+  margin: 70px auto;
   padding: 0 40px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -112,7 +112,7 @@
 @media (max-width: 768px) {
   .category-page-container {
     padding: 0 20px;
-    margin-top: 80px;
+    margin-top: 65px;
   }
 
   .category-title-main {

@@ -48,7 +48,7 @@ public class Restuarent {
 	private String r_llExp;
 	private Integer review;
 	private Double rating;
-	private String discription;
+	private String description;
 	private String share;
 	private String whishlist;
 	@Column(name = "opening_time")
@@ -59,6 +59,9 @@ public class Restuarent {
 	@Column(name = "suspension_expiry")
 	private LocalDateTime suspensionExpiry;
 
+	@jakarta.persistence.Transient
+	private String promoOffer;
+
 	@OneToMany(mappedBy = "restuarent", cascade = CascadeType.ALL)
 	@JsonManagedReference
     private List<RestuarentItems> items = new ArrayList<>();
@@ -66,7 +69,7 @@ public class Restuarent {
 	public Restuarent(Long id, String username, String phnno, String mail, Role role, String password, String name,
 			String location, String r_min, String r_max, String r_cuisine, String r_zone, String r_lat,
 			String r_lon, String r_fName, String r_lName, String r_tin, String r_exp, String r_llNo, String r_llExp,
-			Integer review, Double rating, String discription, String share, String whishlist, LocalTime openingTime,
+			Integer review, Double rating, String description, String share, String whishlist, LocalTime openingTime,
 			LocalTime closingTime, List<RestuarentItems> items) {
 		this.id = id;
 		this.username = username;
@@ -91,7 +94,7 @@ public class Restuarent {
 		this.r_llExp = r_llExp;
 		this.review = review;
 		this.rating = rating;
-		this.discription = discription;
+		this.description = description;
 		this.share = share;
 		this.whishlist = whishlist;
 		this.openingTime = openingTime;
@@ -231,11 +234,11 @@ public class Restuarent {
 	public void setRating(Double rating) {
 		this.rating = rating;
 	}
-	public String getDiscription() {
-		return discription;
+	public String getDescription() {
+		return description;
 	}
-	public void setDiscription(String discription) {
-		this.discription = discription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public String getShare() {
 		return share;
@@ -287,6 +290,15 @@ public class Restuarent {
 
 	public void setSuspensionExpiry(LocalDateTime suspensionExpiry) {
 		this.suspensionExpiry = suspensionExpiry;
+	}
+
+	@jakarta.persistence.Transient
+	public String getPromoOffer() {
+		return promoOffer;
+	}
+
+	public void setPromoOffer(String promoOffer) {
+		this.promoOffer = promoOffer;
 	}
 	
 	

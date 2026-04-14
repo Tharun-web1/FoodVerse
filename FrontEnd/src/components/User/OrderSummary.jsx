@@ -213,7 +213,7 @@ const OrderSummary = ({ order: propOrder, onClose, isModal = false }) => {
                                 <span>{"  " + order.deliveryAddress}</span>
                             </div>
                         </div>
-                        {order.deliveryPartnerName && (
+                        {order.deliveryPartnerName && !['cancelled', 'delivered'].includes(order.status?.toLowerCase()) && (
                             <div className="detail-item">
                                 <FiTruck className="detail-icon" />
                                 <div>

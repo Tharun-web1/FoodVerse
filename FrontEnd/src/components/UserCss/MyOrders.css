@@ -1,6 +1,6 @@
 .orders-page-container {
     max-width: 1000px;
-    margin: 120px auto 60px;
+    margin: 70px auto 60px;
     padding: 0 40px;
     min-height: auto;
 }
@@ -114,10 +114,25 @@
     gap: 6px;
 }
 
-.status-pending { background: rgba(255, 171, 0, 0.1); color: #ffab00; }
-.status-placed { background: rgba(0, 184, 217, 0.1); color: #00b8d9; }
-.status-delivered { background: rgba(54, 179, 126, 0.1); color: #36b37e; }
-.status-cancelled { background: rgba(255, 86, 48, 0.1); color: #ff5630; }
+.status-pending {
+    background: rgba(255, 171, 0, 0.1);
+    color: #ffab00;
+}
+
+.status-placed {
+    background: rgba(0, 184, 217, 0.1);
+    color: #00b8d9;
+}
+
+.status-delivered {
+    background: rgba(54, 179, 126, 0.1);
+    color: #36b37e;
+}
+
+.status-cancelled {
+    background: rgba(255, 86, 48, 0.1);
+    color: #ff5630;
+}
 
 .order-items-summary {
     background: var(--bg-sub);
@@ -192,6 +207,31 @@
     color: white;
 }
 
+.order-actions-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.cancel-order-btn {
+    padding: 8px 20px;
+    background: transparent;
+    color: #ff5630;
+    border: 1.5px solid #ff5630;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancel-order-btn:hover {
+    background: #ff5630;
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 86, 48, 0.2);
+}
+
 /* ================= NO ORDERS EMPTY STATE ================= */
 .no-orders-container {
     display: flex;
@@ -212,7 +252,7 @@
     max-width: 400px;
     height: auto;
     margin-bottom: 30px;
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.05));
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.05));
 }
 
 .no-orders-title {
@@ -331,14 +371,17 @@
 @media (max-width: 768px) {
     .orders-page-container {
         padding: 0 16px;
-        margin: 80px auto 40px; /* Reduced top margin */
-        padding-bottom: 80px; /* Added bottom padding for BottomNav */
+        margin: 65px auto 40px;
+        /* Reduced top margin */
+        padding-bottom: 80px;
+        /* Added bottom padding for BottomNav */
     }
 
     .orders-title {
         font-size: 24px;
         margin-left: 4px;
         margin-bottom: 20px;
+        margin-top: -40px;
     }
 
     .order-card {
@@ -359,7 +402,8 @@
 
 @media (max-width: 480px) {
     .order-header {
-        flex-direction: row; /* Keep row for main header on small mobile if it fits */
+        flex-direction: row;
+        /* Keep row for main header on small mobile if it fits */
         align-items: center;
         justify-content: space-between;
         gap: 8px;
@@ -375,7 +419,8 @@
     }
 
     .order-footer {
-        flex-direction: row; /* Try to keep row for total if space allows */
+        flex-direction: row;
+        /* Try to keep row for total if space allows */
         align-items: center;
         justify-content: space-between;
         gap: 8px;

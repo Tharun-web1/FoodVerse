@@ -32,6 +32,7 @@ export default function Restaurant() {
     username: "",
     closingTime: "",
     openingTime: "",
+    description: "",
     role: "RESTAURANT",
   });
 
@@ -50,6 +51,9 @@ export default function Restaurant() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handlePlaceSelected = (place) => {
     setFormData(prev => ({
@@ -74,7 +78,16 @@ export default function Restaurant() {
   const handleFileChange = (e) => {
     const { name, files: selectedFiles } = e.target;
     const file = selectedFiles[0];
+    
     if (file) {
+      // Client-side validation: Max 10MB
+      const maxSize = 10 * 1024 * 1024;
+      if (file.size > maxSize) {
+        alert(`❌ File is too large! Maximum size allowed is 10MB. Selected file: ${(file.size / (1024 * 1024)).toFixed(2)}MB`);
+        e.target.value = ""; // Reset the input
+        return;
+      }
+
       setFiles((prev) => ({
         ...prev,
         [name]: file,
@@ -99,8 +112,35 @@ export default function Restaurant() {
     await axios.post(url, fd, { headers });
   };
 
+  const validatePassword = (password) => {
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (password.length < minLength) return "Password must be at least 8 characters long";
+    if (!hasUpperCase) return "Password must contain at least one uppercase letter";
+    if (!hasLowerCase) return "Password must contain at least one lowercase letter";
+    if (!hasNumber) return "Password must contain at least one number";
+    if (!hasSpecialChar) return "Password must contain at least one special character (!@#$%^&*)";
+    return null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const passwordError = validatePassword(formData.password);
+    if (passwordError) {
+      alert("❌ " + passwordError);
+      return;
+    }
+
+    if (formData.password !== confirmPassword) {
+      alert("❌ Passwords do not match!");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -207,6 +247,16 @@ export default function Restaurant() {
               <label>Zone</label>
               <input className="form-control mb-2" name="r_zone" placeholder="Zone" onChange={handleChange} value={formData.r_zone} />
 
+              <label>About Restaurant / Description</label>
+              <textarea 
+                className="form-control mb-2" 
+                name="description" 
+                placeholder="Briefly describe your restaurant, cuisines, and specialties..." 
+                onChange={handleChange} 
+                value={formData.description}
+                rows="3"
+              ></textarea>
+
               <div className="row mt-2">
                 <div className="col">
                   <label>Latitude</label>
@@ -273,8 +323,37 @@ export default function Restaurant() {
               <h6 className="section-title mt-3">Security</h6>
               <label>Email</label>
               <input type="email" className="form-control mb-2" name="mail" placeholder="Email" onChange={handleChange} value={formData.mail} />
+              
               <label>Password</label>
-              <input type="password" className="form-control mb-3" name="password" placeholder="Password" onChange={handleChange} value={formData.password} />
+              <div className="input-group-custom mb-3">
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  className="form-control" 
+                  name="password" 
+                  placeholder="Password" 
+                  onChange={handleChange} 
+                  value={formData.password} 
+                />
+                <i 
+                  className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'} password-toggle`} 
+                  onClick={() => setShowPassword(!showPassword)}
+                ></i>
+              </div>
+
+              <label>Confirm Password</label>
+              <div className="input-group-custom mb-3">
+                <input 
+                  type={showConfirmPassword ? "text" : "password"} 
+                  className="form-control" 
+                  placeholder="Confirm Password" 
+                  onChange={(e) => setConfirmPassword(e.target.value)} 
+                  value={confirmPassword} 
+                />
+                <i 
+                  className={`fa-solid ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'} password-toggle`} 
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                ></i>
+              </div>
 
               <button className="btn btn-primary w-100" disabled={isLoading}>
                 {isLoading ? (

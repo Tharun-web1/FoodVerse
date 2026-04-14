@@ -115,7 +115,6 @@ const TopPicks = ({ favorites, toggleFavorite }) => {
                                 <span className="pick-rating">
                                     <FiStar className="star-filled" /> {restaurant.rating.toFixed(1)}
                                 </span>
-                                <span className="pick-dot">•</span>
                                 <span className="pick-time">
                                     {restaurant.r_min || 25}-{restaurant.r_max || 30} {t("mins") || "MINS"}
                                 </span>

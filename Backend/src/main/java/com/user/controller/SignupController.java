@@ -75,8 +75,10 @@ public class SignupController {
         String otp = request.get("otp");
 
         if (otpService.verifyOtp(identifier, otp)) {
-            // Generate token (passing identifier as username, null as password/claims)
-            String token = jwtService.generateToken(identifier, null);
+            // Fetch the actual user details to get the primary username
+            org.springframework.security.core.userdetails.UserDetails userDetails = myUserService.loadUserByUsername(identifier);
+            // Generate token with the REAL username to ensure consistency in JwtFilter/JwtService
+            String token = jwtService.generateToken(userDetails.getUsername(), null);
             return ResponseEntity.ok(token);
         } else {
             return ResponseEntity.status(401).body(Map.of("message", "Invalid or expired OTP"));
@@ -88,4 +90,40 @@ public class SignupController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(signupService.verify(dto));
     }
 
+
+    // 🔄 Forgot Password: Step 1 - Request OTP
+    @PostMapping("/forgot-password/request")
+    public ResponseEntity<?> forgotPasswordRequest(@RequestBody Map<String, String> request) {
+        String identifier = request.get("identifier");
+        if (identifier == null || identifier.isEmpty()) {
+            return ResponseEntity.status(400).body(Map.of("message", "Identifier is required"));
+        }
+
+        try {
+            // Reusing the same OTP logic (which now sends to both Email + Phone)
+            otpService.generateAndSendOtp(identifier);
+            return ResponseEntity.ok(Map.of("message", "Recovery code sent! Please check your Email and Phone Number."));
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(Map.of("message", "User not found"));
+        }
+    }
+
+    // 🔄 Forgot Password: Step 2 - Verify & Reset
+    @PostMapping("/forgot-password/reset")
+    public ResponseEntity<?> forgotPasswordReset(@RequestBody Map<String, String> request) {
+        String identifier = request.get("identifier");
+        String otp = request.get("otp");
+        String newPassword = request.get("newPassword");
+
+        if (otpService.verifyOtp(identifier, otp)) {
+            try {
+                signupService.resetPassword(identifier, newPassword);
+                return ResponseEntity.ok(Map.of("message", "Password reset successful! You can now login."));
+            } catch (Exception e) {
+                return ResponseEntity.status(400).body(Map.of("message", e.getMessage()));
+            }
+        } else {
+            return ResponseEntity.status(401).body(Map.of("message", "Invalid or expired recovery code"));
+        }
+    }
 }

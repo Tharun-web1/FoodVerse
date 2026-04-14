@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from './AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { useToast } from '../../context/ToastContext';
-import { FaUser, FaEnvelope, FaLock, FaPhone, FaCalendarAlt, FaVenusMars } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaPhone, FaCalendarAlt, FaVenusMars, FaEye, FaEyeSlash } from 'react-icons/fa';
 import './Auth.css';
 
 const Register = () => {
@@ -18,13 +18,43 @@ const Register = () => {
     const { showToast } = useToast();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const validatePassword = (password) => {
+        const minLength = 8;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+        if (password.length < minLength) return "Password must be at least 8 characters long";
+        if (!hasUpperCase) return "Password must contain at least one uppercase letter";
+        if (!hasLowerCase) return "Password must contain at least one lowercase letter";
+        if (!hasNumber) return "Password must contain at least one number";
+        if (!hasSpecialChar) return "Password must contain at least one special character (!@#$%^&*)";
+        return null;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const passwordError = validatePassword(formData.password);
+        if (passwordError) {
+            showToast(passwordError, "error");
+            return;
+        }
+
+        if (formData.password !== confirmPassword) {
+            showToast("Passwords do not match!", "error");
+            return;
+        }
+
         setLoading(true);
         try {
             const cleanData = {
@@ -131,7 +161,7 @@ const Register = () => {
                         <div className="input-group-custom">
                             <span className="input-icon"><FaLock /></span>
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 name="password"
                                 className="auth-input"
                                 placeholder="Secure Password"
@@ -139,6 +169,32 @@ const Register = () => {
                                 onChange={handleChange}
                                 required
                             />
+                            <span 
+                                className="input-toggle" 
+                                onClick={() => setShowPassword(!showPassword)}
+                                style={{ position: 'absolute', right: '15px', cursor: 'pointer', color: '#888' }}
+                            >
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+
+                        <div className="input-group-custom">
+                            <span className="input-icon"><FaLock /></span>
+                            <input
+                                type={showConfirmPassword ? "text" : "password"}
+                                className="auth-input"
+                                placeholder="Confirm Password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
+                            <span 
+                                className="input-toggle" 
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                style={{ position: 'absolute', right: '15px', cursor: 'pointer', color: '#888' }}
+                            >
+                                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
                         </div>
 
                         <button type="submit" className="auth-btn" disabled={loading}>

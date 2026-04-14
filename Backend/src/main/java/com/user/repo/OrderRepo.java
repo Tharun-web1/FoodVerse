@@ -19,9 +19,9 @@ public interface OrderRepo extends JpaRepository<Order, Long>{
  
 	 java.util.Optional<Order> findByRazorpayOrderId(@Param("razorpayOrderId") String razorpayOrderId);
 
-    @Query("SELECT FUNCTION('DATE', o.createdAt), SUM(o.totalAmount) FROM Order o GROUP BY FUNCTION('DATE', o.createdAt)")
+    @Query("SELECT FUNCTION('DATE', o.createdAt), SUM(o.totalAmount) FROM Order o WHERE o.status = 'DELIVERED' GROUP BY FUNCTION('DATE', o.createdAt)")
     java.util.List<Object[]> getDailyRevenue();
 
-    @Query("SELECT SUM(o.totalAmount) FROM Order o")
+    @Query("SELECT SUM(o.totalAmount) FROM Order o WHERE o.status = 'DELIVERED'")
     Double getTotalRevenue();
 }

@@ -15,6 +15,30 @@ public class RestuarentService {
     @Autowired
     private RestuarentRepo restuarentRepository;
 
+    @Autowired
+    private com.user.repo.CouponRepo couponRepo;
+
+    private void populatePromoOffer(Restuarent r) {
+        if (r == null) return;
+        List<com.user.entity.Coupon> coupons = couponRepo.findByRestuarentId(r.getId());
+        if (coupons == null || coupons.isEmpty()) return;
+
+        // Find best active coupon
+        coupons.stream()
+            .filter(c -> Boolean.TRUE.equals(c.getActive()))
+            .filter(c -> c.getExpiryDate() == null || c.getExpiryDate().isAfter(java.time.LocalDateTime.now()))
+            .findFirst()
+            .ifPresent(c -> {
+                String val = c.getDiscountType().equals("FIXED") ? ("₹" + c.getDiscountValue()) : (c.getDiscountValue() + "%");
+                String off = val + " OFF" + (c.getMinOrderAmount() != null ? " above ₹" + c.getMinOrderAmount().intValue() : "");
+                r.setPromoOffer(off);
+            });
+    }
+
+    private void populatePromoOffers(List<Restuarent> list) {
+        if (list != null) list.forEach(this::populatePromoOffer);
+    }
+
     
     public Restuarent addRestuarent(Restuarent restuarent) {
         if (restuarent.getRating() == null) restuarent.setRating(0.0);
@@ -22,25 +46,35 @@ public class RestuarentService {
         return restuarentRepository.save(restuarent);
     }
     public List<Restuarent> getAllRestuarents() {
-        return restuarentRepository.findAll();
+        List<Restuarent> list = restuarentRepository.findAll();
+        populatePromoOffers(list);
+        return list;
     }
     
     public Restuarent getRestuarentByUsername(String username) {
-        return restuarentRepository.findByUsername(username);
+        Restuarent res = restuarentRepository.findByUsername(username);
+        populatePromoOffer(res);
+        return res;
     }
 
     public List<Restuarent> getRestaurantsPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return restuarentRepository.findActiveWithItems(pageable).getContent();
+        List<Restuarent> list = restuarentRepository.findActiveWithItems(pageable).getContent();
+        populatePromoOffers(list);
+        return list;
     }
     
     public Restuarent getRestuarentById(Long id) {
-        return restuarentRepository.findById(id)
+        Restuarent res = restuarentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+        populatePromoOffer(res);
+        return res;
     }
 
     public List<Restuarent> searchRestaurants(String query) {
-        return restuarentRepository.searchActiveRestaurants(query);
+        List<Restuarent> list = restuarentRepository.searchActiveRestaurants(query);
+        populatePromoOffers(list);
+        return list;
     }
 
     public Restuarent updateRestuarent(Long id, Restuarent restuarent) {

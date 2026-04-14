@@ -62,13 +62,23 @@ public class OrderController {
         return orderService.verifyPayment(username, paymentDetails);
     }
 
+    @PutMapping("/{orderId}/cancel")
+    public OrderResponseDto cancelOrder(@PathVariable("orderId") Long orderId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return orderService.cancelOrder(orderId, username);
+    }
+
     @PostMapping("/validate-coupon")
-    public org.springframework.http.ResponseEntity<?> validateCoupon(@org.springframework.web.bind.annotation.RequestParam String code, @org.springframework.web.bind.annotation.RequestParam double total) {
+    public org.springframework.http.ResponseEntity<?> validateCoupon(
+            @org.springframework.web.bind.annotation.RequestParam String code, 
+            @org.springframework.web.bind.annotation.RequestParam double total,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) Long restaurantId) {
+        
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         com.user.entity.UserEntity user = userRepo.findByUsername(username);
         Long userId = (user != null) ? user.getId() : null;
 
-        return couponService.validateCoupon(code, total, userId)
+        return couponService.validateCoupon(code, total, userId, restaurantId)
                 .map(coupon -> {
                     double discount = couponService.calculateDiscount(coupon, total);
                     return org.springframework.http.ResponseEntity.ok(java.util.Map.of(
@@ -82,10 +92,18 @@ public class OrderController {
     }
 
     @GetMapping("/available-coupons")
-    public List<java.util.Map<String, Object>> getAvailableCoupons(@org.springframework.web.bind.annotation.RequestParam double total) {
+    public List<java.util.Map<String, Object>> getAvailableCoupons(
+            @org.springframework.web.bind.annotation.RequestParam double total,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) Long restaurantId) {
+        
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         com.user.entity.UserEntity user = userRepo.findByUsername(username);
         Long userId = (user != null) ? user.getId() : null;
-        return couponService.getAvailableCoupons(userId, total);
+        return couponService.getAvailableCoupons(userId, total, restaurantId);
+    }
+    @GetMapping("/is-first-order")
+    public boolean checkIsFirstOrder() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return orderService.isFirstOrder(username);
     }
 }

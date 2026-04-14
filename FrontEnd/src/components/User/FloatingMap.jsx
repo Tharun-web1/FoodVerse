@@ -49,7 +49,7 @@ const FloatingMap = () => {
             });
             
             const active = res.data.find(o => 
-                o.status && ['out_for_delivery', 'preparing', 'placed'].includes(o.status.toLowerCase())
+                o.status && ['placed', 'paid', 'accepted', 'preparing', 'out_for_delivery'].includes(o.status.toLowerCase())
             );
             
             if (active) {

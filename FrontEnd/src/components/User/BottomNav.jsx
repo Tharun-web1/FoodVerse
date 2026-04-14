@@ -16,14 +16,14 @@ const BottomNav = ({ onProfileToggle, onSearchToggle }) => {
 
     return (
         <div className="bottom-nav">
-            <button 
+            <button
                 className={`bottom-nav-item ${isActive('/user') ? 'active' : ''}`}
                 onClick={() => navigate('/user')}
             >
                 <FiHome />
                 <span>{t('home')}</span>
             </button>
-            <button 
+            <button
                 className="bottom-nav-item"
                 onClick={() => {
                     if (onSearchToggle) {
@@ -36,7 +36,7 @@ const BottomNav = ({ onProfileToggle, onSearchToggle }) => {
                 <FiSearch />
                 <span>{t('search')}</span>
             </button>
-            <button 
+            <button
                 className={`bottom-nav-item ${isActive('/cart') ? 'active' : ''}`}
                 onClick={() => navigate('/cart')}
             >
@@ -46,14 +46,14 @@ const BottomNav = ({ onProfileToggle, onSearchToggle }) => {
                 </div>
                 <span>{t('cart')}</span>
             </button>
-            <button 
+            <button
                 className={`bottom-nav-item ${isActive('/orders') ? 'active' : ''}`}
                 onClick={() => navigate('/orders')}
             >
                 <FiList />
                 <span>{t('orders')}</span>
             </button>
-            <button 
+            <button
                 className="bottom-nav-item"
                 onClick={onProfileToggle}
             >

@@ -42,6 +42,7 @@ public class RiderEntity {
     private String bankName;
     private String accountNumber;
     private String ifscCode;
+    private String accountHolderName;
 
     @Enumerated(EnumType.STRING)
     private PartnerStatus status = PartnerStatus.PENDING;
@@ -70,7 +71,7 @@ public class RiderEntity {
 
 	public RiderEntity(Integer id, String riderId, String name, String gender, Integer age, String email, String phone,
 			String password, String panNumber, String aadhaarNumber, String vehicleType, String vehicleNumber,
-			String licenseNumber, String bankName, String accountNumber, String ifscCode, PartnerStatus status, Boolean available, Double totalEarnings, Double bankBalance, Double rating, Integer totalOrders) {
+			String licenseNumber, String bankName, String accountNumber, String ifscCode, String accountHolderName, PartnerStatus status, Boolean available, Double totalEarnings, Double bankBalance, Double rating, Integer totalOrders) {
 		this.id = id;
 		this.riderId = riderId;
 		this.name = name;
@@ -87,6 +88,7 @@ public class RiderEntity {
         this.bankName = bankName;
         this.accountNumber = accountNumber;
         this.ifscCode = ifscCode;
+        this.accountHolderName = accountHolderName;
 		this.status = status;
 		this.available = available;
 		this.totalEarnings = totalEarnings;
@@ -221,6 +223,14 @@ public class RiderEntity {
 
     public void setIfscCode(String ifscCode) {
         this.ifscCode = ifscCode;
+    }
+
+    public String getAccountHolderName() {
+        return accountHolderName;
+    }
+
+    public void setAccountHolderName(String accountHolderName) {
+        this.accountHolderName = accountHolderName;
     }
 
 	public PartnerStatus getStatus() {

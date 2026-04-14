@@ -3,17 +3,17 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import "./Managerestaurants.css";
-import { 
-  FiMapPin, 
-  FiStar, 
-  FiMail, 
-  FiPhone, 
-  FiFileText, 
-  FiTrash2, 
-  FiSearch, 
-  FiClock, 
-  FiCheckCircle, 
-  FiSlash, 
+import {
+  FiMapPin,
+  FiStar,
+  FiMail,
+  FiPhone,
+  FiFileText,
+  FiTrash2,
+  FiSearch,
+  FiClock,
+  FiCheckCircle,
+  FiSlash,
   FiTarget,
   FiChevronLeft,
   FiChevronRight,
@@ -514,7 +514,7 @@ export default function Managerestaurants() {
                             <div className="mb-0">
                               <label className="text-muted extra-small d-block text-uppercase fw-800 mb-1">Description</label>
                               <p className="small text-secondary mb-0 fw-600" style={{ fontStyle: 'italic', lineHeight: '1.6' }}>
-                                {selectedRestaurant.discription || 'No description provided.'}
+                                {selectedRestaurant.description || 'No description provided.'}
                               </p>
                             </div>
                           </div>
@@ -594,8 +594,8 @@ export default function Managerestaurants() {
 
                                 <div className="d-flex gap-3 border-top pt-3">
                                   <div>
-                                    <label className="text-muted extra-small d-block text-uppercase fw-800">Pricing Tier</label>
-                                    <span className="small fw-800">₹{selectedRestaurant.r_min} - ₹{selectedRestaurant.r_max}</span>
+                                    <label className="text-muted extra-small d-block text-uppercase fw-800">Delivery Time</label>
+                                    <span className="small fw-800">{selectedRestaurant.r_min} - {selectedRestaurant.r_max} Mints</span>
                                   </div>
                                   <div className="ms-auto text-end">
                                     <label className="text-muted extra-small d-block text-uppercase fw-800">Coordinates</label>
@@ -657,25 +657,25 @@ export default function Managerestaurants() {
                       Choose the duration for this suspension. The restaurant will be automatically released after the selected period.
                     </p>
                     <div className="d-grid gap-2">
-                      <button 
+                      <button
                         className={`btn py-3 rounded-4 fw-800 ${suspensionHours === 0 ? 'btn-primary-premium shadow-sm' : 'btn-light text-dark border'}`}
                         onClick={() => setSuspensionHours(0)}
                       >
                         Indefinite / Manual Release
                       </button>
-                      <button 
+                      <button
                         className={`btn py-3 rounded-4 fw-800 ${suspensionHours === 1 ? 'btn-primary-premium shadow-sm' : 'btn-light text-dark border'}`}
                         onClick={() => setSuspensionHours(1)}
                       >
                         Suspend for 1 Hour
                       </button>
-                      <button 
+                      <button
                         className={`btn py-3 rounded-4 fw-800 ${suspensionHours === 4 ? 'btn-primary-premium shadow-sm' : 'btn-light text-dark border'}`}
                         onClick={() => setSuspensionHours(4)}
                       >
                         Suspend for 4 Hours
                       </button>
-                      <button 
+                      <button
                         className={`btn py-3 rounded-4 fw-800 ${suspensionHours === 24 ? 'btn-primary-premium shadow-sm' : 'btn-light text-dark border'}`}
                         onClick={() => setSuspensionHours(24)}
                       >
@@ -685,7 +685,7 @@ export default function Managerestaurants() {
                   </div>
                   <div className="modal-footer border-0 p-4 pt-2">
                     <button className="btn btn-light px-4 py-2 fw-800 rounded-pill" onClick={() => setShowSuspendModal(false)}>Cancel</button>
-                    <button 
+                    <button
                       className="btn btn-danger px-5 py-2 fw-800 rounded-pill shadow"
                       onClick={() => toggleStatus(selectedSuspendId, true, suspensionHours)}
                     >

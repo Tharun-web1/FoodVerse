@@ -19,6 +19,7 @@ export default function Login() {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -182,15 +183,26 @@ export default function Login() {
             {loginMode === "password" ? (
               <div className="form-group mb-4">
                 <label className="form-label">Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  name="password"
-                  placeholder="Enter password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                />
+                <div className="input-group-custom">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="form-control"
+                    name="password"
+                    placeholder="Enter password"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+                  <i 
+                    className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'} password-toggle`} 
+                    onClick={() => setShowPassword(!showPassword)}
+                  ></i>
+                </div>
+                <div className="text-end mt-1">
+                  <Link to="/forgot-password" style={{ fontSize: '0.85rem', color: '#ff4d4d', textDecoration: 'none' }}>
+                    Forgot Password?
+                  </Link>
+                </div>
               </div>
             ) : (
               otpStep === 2 && (

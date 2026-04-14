@@ -12,7 +12,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -43,7 +44,7 @@ public class Security {
 				.requestMatchers(HttpMethod.GET, 
 						"/restaurants", "/restaurants/*", "/restaurants/*/itemimg", 
 						"/restaurants/*/items", "/restaurants/category/*", 
-						"/restaurants/search").permitAll()
+						"/restaurants/search", "/reviews/restaurant/**", "/reviews/item/**").permitAll()
 				.requestMatchers("/restaurants/*/image", "/restaurants/tindoc/*", "/restaurants/licencedoc/*", "/restaurants/logoimage/*").permitAll()
 				.requestMatchers("/users/me/**","/users/*/profile-image").permitAll()
 				.requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
@@ -56,12 +57,17 @@ public class Security {
 	
 		return http.build();
 	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 	
 	@Bean
 	public AuthenticationProvider authProvider() {
 		DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
 		provider.setUserDetailsService(userDetailsService);
-		provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+		provider.setPasswordEncoder(passwordEncoder());
 		return provider;
 	}
 	
