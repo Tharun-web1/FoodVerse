@@ -1,126 +1,315 @@
+/* ================= CATEGORY PAGE DESIGN SYSTEM ================= */
 .category-page-container {
-  max-width: 1200px;
-  margin: 70px auto 60px;
-  padding: 0 40px;
+  max-width: 1100px;
+  margin: 16px auto 30px;
+  padding: 0 24px;
+  box-sizing: border-box;
 }
 
 .category-header-section {
-  margin-bottom: 40px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  padding-bottom: 24px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 10px;
+}
+
+.category-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.category-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.category-back-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateX(-2px);
+}
+
+.category-back-btn:active {
+  transform: scale(0.95);
 }
 
 .category-title-main {
-  font-family: 'Inter', sans-serif;
-  font-size: 2.5rem;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 1.8rem;
   font-weight: 850;
-  color: #111;
-  letter-spacing: -1.5px;
+  color: #0f172a;
+  letter-spacing: -0.8px;
   text-transform: capitalize;
-  margin-bottom: 8px;
+  margin: 0;
 }
 
 .category-subtitle {
-  font-size: 1.1rem;
-  color: var(--text-muted);
+  font-size: 0.9rem;
+  color: #64748b;
   font-weight: 500;
+  margin: 0 0 0 52px; /* Align with title text */
 }
 
 .restaurant-grid-container {
-  padding-top: 10px;
+  padding-top: 4px;
 }
 
-/* Override horizontal scroll if needed, or use vertical grid */
-.restaurant-grid-container .restaurant-grid {
+/* 2x2 Grid Layout for Category Page */
+.restaurant-grid-container .restaurant-grid,
+.category-2x2-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 40px 32px;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 16px;
   overflow: visible;
-  /* Standard grid */
   padding: 0;
 }
 
-.restaurant-grid-container .restaurant-card1 {
-  flex: none;
+@media (min-width: 769px) {
+  .restaurant-grid-container .restaurant-grid,
+  .category-2x2-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+    gap: 20px;
+  }
+}
+
+.restaurant-grid-container .restaurant-card-v2 {
   width: 100%;
+}
+
+/* Enhanced 2x2 Card Styling for Categories */
+.category-card-v2 .res-img-container-v2 {
+  aspect-ratio: 1.25 / 1 !important;
+  max-height: 165px !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.category-card-v2 .res-details-overlay-v2 {
+  padding: 12px 8px 6px 8px !important;
+  gap: 3px !important;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.45) 70%, rgba(0, 0, 0, 0) 100%) !important;
+}
+
+.category-card-v2 .res-name-v2 {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.2px;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  margin-bottom: 0 !important;
+}
+
+.category-card-v2 .res-time-pill-v2 {
+  font-size: 9px !important;
+  padding: 2px 5px !important;
+  border-radius: 5px !important;
+}
+
+.category-card-v2 .res-rating-pill-v2 {
+  font-size: 9px !important;
+  padding: 2px 5px !important;
+  border-radius: 5px !important;
+  font-weight: 900 !important;
+}
+
+.category-card-v2 .res-fav-btn-v2 {
+  width: 26px !important;
+  height: 26px !important;
+  top: 6px !important;
+  right: 6px !important;
 }
 
 .no-restaurants {
   text-align: center;
-  padding: 60px 20px;
-  background: white;
-  border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  padding: 40px 20px;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .no-restaurants img {
-  width: 250px;
-  margin-bottom: 24px;
-  opacity: 0.8;
+  width: 160px;
+  margin-bottom: 16px;
+  opacity: 0.85;
 }
 
 .no-restaurants h3 {
-  font-size: 20px;
-  color: var(--text-heading);
-  margin-bottom: 16px;
+  font-size: 17px;
+  color: #0f172a;
+  font-weight: 800;
+  margin-bottom: 14px;
 }
 
 .no-restaurants button {
-  background: var(--nav-bg);
-  color: white;
-  padding: 12px 24px;
+  background: linear-gradient(135deg, #fc8019 0%, #e56800 100%);
+  color: #ffffff;
+  padding: 10px 24px;
   border: none;
-  border-radius: 12px;
-  font-weight: 700;
+  border-radius: 100px;
+  font-weight: 800;
+  font-size: 13.5px;
   cursor: pointer;
-  transition: var(--transition);
+  box-shadow: 0 4px 14px rgba(252, 128, 25, 0.25);
+  transition: all 0.2s ease;
 }
 
 .no-restaurants button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(231, 128, 18, 0.3);
+  opacity: 0.95;
 }
 
 .category-page-loader {
-  max-width: 1200px;
-  margin: 70px auto;
-  padding: 0 40px;
+  max-width: 1100px;
+  margin: 16px auto 30px;
+  padding: 0 24px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 
-.shimmer-card1 {
-  height: 300px;
-  background: #f0f0f0;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+.shimmer-card {
+  height: 130px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #f8fafc 50%, #f1f5f9 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
+/* ================= MOBILE RESPONSIVE 2X2 GRID OVERHAUL ================= */
 @media (max-width: 768px) {
   .category-page-container {
-    padding: 0 20px;
-    margin-top: 65px;
+    padding: 0 10px;
+    margin-top: 10px;
+    margin-bottom: 24px;
+  }
+
+  .category-header-section {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+  }
+
+  .category-title-row {
+    gap: 10px;
+    margin-bottom: 2px;
+  }
+
+  .category-back-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 15px;
   }
 
   .category-title-main {
-    font-size: 2rem;
+    font-size: 1.35rem !important;
+    letter-spacing: -0.4px !important;
   }
 
-  .restaurant-grid-container .restaurant-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .category-subtitle {
+    font-size: 0.78rem !important;
+    margin-left: 42px;
+  }
+
+  /* Force 2x2 grid on mobile screens */
+  .restaurant-grid-container .restaurant-grid,
+  .category-2x2-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .category-card-v2 .res-img-container-v2 {
+    aspect-ratio: 1.25 / 1 !important;
+    max-height: 135px !important;
+    border-radius: 12px !important;
+  }
+
+  .category-card-v2 .res-details-overlay-v2 {
+    padding: 8px 6px 5px 6px !important;
+    gap: 2px !important;
+  }
+
+  .category-card-v2 .res-name-v2 {
+    font-size: 11.5px !important;
+    line-height: 1.2 !important;
+  }
+
+  .category-card-v2 .res-time-pill-v2 {
+    font-size: 8.5px !important;
+    padding: 1.5px 3.5px !important;
+    gap: 2px !important;
+  }
+
+  .category-card-v2 .res-rating-pill-v2 {
+    font-size: 8.5px !important;
+    padding: 1.5px 4px !important;
+  }
+
+  .category-card-v2 .res-fav-btn-v2 {
+    width: 24px !important;
+    height: 24px !important;
+    top: 5px !important;
+    right: 5px !important;
+  }
+
+  .category-card-v2 .res-fav-btn-v2 .heart-icon {
+    font-size: 12px !important;
+  }
+
+  .category-page-loader {
+    margin-top: 10px;
+    padding: 0 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .shimmer-card {
+    height: 120px;
+  }
+
+  .no-restaurants {
+    padding: 24px 14px;
+  }
+
+  .no-restaurants img {
+    width: 140px;
+  }
+
+  .no-restaurants h3 {
+    font-size: 15px;
   }
 }
+
+@media (max-width: 380px) {
+  .category-card-v2 .res-name-v2 {
+    font-size: 10.5px !important;
+  }
+
+  .category-card-v2 .res-time-pill-v2,
+  .category-card-v2 .res-rating-pill-v2 {
+    font-size: 8px !important;
+    padding: 1px 3px !important;
+  }
+}
+
+
+

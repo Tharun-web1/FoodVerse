@@ -78,17 +78,21 @@ public class OrderController {
         com.user.entity.UserEntity user = userRepo.findByUsername(username);
         Long userId = (user != null) ? user.getId() : null;
 
-        return couponService.validateCoupon(code, total, userId, restaurantId)
-                .map(coupon -> {
-                    double discount = couponService.calculateDiscount(coupon, total);
-                    return org.springframework.http.ResponseEntity.ok(java.util.Map.of(
-                        "code", coupon.getCode(),
-                        "discountAmount", discount,
-                        "discountType", coupon.getDiscountType(),
-                        "discountValue", coupon.getDiscountValue()
-                    ));
-                })
-                .orElse(org.springframework.http.ResponseEntity.badRequest().body(java.util.Map.of("message", "Invalid or expired coupon")));
+        try {
+            return couponService.validateCoupon(code, total, userId, restaurantId)
+                    .map(coupon -> {
+                        double discount = couponService.calculateDiscount(coupon, total);
+                        return org.springframework.http.ResponseEntity.ok(java.util.Map.of(
+                            "code", coupon.getCode(),
+                            "discountAmount", discount,
+                            "discountType", coupon.getDiscountType(),
+                            "discountValue", coupon.getDiscountValue()
+                        ));
+                    })
+                    .orElse(org.springframework.http.ResponseEntity.badRequest().body(java.util.Map.of("message", "invalid_coupon")));
+        } catch (IllegalArgumentException ex) {
+            return org.springframework.http.ResponseEntity.badRequest().body(java.util.Map.of("message", ex.getMessage()));
+        }
     }
 
     @GetMapping("/available-coupons")

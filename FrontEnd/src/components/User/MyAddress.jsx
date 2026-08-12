@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { FiPlus, FiTrash2, FiMapPin, FiCheckCircle, FiHome, FiBriefcase, FiX } from "react-icons/fi";
+import { FiPlus, FiTrash2, FiMapPin, FiCheckCircle, FiHome, FiBriefcase, FiX, FiArrowLeft } from "react-icons/fi";
 import LocationSelector from "../User/LocationSelector";
 import "../UserCss/MyAddress.css";
 import { API_BASE_URL } from "../../api/api";
@@ -8,6 +9,8 @@ import { useTranslation } from "react-i18next";
 
 const MyAddress = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const location = useLocation();
     const [addresses, setAddresses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
@@ -105,7 +108,12 @@ const MyAddress = () => {
     return (
         <div className="my-address-section">
             <div className="address-header">
-                <h2>{t("my_addresses")}</h2>
+                <div className="address-title-container">
+                    <button className="back-btn-address" onClick={() => location.state?.from === "/cart" ? navigate("/cart") : navigate("/profile")} aria-label="Go Back">
+                        <FiArrowLeft />
+                    </button>
+                    <h2>{t("my_addresses")}</h2>
+                </div>
                 {!showForm && (
                     <div className="address-header-actions">
                         <LocationSelector onLocationChange={handleLocationChange} />

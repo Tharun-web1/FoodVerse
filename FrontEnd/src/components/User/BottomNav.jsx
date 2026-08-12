@@ -9,8 +9,8 @@ const BottomNav = ({ onProfileToggle, onSearchToggle }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const { t } = useTranslation();
-    const { cartItems } = useCart();
-    const cartItemCount = cartItems.reduce((total, item) => total + item.qty, 0);
+    const { totalItemsCount } = useCart();
+    const cartItemCount = totalItemsCount;
 
     const isActive = (path) => location.pathname === path;
 
@@ -54,10 +54,29 @@ const BottomNav = ({ onProfileToggle, onSearchToggle }) => {
                 <span>{t('orders')}</span>
             </button>
             <button
-                className="bottom-nav-item"
-                onClick={onProfileToggle}
+                className={`bottom-nav-item ${isActive('/profile') ? 'active' : ''}`}
+                onClick={() => {
+                    if (onProfileToggle) onProfileToggle();
+                    if (location.pathname !== "/profile") {
+                        navigate("/profile");
+                    }
+                }}
             >
-                <FiUser />
+                <span style={{
+                    width: '22px',
+                    height: '22px',
+                    borderRadius: '50%',
+                    background: '#e11d48',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    fontSize: '12px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '2px'
+                }}>
+                    {(localStorage.getItem("username") || "Roy").charAt(0).toUpperCase()}
+                </span>
                 <span>{t('profile')}</span>
             </button>
         </div>

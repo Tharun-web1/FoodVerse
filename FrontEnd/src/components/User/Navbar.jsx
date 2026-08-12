@@ -5,11 +5,11 @@ import axios from "axios";
 import { API_BASE_URL } from "../../api/api";
 import logo from "../../assets/images/logo2.jpeg";
 import ProfileSidebar from "../User/ProfileSidebar";
-import LanguagePicker from "../User/LanguagePicker";
 import LocationSelector from "../User/LocationSelector";
 import BottomNav from "../User/BottomNav";
 import { useCart } from "../User/CartContext";
 import { useTranslation } from "react-i18next";
+import FloatingCart from "./FloatingCart";
 
 import "../UserCss/Navbar.css";
 
@@ -20,13 +20,18 @@ const Navbar = ({ onSearch, onOpenSearch }) => {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const [isLangPickerOpen, setIsLangPickerOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [navbarUserLocation, setNavbarUserLocation] = useState("");
   const [walletBalance, setWalletBalance] = useState(0);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [profileImgError, setProfileImgError] = useState(false);
 
-  const { cartItems } = useCart();
-  const cartItemCount = cartItems.reduce((total, item) => total + item.qty, 0);
+  useEffect(() => {
+    setProfileImgError(false);
+  }, [currentUser]);
+
+  const { totalItemsCount } = useCart();
+  const cartItemCount = totalItemsCount;
 
   const handleLocationChange = (location) => {
     setNavbarUserLocation(location.displayName);
@@ -36,17 +41,18 @@ const Navbar = ({ onSearch, onOpenSearch }) => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      const fetchWallet = async () => {
+      const fetchUserData = async () => {
         try {
           const res = await axios.get(`${API_BASE_URL}/users/me`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
           });
           setWalletBalance(res.data.walletBalance || 0);
+          setCurrentUser(res.data);
         } catch (err) {
-          console.error("Error fetching wallet in navbar", err);
+          console.error("Error fetching user data in navbar", err);
         }
       };
-      fetchWallet();
+      fetchUserData();
     }
   }, [isLoggedIn]);
 
@@ -58,6 +64,13 @@ const Navbar = ({ onSearch, onOpenSearch }) => {
     }, 300);
     return () => clearTimeout(timer);
   }, [searchValue, onSearch]);
+
+  useEffect(() => {
+    if (location.state?.openProfileSidebar) {
+      setProfileOpen(true);
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, location.pathname, navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -86,13 +99,29 @@ const Navbar = ({ onSearch, onOpenSearch }) => {
           {isLoggedIn && (
             <button
               className="nav-wallet-btn-mobile1"
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate("/wallet")}
               aria-label="View Wallet"
             >
               <FiCreditCard className="wallet-mini-icon1" />
-              <span className="wallet-balance-text1">₹{walletBalance.toFixed(2)}</span>
             </button>
           )}
+
+          {/* Mobile Profile Button */}
+          <button
+            className="nav-profile-btn-mobile1"
+            onClick={() => {
+              if (isLoggedIn) {
+                setProfileOpen(true);
+              } else {
+                navigate("/login/user");
+              }
+            }}
+            aria-label="View Profile"
+          >
+            <div className="profile-mini-fallback-avatar">
+              {(currentUser?.username || localStorage.getItem("username") || "Roy").charAt(0).toUpperCase()}
+            </div>
+          </button>
 
           <div
             className="navbar-brand1"
@@ -187,9 +216,25 @@ const Navbar = ({ onSearch, onOpenSearch }) => {
                     onClick={() => {
                       closeMenu();
                       setProfileOpen(true);
+                      if (location.pathname !== "/profile") {
+                        navigate("/profile");
+                      }
                     }}
                   >
-                    <FiUser /> {t("profile")}
+                    <span style={{
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      background: '#e11d48',
+                      color: 'white',
+                      fontWeight: 'bold',
+                      fontSize: '13px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      {(currentUser?.username || localStorage.getItem("username") || "Roy").charAt(0).toUpperCase()}
+                    </span> {t("profile")}
                   </button>
                 </li>
 
@@ -231,22 +276,16 @@ const Navbar = ({ onSearch, onOpenSearch }) => {
       </nav>
 
 
-      {/* PROFILE SIDEBAR */}
       <ProfileSidebar
         isOpen={profileOpen}
         onClose={() => setProfileOpen(false)}
       />
 
-      <LanguagePicker
-        isOpen={isLangPickerOpen}
-        onClose={() => setIsLangPickerOpen(false)}
-      />
-
       {/* MOBILE BOTTOM NAVIGATION */}
-      <BottomNav
+      {/* <BottomNav
         onProfileToggle={() => setProfileOpen(prev => !prev)}
         onSearchToggle={onOpenSearch}
-      />
+      /> */}
 
       {menuOpen && <div className="nav-menu-overlay1" onClick={closeMenu}></div>}
     </>

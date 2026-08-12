@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FiArrowLeft, FiEdit2 } from "react-icons/fi";
 import "../UserCss/EditProfile.css";
 import { API_BASE_URL } from "../../api/api"; 
 import { useTranslation } from "react-i18next";
 
 const EditProfile = () => {
-    const { t } = useTranslation();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   const [form, setForm] = useState({
@@ -17,6 +20,7 @@ const EditProfile = () => {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
 
   /* ================= FETCH PROFILE ================= */
   useEffect(() => {
@@ -70,9 +74,10 @@ const EditProfile = () => {
         }
       );
 
-      setMessage(t("profile_updated_success"));
+      setMessage(t("profile_updated_success", "Profile updated successfully!"));
+      setIsEditing(false);
     } catch (err) {
-      setMessage(t("update_failed"));
+      setMessage(t("update_failed", "Failed to update profile"));
     } finally {
       setSaving(false);
     }
@@ -82,59 +87,87 @@ const EditProfile = () => {
 
   return (
     <div className="edit-profile">
-      <h2>{t("edit_profile")}</h2>
-
-      <div className="bitezy-wallet-card">
-        <div className="wallet-header">
-           <i className="fa-solid fa-wallet"></i>
-           <span>{t("bitezy_wallet")}</span>
+      <div className="profile-details-header">
+        <div className="profile-title-container">
+          <button className="back-btn-profile" onClick={() => navigate("/profile")} aria-label="Go Back">
+            <FiArrowLeft />
+          </button>
+          <h2>{t("profile_details", "My Profile Details")}</h2>
         </div>
-        <div className="wallet-balance">
-           <span className="balance-amount">₹{(form.walletBalance || 0).toFixed(2)}</span>
-        </div>
+        {!isEditing && (
+          <button className="edit-profile-toggle-btn" onClick={() => setIsEditing(true)} aria-label="Edit Profile">
+            <FiEdit2 /> <span>{t("edit", "Edit")}</span>
+          </button>
+        )}
       </div>
 
-      <form onSubmit={handleSubmit} className="edit-profile-form">
+      {isEditing ? (
+        <form onSubmit={handleSubmit} className="edit-profile-form">
+          <div className="form-group">
+            <label>{t("username")}</label>
+            <input
+              type="text"
+              name="username"
+              value={form.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div className="form-group">
-          <label>{t("username")}</label>
-          <input
-            type="text"
-            name="username"
-            value={form.username}
-            onChange={handleChange}
-            required
-          />
+          <div className="form-group">
+            <label>{t("email")}</label>
+            <input
+              type="email"
+              name="mail"
+              value={form.mail}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group disabled-group">
+            <label>{t("phone_number")}</label>
+            <input
+              type="tel"
+              name="phnno"
+              value={form.phnno}
+              disabled
+              className="disabled-input"
+            />
+            <span className="input-hint">{t("phone_number_uneditable", "Phone number cannot be modified")}</span>
+          </div>
+
+          <div className="form-actions">
+            <button type="submit" className="save-profile-btn" disabled={saving}>
+              {saving ? t("saving") : t("save_changes")}
+            </button>
+            <button type="button" className="cancel-profile-btn" onClick={() => setIsEditing(false)}>
+              {t("cancel")}
+            </button>
+          </div>
+
+          {message && <p className="form-message success">{message}</p>}
+        </form>
+      ) : (
+        <div className="profile-details-display">
+          <div className="display-group">
+            <span className="display-label">{t("username")}</span>
+            <span className="display-value">{form.username || "—"}</span>
+          </div>
+
+          <div className="display-group">
+            <span className="display-label">{t("email")}</span>
+            <span className="display-value">{form.mail || "—"}</span>
+          </div>
+
+          <div className="display-group">
+            <span className="display-label">{t("phone_number")}</span>
+            <span className="display-value">{form.phnno || "—"}</span>
+          </div>
+          
+          {message && <p className="form-message success">{message}</p>}
         </div>
-
-        <div className="form-group">
-          <label>{t("email")}</label>
-          <input
-            type="email"
-            name="mail"
-            value={form.mail}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>{t("phone_number")}</label>
-          <input
-            type="tel"
-            name="phnno"
-            value={form.phnno}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <button type="submit" disabled={saving}>
-          {saving ? t("saving") : t("save_changes")}
-        </button>
-
-        {message && <p className="form-message">{message}</p>}
-      </form>
+      )}
     </div>
   );
 };

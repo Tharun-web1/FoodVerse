@@ -49,7 +49,7 @@ const VehicleDetails = () => {
                 await uploadLicenseImage(userId, licenseImage);
             }
             showToast('Vehicle configuration saved!', 'success');
-            navigate('/delivery/kycdocuments');
+            navigate('/delivery-partner/kyc-documents');
         } catch (error) {
             console.error(error);
             showToast('Failed to save vehicle data', 'error');

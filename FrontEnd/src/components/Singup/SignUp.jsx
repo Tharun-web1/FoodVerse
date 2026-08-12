@@ -144,6 +144,17 @@ export default function SignUp() {
             </div>
 
             <div className="form-group mb-3">
+              <label className="form-label">Referral Code (Optional)</label>
+              <input
+                type="text"
+                className="form-control"
+                name="referralCode"
+                placeholder="e.g. SREEKANTH4829"
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group mb-3">
               <label className="form-label">Password</label>
               <div className="input-group-custom">
                 <input

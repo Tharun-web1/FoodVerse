@@ -70,7 +70,7 @@ const DocumentUpload = () => {
                 aadhaarNumber: formData.aadhaarNumber
             });
             showToast('KYC documents verified!', 'success');
-            navigate('/delivery/dash');
+            navigate('/delivery-partner/dashboard');
         } catch (error) {
             console.error(error);
             showToast('Verification upload failed', 'error');

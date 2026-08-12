@@ -1,0 +1,418 @@
+/* ================= BITEZY WALLET STYLES ================= */
+.wallet-page-wrapper {
+    min-height: 100vh;
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.wallet-page-wrapper.profile-view {
+    padding-top: 0 !important;
+    min-height: auto;
+}
+
+.wallet-page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 30px;
+    box-sizing: border-box;
+}
+
+.wallet-layout-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+/* Wallet Premium Card */
+.wallet-card-widget {
+    background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+    border-radius: 20px;
+    padding: 30px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(255, 75, 43, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 220px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wallet-card-widget:hover {
+    transform: translateY(-5px);
+}
+
+.wallet-card-overlay {
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.wallet-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.wallet-card-brand {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    font-family: 'Outfit', sans-serif;
+}
+
+.wallet-card-icon {
+    font-size: 24px;
+}
+
+.wallet-card-middle {
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.wallet-card-bal-lbl {
+    font-size: 13px;
+    opacity: 0.85;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.wallet-card-balance {
+    font-size: 36px;
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+}
+
+.wallet-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.wallet-card-owner {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.9;
+    font-family: 'Inter', sans-serif;
+}
+
+.wallet-card-chip {
+    width: 35px;
+    height: 25px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+}
+
+/* Add Money Box */
+.wallet-add-money-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.wallet-add-money-box h3 {
+    font-size: 18px;
+    font-weight: 750;
+    color: var(--text-main);
+    margin-bottom: 20px;
+}
+
+.quick-amount-chips {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.amount-chip {
+    background: var(--bg-sub);
+    border: 1px solid var(--border);
+    padding: 10px 0;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.amount-chip:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+    border-color: rgba(255, 51, 89, 0.2);
+}
+
+.amount-input-group {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 2px 16px;
+    margin-bottom: 20px;
+    background: var(--bg-sub);
+    transition: border-color 0.2s;
+}
+
+.amount-input-group:focus-within {
+    border-color: var(--primary);
+}
+
+.currency-prefix {
+    font-size: 20px;
+    font-weight: 750;
+    color: var(--text-sub);
+    margin-right: 8px;
+}
+
+.amount-input-group input {
+    border: none;
+    background: transparent;
+    padding: 12px 0;
+    font-size: 18px;
+    font-weight: 750;
+    width: 100%;
+    color: var(--text-main);
+}
+
+.amount-input-group input:focus {
+    outline: none;
+}
+
+.add-wallet-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+}
+
+/* Ledger List */
+.wallet-transactions-section {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--shadow-sm);
+}
+
+.wallet-transactions-section h3 {
+    font-size: 18px;
+    font-weight: 750;
+    color: var(--text-main);
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+}
+
+.empty-transactions {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.tx-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tx-icon-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.tx-icon-circle.credit {
+    background: rgba(16, 185, 129, 0.1);
+    color: rgb(16, 185, 129);
+}
+
+.tx-icon-circle.debit {
+    background: rgba(239, 68, 68, 0.1);
+    color: rgb(239, 68, 68);
+}
+
+.tx-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.tx-desc {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.tx-date {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.tx-amount {
+    font-size: 16px;
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+}
+
+.tx-amount.credit {
+    color: rgb(16, 185, 129);
+}
+
+.tx-amount.debit {
+    color: rgb(239, 68, 68);
+}
+
+/* RESPONSIVE OVERRIDES */
+@media (max-width: 768px) {
+    .wallet-page-wrapper {
+        padding-top: 0 !important;
+    }
+
+    .wallet-page-container {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .wallet-layout-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .wallet-card-widget {
+        padding: 16px 18px;
+        height: 160px;
+        border-radius: 16px;
+    }
+
+    .wallet-card-brand {
+        font-size: 15px;
+    }
+
+    .wallet-card-balance {
+        font-size: 26px;
+    }
+
+    .wallet-card-bal-lbl {
+        font-size: 11.5px;
+    }
+
+    .wallet-card-owner {
+        font-size: 11.5px;
+    }
+
+    .wallet-add-money-box {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .wallet-add-money-box h3 {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .quick-amount-chips {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        margin-bottom: 12px;
+    }
+
+    .amount-chip {
+        font-size: 11.5px;
+        font-weight: 750;
+        padding: 7px 0;
+        border-radius: 8px;
+    }
+
+    .amount-input-group {
+        height: 44px;
+        padding: 0 12px;
+        margin-bottom: 12px;
+        border-radius: 10px;
+    }
+
+    .amount-input-group input {
+        font-size: 14px;
+    }
+
+    .add-wallet-btn {
+        height: 44px;
+        font-size: 13.5px;
+        border-radius: 100px;
+    }
+
+    .wallet-transactions-section {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .wallet-transactions-section h3 {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+    .transaction-item {
+        padding-bottom: 12px;
+    }
+
+    .tx-icon-circle {
+        width: 36px;
+        height: 36px;
+        font-size: 15px;
+    }
+
+    .tx-desc {
+        font-size: 13px;
+    }
+
+    .tx-date {
+        font-size: 11px;
+    }
+
+    .tx-amount {
+        font-size: 14px;
+    }
+}

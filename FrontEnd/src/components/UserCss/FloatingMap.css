@@ -1,145 +1,179 @@
-.floating-map-widget {
+/* ==========================================================================
+   Horizontal Floating Order Tracking Bar (Matching Sketch)
+   ========================================================================== */
+.floating-track-bar-container {
     position: fixed;
     bottom: 24px;
-    right: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 500px;
     background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    z-index: 1001;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(0,0,0,0.05);
-}
-
-.floating-map-widget.expanded {
-    width: 280px;
-}
-
-.floating-map-widget.minimized {
-    width: 60px;
-    height: 60px;
-    border-radius: 30px;
-    cursor: pointer;
-}
-
-.floating-map-header {
-    padding: 12px;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    border-radius: 100px;
+    padding: 8px 12px 8px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fdfbf7;
-    border-bottom: 1px solid #f0f0f0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+    z-index: 10001; /* Floating alongside floating cart */
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
 }
 
-.minimized .floating-map-header {
-    height: 100%;
-    width: 100%;
-    justify-content: center;
-    padding: 0;
-    background: #D4AF37;
-    color: white;
-}
-
-.minimized .order-info-mini, .minimized .controls button:last-child {
-    display: none;
-}
-
-.minimized .controls button {
-    color: white;
-}
-
-.order-info-mini {
+.floating-track-bar-left {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+    cursor: pointer;
 }
 
-.truck-icon {
-    color: #D4AF37;
+.track-avatar-wrapper {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.track-res-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.track-avatar-fallback {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fff7ed;
+    color: #fc8019;
+    border: 1px solid #ffedd5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 18px;
 }
 
-.status-text {
+.track-res-text-box {
     display: flex;
     flex-direction: column;
+    gap: 2px;
+    min-width: 0;
 }
 
-.status-text .label {
-    font-size: 10px;
-    text-transform: uppercase;
-    color: #999;
-    font-weight: 700;
+.track-res-name {
+    font-size: 13.5px;
+    font-weight: 750;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
 }
 
-.status-text .value {
-    font-size: 13px;
+.track-status-sub {
+    font-size: 11.5px;
     font-weight: 600;
-    color: #333;
-    max-width: 140px;
+    color: #fc8019;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.controls {
+.floating-track-bar-right {
     display: flex;
-    gap: 4px;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
 }
 
-.controls button {
-    background: none;
+.track-order-pill-btn {
+    background: linear-gradient(135deg, #fc8019 0%, #e56800 100%);
     border: none;
-    color: #666;
-    padding: 4px;
+    color: #ffffff;
+    padding: 9px 20px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    box-shadow: 0 4px 14px rgba(252, 128, 25, 0.3);
+    transition: all 0.2s ease;
+}
+
+.track-order-pill-btn:hover {
+    opacity: 0.94;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(252, 128, 25, 0.4);
+}
+
+.track-order-pill-btn:active {
+    transform: scale(0.97);
+}
+
+.track-order-pill-btn .nav-icon {
+    font-size: 13px;
+}
+
+.clear-track-dismiss-btn {
+    background: #f1f5f9;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: #94a3b8;
+    font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background 0.2s;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
 }
 
-.controls button:hover {
-    background: rgba(0,0,0,0.05);
+.clear-track-dismiss-btn:hover {
+    background: #fee2e2;
+    color: #ef4444;
 }
 
-.floating-map-body {
-    height: 200px;
+.clear-track-dismiss-btn:active {
+    transform: scale(0.9);
 }
 
-.mini-track-map {
-    width: 100%;
-    height: 140px;
-}
-
-.map-footer {
-    padding: 12px;
-    background: #fff;
-}
-
-.track-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: #D4AF37;
-    color: white;
-    text-decoration: none;
-    padding: 8px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 14px;
-    transition: transform 0.2s;
-}
-
-.track-button:hover {
-    transform: translateY(-2px);
-    color: white;
-}
-
+/* Mobile Responsive */
 @media (max-width: 768px) {
-    .floating-map-widget {
-        bottom: 10px; /* Above potential mobile nav */
-        right: 16px;
+    .floating-track-bar-container {
+        bottom: 16px;
+        width: 92%;
+        max-width: 440px;
+        padding: 6px 8px 6px 6px;
+    }
+
+    .track-avatar-wrapper, .track-res-avatar, .track-avatar-fallback {
+        width: 38px;
+        height: 38px;
+    }
+
+    .track-res-name {
+        font-size: 12.5px;
+    }
+
+    .track-status-sub {
+        font-size: 10.5px;
+    }
+
+    .track-order-pill-btn {
+        padding: 7px 14px;
+        font-size: 12px;
     }
 }
+

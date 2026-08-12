@@ -274,7 +274,7 @@ const Earnings = () => {
                              <button className="btn btn-light btn-sm rounded-pill px-3 fw-bold" onClick={() => setShowBankForm(true)}>
                                 <i className="fas fa-university me-1"></i> Bank
                             </button>
-                             <button className="btn btn-light btn-sm rounded-pill px-3 fw-bold" onClick={() => navigate('/delivery/history')}>
+                             <button className="btn btn-light btn-sm rounded-pill px-3 fw-bold" onClick={() => navigate('/delivery-partner/history')}>
                                 <i className="fas fa-list me-1"></i> Trips
                             </button>
                         </div>
@@ -416,7 +416,7 @@ const Earnings = () => {
                 {/* 🌊 Recent Activity */}
                 <div className="activity-heading animate-in" style={{ animationDelay: '0.5s' }}>
                     <h6 className="fw-bold mb-0 text-muted">RECENT ACTIVITY</h6>
-                    <button className="btn btn-link btn-sm text-primary fw-bold text-decoration-none" onClick={() => navigate('/delivery/history')}>See All</button>
+                    <button className="btn btn-link btn-sm text-primary fw-bold text-decoration-none" onClick={() => navigate('/delivery-partner/history')}>See All</button>
                 </div>
 
                 <div className="activity-feed animate-in" style={{ animationDelay: '0.5s' }}>

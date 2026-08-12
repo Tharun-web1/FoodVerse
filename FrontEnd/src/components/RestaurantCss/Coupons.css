@@ -134,3 +134,201 @@
 .animate__animated {
   animation-duration: 0.6s;
 }
+
+/* Tab Navigation */
+.offers-tab-navigation {
+  display: flex;
+  gap: 12px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+.tab-nav-btn {
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 15px;
+  color: #64748b;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+}
+
+.tab-nav-btn:hover {
+  color: #0f172a;
+  background: #f1f5f9;
+}
+
+.tab-nav-btn.active {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.12);
+}
+
+.tab-badge {
+  font-size: 11px;
+  background: #ef4444;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+/* Section Subtitle & Step Numbers */
+.section-subtitle {
+  font-weight: 800;
+  font-size: 18px;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+}
+
+.step-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: white;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Percentage Selector Pills */
+.percentage-pill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.percentage-pill {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  color: #334155;
+  font-weight: 700;
+  font-size: 13.5px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.percentage-pill:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  transform: translateY(-2px);
+}
+
+.percentage-pill.active {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Item Selection Grid */
+.item-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.item-select-card {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.item-select-card:hover {
+  border-color: #cbd5e1;
+  background: #ffffff;
+}
+
+.item-select-card.selected {
+  background: #f0fdf4;
+  border-color: #22c55e;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.15);
+}
+
+.item-name {
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.item-category {
+  font-size: 12px;
+}
+
+/* Active Offer Cards */
+.active-offer-card {
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
+}
+
+.active-offer-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Category Filter Bar */
+.category-filter-bar {
+  background: #f8fafc;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.category-pill-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.category-filter-pill {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  color: #334155;
+  font-weight: 700;
+  font-size: 12.5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.category-filter-pill:hover {
+  border-color: #0f172a;
+  color: #0f172a;
+}
+
+.category-filter-pill.active {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+}
+
+.cat-count-badge {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.cat-select-btn {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 4px 8px !important;
+  border-radius: 16px !important;
+}
+
+

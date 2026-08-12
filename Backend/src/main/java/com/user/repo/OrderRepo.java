@@ -16,6 +16,15 @@ public interface OrderRepo extends JpaRepository<Order, Long>{
 
 	 @Query("SELECT DISTINCT o FROM Order o LEFT JOIN FETCH o.items WHERE o.restaurant.id = :restaurantId")
 	 List<Order> findByRestaurantId(@Param("restaurantId") Long restaurantId);
+
+	 @Query("SELECT COUNT(o) FROM Order o WHERE o.restaurant.id = :restaurantId AND o.createdAt >= :since")
+	 long countOrdersSince(@Param("restaurantId") Long restaurantId, @Param("since") java.time.LocalDateTime since);
+
+	 @Query("SELECT COUNT(o) FROM Order o WHERE o.user.username = :username AND o.restaurant.id = :restaurantId")
+	 long countByUsernameAndRestaurantId(@Param("username") String username, @Param("restaurantId") Long restaurantId);
+
+	 @Query("SELECT COUNT(o) FROM Order o WHERE o.user.id = :userId AND o.restaurant.id = :restaurantId")
+	 long countByUserIdAndRestaurantId(@Param("userId") Long userId, @Param("restaurantId") Long restaurantId);
  
 	 java.util.Optional<Order> findByRazorpayOrderId(@Param("razorpayOrderId") String razorpayOrderId);
 

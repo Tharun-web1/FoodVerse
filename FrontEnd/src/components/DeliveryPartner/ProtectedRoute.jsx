@@ -9,7 +9,7 @@ const ProtectedRoute = () => {
         return <Loader fullPage text="Authenticating..." />;
     }
 
-    return user ? <Outlet /> : <Navigate to="/delivery/login" />;
+    return user ? <Outlet /> : <Navigate to="/delivery-partner/login" />;
 };
 
 export default ProtectedRoute;

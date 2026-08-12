@@ -83,7 +83,7 @@ const Dashboard = () => {
         try {
             await api.put(`/delivery-orders/${orderId}/accept?partnerId=${user.id}`);
             showToast('Order Accepted! Redirecting...', 'success');
-            setTimeout(() => navigate(`/delivery/order/${orderId}`), 1000);
+            setTimeout(() => navigate(`/delivery-partner/order/${orderId}`), 1000);
         } catch (err) {
             console.error("Acceptance failed", err);
             showToast('Failed to accept order', 'error');
@@ -206,25 +206,25 @@ const Dashboard = () => {
 
                 {/* Active Order Section */}
                 {activeOrder && (
-                    <div className="active-order-card1">
-                        <div className="active-order-header">
-                            <h6 className="mb-0 fw-bold"><i className="fas fa-bolt me-2"></i> Active Order</h6>
-                            <div className="d-flex align-items-center">
-                                <span className="pulse-dot me-2"></span>
-                                <small className="fw-bold">{activeOrder.status}</small>
-                            </div>
+                    <div className="card border-0 rounded-4 shadow-sm p-4 mb-4 bg-gradient-danger text-white">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <span className="badge bg-white text-danger fw-bold rounded-pill px-3 py-2">
+                                🔥 ACTIVE TRIP IN PROGRESS
+                            </span>
+                            <span className="badge bg-white bg-opacity-25 text-white">
+                                Order #{activeOrder.id}
+                            </span>
                         </div>
                         <h5 className="fw-bold mb-1">{activeOrder.restaurantName}</h5>
                         <p className="mb-3 text-white-50"><FiShoppingBag size={14} className="me-1" /> {activeOrder.pickupAddress}</p>
                         <button 
                             className="btn btn-light text-danger fw-bold w-100 rounded-pill shadow-sm"
-                            onClick={() => navigate(`/delivery/order/${activeOrder.id}`)}
+                            onClick={() => navigate(`/delivery-partner/order/${activeOrder.id}`)}
                         >
                             View Order Details
                         </button>
                     </div>
                 )}
-
                 {/* Available Orders Section */}
                 <div className="orders-section">
                     <div className="section-header">

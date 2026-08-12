@@ -159,10 +159,10 @@ export default function Profile({ open = true, onClose }) {
 
         {/* MENU */}
         <ul className="sidebar-menu">
-          <li onClick={() => navigate("/res/dash")}>Dashboard</li>
-          <li onClick={() => navigate("/res/menu")}>Menu Items</li>
-          <li onClick={() => navigate("/res/order-history")}>Order History</li>
-          <li onClick={() => navigate(`/res/details/edit/${currentId}`)}>Edit Restaurant</li>
+          <li onClick={() => navigate("/restaurant/dashboard")}>Dashboard</li>
+          <li onClick={() => navigate("/restaurant/menu")}>Menu Items</li>
+          <li onClick={() => navigate("/restaurant/orders/history")}>Order History</li>
+          <li onClick={() => navigate(`/restaurant/details/edit/${currentId}`)}>Edit Restaurant</li>
           <li className="logout" onClick={logout}>Logout</li>
         </ul>
       </div>

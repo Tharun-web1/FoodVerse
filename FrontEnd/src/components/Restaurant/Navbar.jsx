@@ -39,7 +39,7 @@ export default function Navbar() {
     <>
       <nav id="res-navbar-premium" className={`navbar navbar-expand-lg navbar-dark r-navbar fixed-top ${showProfile ? 'navbar-shifted' : ''}`}>
         <div className="container-fluid px-5">
-          <Link className="navbar-brand-premium" to="/res/dash">
+          <Link className="navbar-brand-premium" to="/restaurant/dashboard">
             <div className="brand-logo-container">
               <img src={logo} alt="Restaurant Logo" className="brand-logo-image" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
             </div>
@@ -59,25 +59,25 @@ export default function Navbar() {
           <div className="collapse navbar-collapse" id="navbar" ref={navbarCollapseRef}>
             <ul className="navbar-nav ms-auto align-items-lg-center gap-2">
               <li className="nav-item">
-                <NavLink className="nav-link-premium" to="/res/dash">
+                <NavLink className="nav-link-premium" to="/restaurant/dashboard">
                   <FiGrid size={18} /> <span>Dashboard</span>
                 </NavLink>
               </li>
 
               <li className="nav-item">
-                <NavLink className="nav-link-premium" to="/res/menu">
+                <NavLink className="nav-link-premium" to="/restaurant/menu">
                   <FiLayers size={18} /> <span>Menu Items</span>
                 </NavLink>
               </li>
 
               <li className="nav-item">
-                <NavLink className="nav-link-premium" to="/res/orders">
+                <NavLink className="nav-link-premium" to="/restaurant/orders">
                   <FiClipboard size={18} /> <span>Orders</span>
                 </NavLink>
               </li>
 
               <li className="nav-item">
-                <NavLink className="nav-link-premium" to="/res/coupons">
+                <NavLink className="nav-link-premium" to="/restaurant/coupons">
                   <FiTag size={18} /> <span>Coupons</span>
                 </NavLink>
               </li>

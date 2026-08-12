@@ -26,4 +26,8 @@ public interface UserRepo extends JpaRepository<UserEntity, Long> {
     Page<UserEntity> searchByRole(@Param("role") Role role, @Param("search") String search, Pageable pageable);
 
     List<UserEntity> findByRole(Role role);
+
+    UserEntity findByReferralCode(String referralCode);
+    List<UserEntity> findByReferredBy(UserEntity referredBy);
+    long countByReferredByAndReferralRewardClaimed(UserEntity referredBy, boolean claimed);
 }

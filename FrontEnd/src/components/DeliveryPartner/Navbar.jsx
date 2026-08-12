@@ -41,7 +41,7 @@ const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top" ref={navbarRef}>
 
-            <Link className="navbar-brand fw-bold text-primary d-flex align-items-center" to="/delivery/dash">
+            <Link className="navbar-brand fw-bold text-primary d-flex align-items-center" to="/delivery-partner/dashboard">
                 <img src={logo} alt="Delivery Logo" className="me-2 d-none d-md-block" style={{ marginLeft: "100px", width: "36px", height: "36px", borderRadius: "50%", objectFit: "cover" }} />
                 <span className="d-none d-md-block">DeliveryPartner</span>
                 <div
@@ -57,7 +57,7 @@ const Navbar = () => {
                     <span className="text-truncate fs-6">{location?.address || 'Locating...'}</span>
                 </div>
             </Link>
-            <Link to="/delivery/profile" className="d-md-none text-decoration-none" style={{ "marginRight": "10px" }}>
+            <Link to="/delivery-partner/profile" className="d-md-none text-decoration-none" style={{ "marginRight": "10px" }}>
                 <img
                     src={`http://localhost:8082/partner/auth/userimg/${user?.id}`}
                     alt="Profile"
@@ -77,13 +77,13 @@ const Navbar = () => {
                         <small>{location?.address}</small>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/delivery/profile">Profile</Link>
+                        <Link className="nav-link" to="/delivery-partner/profile">Profile</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/delivery/earnings">Earnings</Link>
+                        <Link className="nav-link" to="/delivery-partner/earnings">Earnings</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/delivery/history">History</Link>
+                        <Link className="nav-link" to="/delivery-partner/history">History</Link>
                     </li>
                     <li className="nav-item">
                         <button className="btn btn-outline-danger btn-sm ms-2" onClick={logout}>Logout</button>

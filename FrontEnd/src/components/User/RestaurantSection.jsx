@@ -5,7 +5,17 @@ import "../UserCss/RestuarentCard.css";
 import { API_BASE_URL } from "../../api/api";
 import { useTranslation } from "react-i18next";
 
-const RestaurantSection = ({ restaurants, onLoadMore, hasMore, isLoadingMore, favorites, toggleFavorite }) => {
+const RestaurantSection = ({ 
+  restaurants, 
+  onLoadMore, 
+  hasMore, 
+  isLoadingMore, 
+  favorites, 
+  toggleFavorite,
+  title,
+  showClearFilters = false,
+  onClearFilters
+}) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const observerTarget = useRef(null);
@@ -26,7 +36,7 @@ const RestaurantSection = ({ restaurants, onLoadMore, hasMore, isLoadingMore, fa
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting && hasMore && !isLoadingMore) {
+        if (entries[0].isIntersecting && hasMore && !isLoadingMore && onLoadMore) {
           onLoadMore();
         }
       },
@@ -44,18 +54,28 @@ const RestaurantSection = ({ restaurants, onLoadMore, hasMore, isLoadingMore, fa
     };
   }, [hasMore, isLoadingMore, onLoadMore]);
 
-  const displayedRestaurants = restaurants;
+  const displayedRestaurants = restaurants || [];
 
   return (
-    <div className="restaurant-section " >
+    <div className="restaurant-section">
       <div className="section-header">
-        <h2>{t("restaurants_with_us")}</h2>
+        <h2>{title || t("restaurants_with_us")}</h2>
+        {showClearFilters && onClearFilters && (
+          <button className="clear-filters-btn" onClick={onClearFilters}>
+            {t("clear_all", "Clear All")}
+          </button>
+        )}
       </div>
 
       <div className="restaurant-grid">
         {displayedRestaurants.length === 0 ? (
           <div className="no-restaurants">
-            <p>{t("no_restaurants_found")}</p>
+            <p>{t("no_restaurants_found", "No restaurants found matching your active filters.")}</p>
+            {showClearFilters && onClearFilters && (
+              <button className="clear-filters-btn secondary" onClick={onClearFilters}>
+                {t("clear_filters", "Clear Filters")}
+              </button>
+            )}
           </div>
         ) : (
           displayedRestaurants.map((r) => (
@@ -94,27 +114,23 @@ const RestaurantSection = ({ restaurants, onLoadMore, hasMore, isLoadingMore, fa
                 >
                   <FiHeart className="heart-icon" />
                 </button>
-              </div>
 
-              <div className="res-details-v2">
-                <h3 className="res-name-v2">{r.name}</h3>
-                
-                <div className="res-meta-v2">
-                  <div className="res-rating-pill-v2">
-                    <FiStar className="star-icon-v2" />
-                    <span>{r.rating > 0 ? r.rating.toFixed(1) : "New"}</span>
-                  </div>
+                {/* Details Overlay on the image bottom */}
+                <div className="res-details-overlay-v2">
+                  <h3 className="res-name-v2">{r.name}</h3>
                   
-                  <div className="res-time-v2">
-                    <FiZap className="zap-icon-v2" />
-                    <div className="res-time-stack">
-                      <span className="res-time-val">{(r.r_min ?? 25)}-{(r.r_max ?? 30)}</span>
-                      <span className="res-time-unit">MINS</span>
+                  <div className="res-meta-v2">
+                    <div className="res-time-pill-v2">
+                      <FiZap className="zap-icon-v2" />
+                      <span>{(r.r_min ?? 25)}-{(r.r_max ?? 30)} Mins</span>
+                    </div>
+                    
+                    <div className="res-rating-pill-v2">
+                      <FiStar className="star-icon-v2" />
+                      <span>{r.rating > 0 ? r.rating.toFixed(1) : "New"}</span>
                     </div>
                   </div>
                 </div>
-                
-                <p className="res-cuisines-v2">{r.discription}</p>
               </div>
             </div>
           ))
@@ -126,11 +142,6 @@ const RestaurantSection = ({ restaurants, onLoadMore, hasMore, isLoadingMore, fa
                 <span></span><span></span><span></span>
               </div>
               <p>{t("loading_more_restaurants")}</p>
-            </div>
-          )}
-          {!hasMore && restaurants.length > 0 && (
-            <div className="end-message">
-              <p>{t("end_of_list_msg")}</p>
             </div>
           )}
         </div>

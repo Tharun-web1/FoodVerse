@@ -69,7 +69,7 @@ const TodayRevenue = () => {
                     <div>
                         <button
                             className="btn btn-outline-secondary btn-sm mb-2"
-                            onClick={() => navigate('/res/dash')}
+                            onClick={() => navigate('/restaurant/dashboard')}
                         >
                             ← Back to Dashboard
                         </button>

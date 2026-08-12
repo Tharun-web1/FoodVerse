@@ -1,4 +1,4 @@
-import { FiMapPin, FiX, FiNavigation, FiSearch } from 'react-icons/fi';
+import { FiMapPin, FiX, FiNavigation, FiSearch, FiChevronDown } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 // removing @react-google-maps/api Autocomplete import as we will use the service manually
 import '../UserCss/LocationSelector.css';
@@ -217,10 +217,22 @@ const LocationDisplay = ({
                 onClick={handleLocationClick}
                 disabled={detecting}
             >
-                <FiMapPin className={`location-icon-img ${detecting ? 'spinning' : ''}`} />
-                <span className="location-text">
-                    {detecting ? t("detecting") + "..." : (selectedLocation ? selectedLocation.displayName : t("select_location"))}
-                </span>
+                <div className="location-pin-wrapper">
+                    <FiMapPin className={`location-icon-img ${detecting ? 'spinning' : ''}`} />
+                </div>
+                <div className="location-info-wrapper">
+                    <div className="location-title-row">
+                        <span className="location-title">
+                            {detecting ? t("detecting") + "..." : (selectedLocation ? selectedLocation.displayName : t("select_location"))}
+                        </span>
+                        <FiChevronDown className="location-chevron" />
+                    </div>
+                    {selectedLocation && (
+                        <div className="location-subtitle">
+                            {selectedLocation.address}
+                        </div>
+                    )}
+                </div>
             </button>
 
             {/* Location Modal */}

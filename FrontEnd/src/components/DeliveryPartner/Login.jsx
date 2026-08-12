@@ -5,18 +5,19 @@ import { useToast } from '../../context/ToastContext';
 import axios from 'axios';
 import { API_BASE_URL } from '../../api/api';
 import { FaUser, FaLock, FaMobileAlt, FaEnvelope, FaFingerprint } from 'react-icons/fa';
+import { FiTruck, FiUser, FiLock, FiSmartphone, FiKey } from 'react-icons/fi';
 import './Auth.css';
 
 const Login = () => {
     const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
-    
+
     // OTP States
     const [loginMode, setLoginMode] = useState('password'); // 'password' or 'otp'
     const [otpStep, setOtpStep] = useState(1); // 1: Request, 2: Verify
     const [otp, setOtp] = useState('');
     const [timer, setTimer] = useState(0);
-    
+
     const [loading, setLoading] = useState(false);
     const { login } = useAuth();
     const { showToast } = useToast();
@@ -65,12 +66,12 @@ const Login = () => {
 
             localStorage.setItem('token', res.data);
             localStorage.setItem('user_role', 'RIDER');
-            
+
             const { hasVehicleDetails } = await login(identifier, 'OTP_LOGIN_BYPASS', res.data);
             if (hasVehicleDetails) {
-                navigate('/delivery/dash');
+                navigate('/delivery-partner/dashboard');
             } else {
-                navigate('/delivery/vehicle');
+                navigate('/delivery-partner/vehicle');
             }
             showToast('Login successful!', 'success');
         } catch (error) {
@@ -86,9 +87,9 @@ const Login = () => {
         try {
             const { hasVehicleDetails } = await login(identifier.trim(), password);
             if (hasVehicleDetails) {
-                navigate('/delivery/dash');
+                navigate('/delivery-partner/dashboard');
             } else {
-                navigate('/delivery/vehicle');
+                navigate('/delivery-partner/vehicle');
             }
         } catch (error) {
             const errorMsg = error.response?.data?.message || error.message || 'Login failed';
@@ -99,83 +100,90 @@ const Login = () => {
     };
 
     return (
-        <div className="delivery-body">
-            <div className="auth-container">
-                <div className="auth-card1">
-                    <h2 className="auth-title">Rider Portal</h2>
-                    <p className="auth-subtitle">Welcome back, Partner</p>
-                    
+        <div className="auth-page">
+            <div className="auth-form-wrapper">
+                <div className="auth-form-card">
+                    {/* <div className="auth-brand-center">
+                        <FiTruck className="brand-icon" />
+                        <span>FoodVerse Logistics</span>
+                    </div> */}
+                    <h2>Partner Portal</h2>
+                    <p className="auth-sub">Access your delivery dashboard</p>
+
                     <div className="otp-toggle">
-                        <button 
+                        <button
                             className={`otp-btn ${loginMode === 'password' ? 'active' : ''}`}
-                            onClick={() => setLoginMode('password')}
+                            onClick={() => { setLoginMode('password'); setOtpStep(1); }}
+                            type="button"
                         >
                             Password
                         </button>
-                        <button 
+                        <button
                             className={`otp-btn ${loginMode === 'otp' ? 'active' : ''}`}
-                            onClick={() => {
-                                setLoginMode('otp');
-                                setOtpStep(1);
-                            }}
+                            onClick={() => { setLoginMode('otp'); setOtpStep(1); }}
+                            type="button"
                         >
-                            OTP Login
+                            OTP Access
                         </button>
                     </div>
 
-                    <form onSubmit={loginMode === 'password' ? handlePasswordLogin : (otpStep === 1 ? handleRequestOtp : handleVerifyOtp)}>
-                        <div className="input-group-custom">
-                            <span className="input-icon">
-                                {identifier.contains && identifier.contains('@') ? <FaEnvelope /> : (identifier.match && identifier.match(/^\d+$/) ? <FaMobileAlt /> : <FaUser />)}
-                            </span>
-                            <input
-                                type="text"
-                                className="auth-input"
-                                placeholder={loginMode === 'password' ? 'Email, Phone or Name' : 'Email or Phone Number'}
-                                value={identifier}
-                                onChange={(e) => setIdentifier(e.target.value)}
-                                required
-                                disabled={otpStep === 2 && loginMode === 'otp'}
-                            />
-                        </div>
-
-                        {loginMode === 'password' ? (
-                            <div className="input-group-custom">
-                                <span className="input-icon"><FaLock /></span>
-                                <input
-                                    type="password"
-                                    className="auth-input"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                />
-                            </div>
-                        ) : (
-                            otpStep === 2 && (
+                    <form onSubmit={loginMode === 'otp' ? (otpStep === 1 ? handleRequestOtp : handleVerifyOtp) : handlePasswordLogin}>
+                        {loginMode === 'otp' ? (
+                            <>
                                 <div className="input-group-custom">
-                                    <span className="input-icon"><FaFingerprint /></span>
+                                    <span className="input-icon"><FiSmartphone /></span>
                                     <input
                                         type="text"
                                         className="auth-input"
-                                        placeholder="Enter 6-digit OTP"
-                                        maxLength={6}
-                                        value={otp}
-                                        onChange={(e) => setOtp(e.target.value)}
+                                        placeholder="Mobile Number or Email"
+                                        value={identifier}
+                                        onChange={(e) => setIdentifier(e.target.value)}
+                                        disabled={otpStep === 2}
                                         required
-                                        autoFocus
                                     />
-                                    {timer > 0 ? (
-                                        <span className="otp-timer">Resend in {timer}s</span>
-                                    ) : (
-                                        <div className="text-center mt-3">
-                                            <span className="resend-link" style={{ cursor: 'pointer', color: '#00d2ff', fontSize: '0.85rem', fontWeight: '700' }} onClick={handleRequestOtp}>
-                                                Resend OTP
-                                            </span>
-                                        </div>
-                                    )}
                                 </div>
-                            )
+
+                                {otpStep === 2 && (
+                                    <div className="input-group-custom animate__animated animate__fadeIn">
+                                        <span className="input-icon"><FiKey /></span>
+                                        <input
+                                            type="text"
+                                            className="auth-input"
+                                            placeholder="Enter 6-Digit OTP"
+                                            value={otp}
+                                            onChange={(e) => setOtp(e.target.value)}
+                                            maxLength={6}
+                                            required
+                                        />
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <>
+                                <div className="input-group-custom">
+                                    <span className="input-icon"><FiUser /></span>
+                                    <input
+                                        type="text"
+                                        className="auth-input"
+                                        placeholder="Username / Email / Mobile"
+                                        value={identifier}
+                                        onChange={(e) => setIdentifier(e.target.value)}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="input-group-custom">
+                                    <span className="input-icon"><FiLock /></span>
+                                    <input
+                                        type="password"
+                                        className="auth-input"
+                                        placeholder="Password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            </>
                         )}
 
                         <button type="submit" className="auth-btn" disabled={loading}>
@@ -183,7 +191,7 @@ const Login = () => {
                         </button>
 
                         <div className="auth-link">
-                            New partner? <Link to="/delivery/register">Join Our Fleet</Link>
+                            New partner? <Link to="/delivery-partner/register">Join Our Fleet</Link>
                         </div>
                     </form>
                 </div>

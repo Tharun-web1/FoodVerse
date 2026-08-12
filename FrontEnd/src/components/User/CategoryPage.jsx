@@ -7,7 +7,7 @@ import "../UserCss/RestuarentCard.css";
 import { API_BASE_URL } from "../../api/api";
 import NoOrdersImg from "../../assets/images/no-orders.png"; 
 import FloatingMap from "./FloatingMap";
-import { FiHeart, FiStar } from "react-icons/fi";
+import { FiArrowLeft, FiHeart, FiStar, FiZap } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 
 const CategoryPage = () => {
@@ -129,54 +129,70 @@ const CategoryPage = () => {
   const categoryKey = categoryKeys[categoryName] || categoryName.toLowerCase();
   const displayCategory = t(categoryKey) !== categoryKey ? t(categoryKey) : categoryName;
 
+  const handleCategoryBack = () => {
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate('/user');
+    }
+  };
+
   return (
     <>
       <Navbar />
       <div className="category-page-container">
         <header className="category-header-section">
-          <h1 className="category-title-main">{displayCategory}</h1>
+          <div className="category-title-row">
+            <button className="category-back-btn" onClick={handleCategoryBack} aria-label="Go Back">
+              <FiArrowLeft />
+            </button>
+            <h1 className="category-title-main">{displayCategory}</h1>
+          </div>
           <p className="category-subtitle">{t("category_subtitle_prefix")} {displayCategory} {t("category_subtitle_suffix")}</p>
         </header>
 
         <div className="restaurant-grid-container">
           {restaurants.length > 0 ? (
-            <div className="restaurant-grid">
+            <div className="restaurant-grid category-2x2-grid">
               {restaurants.map((r) => (
                 <div
                   key={r.id}
-                  className="restaurant-card1"
+                  className="restaurant-card-v2 category-card-v2"
                   onClick={() => navigate(`/restaurant/${r.id}`)}
                 >
-                  <div className="restaurant-image-container">
+                  <div className="res-img-container-v2">
                     <img
                       src={`${API_BASE_URL}/restaurants/${r.id}/image`}
                       alt={r.name}
-                      className="restaurant-image"
+                      className="res-card-img-v2"
                       onError={(e) => {
                         e.target.src =
-                          "https://via.placeholder.com/300x200?text=No+Image";
+                          "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=400";
                       }}
                     />
+                    
                     <button
-                      className={`fav-toggle-btn ${favorites.has(Number(r.id)) ? 'active' : ''}`}
+                      className={`res-fav-btn-v2 ${favorites.has(Number(r.id)) ? 'active' : ''}`}
                       onClick={(e) => toggleFavorite(e, r.id)}
                     >
                       <FiHeart className="heart-icon" />
                     </button>
-                  </div>
 
-                  <div className="restaurant-info">
-                    <h3 className="restaurant-name">{r.name}</h3>
-                    <div className="res-card-meta">
-                      <span className="res-card-rating">
-                        <FiStar className="star-filled" style={{ fill: "var(--success)", color: "var(--success)" }} /> {r.rating > 0 ? Number(r.rating).toFixed(1) : t("new")}
-                      </span>
-                      <span className="res-card-time">
-                        {(r.r_min ?? 25)}-{(r.r_max ?? 30)} {t("mins") || "MINS"}
-                      </span>
+                    <div className="res-details-overlay-v2">
+                      <h3 className="res-name-v2">{r.name}</h3>
+                      
+                      <div className="res-meta-v2">
+                        <div className="res-time-pill-v2">
+                          <FiZap className="zap-icon-v2" />
+                          <span>{(r.r_min ?? 25)}-{(r.r_max ?? 30)} Mins</span>
+                        </div>
+                        
+                        <div className="res-rating-pill-v2">
+                          <FiStar className="star-icon-v2" />
+                          <span>{r.rating > 0 ? Number(r.rating).toFixed(1) : "New"}</span>
+                        </div>
+                      </div>
                     </div>
-                    <p className="restaurant-cuisines">{r.description}</p>
-                    <p className="restaurant-location">{getArea(r.location)}...</p>
                   </div>
                 </div>
               ))}

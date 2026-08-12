@@ -27,6 +27,17 @@ const SearchOverlay = ({
         }
     }, [isOpen, searchQuery]);
 
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('search-overlay-open');
+        } else {
+            document.body.classList.remove('search-overlay-open');
+        }
+        return () => {
+            document.body.classList.remove('search-overlay-open');
+        };
+    }, [isOpen]);
+
     // Real-time backend search
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -169,7 +180,7 @@ const SearchOverlay = ({
                                                     <div className="result-card-inner">
                                                         <div className="result-card-info">
                                                             <div className="result-name-premium">
-                                                                {dish.itemName}
+                                                                {dish.itemName}{dish.serves ? ` (${dish.serves})` : ''}
                                                                 {dish.available === false && <span style={{fontSize: '10px', color: '#686b78', marginLeft: '8px', border: '1px solid #686b78', padding: '2px 4px', borderRadius: '4px'}}>{t("unavailable")}</span>}
                                                             </div>
                                                             <div className="result-price-premium">₹{dish.price}</div>

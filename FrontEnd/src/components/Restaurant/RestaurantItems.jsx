@@ -21,6 +21,61 @@ export default function RestaurantItems() {
   });
 
   const [itemImage, setItemImage] = useState(null);
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [customCategoryInput, setCustomCategoryInput] = useState("");
+  const [isCustomServes, setIsCustomServes] = useState(false);
+  const [customServesInput, setCustomServesInput] = useState("");
+
+  const STANDARD_CATEGORIES = [
+    "Starters",
+    "Desserts",
+    "Biryani",
+    "Pizza",
+    "Ice Cream",
+    "Chinese",
+    "South Indian",
+    "Juice",
+    "Burger",
+    "Cake",
+    "Refresheners & Beverages",
+    "Cool Drinks",
+    "Main Course",
+    "Soups & Salads",
+    "Snacks & Fast Food",
+    "Combos & Thalis",
+    "Others"
+  ];
+
+  const getCategoryQuantityOptions = (category) => {
+    const cat = (category || "").toLowerCase();
+    if (cat.includes("biryani") || cat.includes("rice") || cat.includes("thali")) {
+      return ["Single", "Full", "Family Pack", "Jumbo", "Half"];
+    }
+    if (cat.includes("pizza")) {
+      return ['Small (7")', 'Medium (10")', 'Large (12")', 'Personal / Regular'];
+    }
+    if (cat.includes("beverage") || cat.includes("refreshener") || cat.includes("drink") || cat.includes("juice") || cat.includes("soda")) {
+      return ["Small (250ml)", "Medium (350ml)", "Large (500ml)", "Can (300ml)", "Bottle (1 Litre)", "Glass"];
+    }
+    if (cat.includes("burger") || cat.includes("sandwich")) {
+      return ["Single / Regular", "Double", "Combo / Meal"];
+    }
+    if (cat.includes("cake") || cat.includes("ice cream") || cat.includes("dessert")) {
+      return ["Single Scoop / Slice", "Double Scoop", "Tub (500ml)", "250 Grams", "500 Grams", "1 Kg"];
+    }
+    if (cat.includes("starter") || cat.includes("chinese") || cat.includes("snack") || cat.includes("south indian") || cat.includes("main course")) {
+      return ["Half", "Full", "1 Portion", "2 Pcs", "4 Pcs", "6 Pcs", "Family Pack"];
+    }
+    return ["Single", "Half", "Full", "Small", "Medium", "Large", "1 Portion", "2 Pcs", "4 Pcs", "Family Pack", "Jumbo"];
+  };
+
+  // Dynamic unique categories from existing items
+  const customCategoriesFromItems = Array.from(
+    new Set(items.map(i => i.category).filter(c => c && !STANDARD_CATEGORIES.includes(c)))
+  );
+  const allCategories = [...STANDARD_CATEGORIES, ...customCategoriesFromItems];
+
+  const quantityOptions = getCategoryQuantityOptions(item.category);
 
   const fetchItems = async () => {
     try {
@@ -44,6 +99,40 @@ export default function RestaurantItems() {
     });
   };
 
+  const handleCategorySelectChange = (e) => {
+    const val = e.target.value;
+    if (val === "CUSTOM_NEW") {
+      setIsCustomCategory(true);
+      setItem(prev => ({ ...prev, category: customCategoryInput }));
+    } else {
+      setIsCustomCategory(false);
+      setItem(prev => ({ ...prev, category: val }));
+    }
+  };
+
+  const handleCustomCategoryInputChange = (e) => {
+    const val = e.target.value;
+    setCustomCategoryInput(val);
+    setItem(prev => ({ ...prev, category: val }));
+  };
+
+  const handleServesSelectChange = (e) => {
+    const val = e.target.value;
+    if (val === "CUSTOM_SERVES_NEW") {
+      setIsCustomServes(true);
+      setItem(prev => ({ ...prev, serves: customServesInput }));
+    } else {
+      setIsCustomServes(false);
+      setItem(prev => ({ ...prev, serves: val }));
+    }
+  };
+
+  const handleCustomServesInputChange = (e) => {
+    const val = e.target.value;
+    setCustomServesInput(val);
+    setItem(prev => ({ ...prev, serves: val }));
+  };
+
   const handleFileChange = (e) => {
     setItemImage(e.target.files[0]);
   };
@@ -51,7 +140,10 @@ export default function RestaurantItems() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
+    if (!item.category || !item.category.trim()) {
+      alert("Please select or enter a category");
+      return;
+    }
 
     try {
       const res = await api.post('/restaurants/additem', item);
@@ -75,10 +167,13 @@ export default function RestaurantItems() {
         type: "",
         serves: ""
       });
+      setIsCustomCategory(false);
+      setCustomCategoryInput("");
+      setIsCustomServes(false);
+      setCustomServesInput("");
       setItemImage(null);
       setShowForm(false);
       fetchItems();
-
 
     } catch (error) {
       console.error(error);
@@ -107,7 +202,6 @@ export default function RestaurantItems() {
       alert("Failed to delete item");
     }
   };
-
 
   const filteredItems = items.filter((i) =>
     i.itemName.toLowerCase().includes(search.toLowerCase())
@@ -143,20 +237,32 @@ export default function RestaurantItems() {
 
                 <div className="col-md-4">
                   <label className="form-label small fw-bold text-muted">Category</label>
-                  <select name="category" className="form-select rounded-3" onChange={handleChange} value={item.category}>
+                  <select 
+                    name="categorySelect" 
+                    className="form-select rounded-3" 
+                    onChange={handleCategorySelectChange} 
+                    value={isCustomCategory ? "CUSTOM_NEW" : item.category}
+                    required={!isCustomCategory}
+                  >
                     <option value="">Select Category</option>
-                    <option value="Starters">Starters</option>
-                    <option value="Desserts">Desserts</option>
-                    <option value="Biryani">Biryani</option>
-                    <option value="Pizza">Pizza</option>
-                    <option value="Ice Cream">Ice Cream</option>
-                    <option value="Chinese">Chinese</option>
-                    <option value="South Indian">South Indian</option>
-                    <option value="Juice">Juice</option>
-                    <option value="Burger">Burger</option>
-                    <option value="Cake">Cake</option>
-                    <option value="Others">Others</option>
+                    {allCategories.map((cat, idx) => (
+                      <option key={idx} value={cat}>{cat}</option>
+                    ))}
+                    <option value="CUSTOM_NEW" style={{ fontWeight: "bold", color: "#e11d48" }}>
+                      + Add Custom Category...
+                    </option>
                   </select>
+
+                  {isCustomCategory && (
+                    <input 
+                      type="text" 
+                      className="form-control rounded-3 mt-2 animate__animated animate__fadeIn" 
+                      placeholder="e.g. Refresheners, Cool Drinks, Mocktails..." 
+                      value={customCategoryInput} 
+                      onChange={handleCustomCategoryInputChange} 
+                      required 
+                    />
+                  )}
                 </div>
 
                 <div className="col-md-4">
@@ -180,8 +286,32 @@ export default function RestaurantItems() {
                 </div>
 
                 <div className="col-md-3">
-                  <label className="form-label small fw-bold text-muted">Serves</label>
-                  <input type="text" name="serves" className="form-control rounded-3" placeholder="1-2 people" value={item.serves} onChange={handleChange} />
+                  <label className="form-label small fw-bold text-muted">Quantity / Portion</label>
+                  <select 
+                    name="servesSelect" 
+                    className="form-select rounded-3" 
+                    value={isCustomServes ? "CUSTOM_SERVES_NEW" : item.serves} 
+                    onChange={handleServesSelectChange}
+                  >
+                    <option value="">Select Quantity / Size</option>
+                    {quantityOptions.map((opt, idx) => (
+                      <option key={idx} value={opt}>{opt}</option>
+                    ))}
+                    <option value="CUSTOM_SERVES_NEW" style={{ fontWeight: "bold", color: "#e11d48" }}>
+                      + Add Custom Size...
+                    </option>
+                  </select>
+
+                  {isCustomServes && (
+                    <input 
+                      type="text" 
+                      className="form-control rounded-3 mt-2 animate__animated animate__fadeIn" 
+                      placeholder="e.g. 250ml, 500g, 6 Pcs, 10 inch..." 
+                      value={customServesInput} 
+                      onChange={handleCustomServesInputChange} 
+                      required 
+                    />
+                  )}
                 </div>
 
                 <div className="col-md-4">
@@ -271,10 +401,10 @@ export default function RestaurantItems() {
                       </td>
                       <td>
                         <div className="action-btn-group">
-                          <Link className="action-btn btn-view" to={`/res/item/view/${i.id}`} title="View Details">
+                          <Link className="action-btn btn-view" to={`/restaurant/items/view/${i.id}`} title="View Details">
                             <i className="fa fa-eye"></i>
                           </Link>
-                          <Link className="action-btn btn-edit" to={`/res/item/edit/${i.id}`} title="Edit Item">
+                          <Link className="action-btn btn-edit" to={`/restaurant/items/edit/${i.id}`} title="Edit Item">
                             <i className="fa fa-pen"></i>
                           </Link>
                           <button className="action-btn btn-delete" onClick={() => handleDelete(i.id)} title="Delete Item">

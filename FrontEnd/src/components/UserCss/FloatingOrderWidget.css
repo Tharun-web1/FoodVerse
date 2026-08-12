@@ -1,0 +1,171 @@
+/* Floating Active Order Live Tracker Widget Stylesheet */
+
+.floating-order-widget-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    max-width: 420px;
+    width: calc(100% - 32px);
+    animation: slideUpWidget 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpWidget {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.floating-order-card {
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 16px 18px;
+    color: #ffffff;
+    box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.4), 0 0 0 1px rgba(225, 29, 72, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.widget-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.widget-status-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+.pulse-dot-container {
+    position: relative;
+    width: 10px;
+    height: 10px;
+}
+
+.pulse-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #10b981;
+}
+
+.pulse-ring {
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.4);
+    animation: pulseRing 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseRing {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
+.widget-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #94a3b8;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.widget-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.widget-content-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.widget-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.widget-res-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+}
+
+.widget-status-msg {
+    font-size: 12.5px;
+    color: #cbd5e1;
+    margin: 0;
+}
+
+.widget-eta-badge {
+    background: rgba(225, 29, 72, 0.2);
+    border: 1px solid rgba(225, 29, 72, 0.4);
+    color: #f43f5e;
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 11.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.widget-track-btn {
+    background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+}
+
+.widget-track-btn:hover {
+    transform: translateY(-1.5px);
+    box-shadow: 0 6px 18px rgba(225, 29, 72, 0.45);
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .floating-order-widget-container {
+        bottom: 80px; /* Above bottom nav bar */
+        right: 16px;
+        left: 16px;
+        width: auto;
+    }
+}

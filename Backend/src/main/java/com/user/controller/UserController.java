@@ -31,6 +31,8 @@ public class UserController {
     private SignupService signupService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private com.user.repo.ProfileImagerepo profileImageRepo;
     @GetMapping("/users/me")
     public ResponseEntity<UserProfileDto> getMyProfile(Authentication authentication) {
         Principal principal = (Principal) authentication.getPrincipal();
@@ -73,9 +75,12 @@ public class UserController {
     public ResponseEntity<Resource> getProfileImage(Authentication authentication) throws MalformedURLException {
         Principal principal = (Principal) authentication.getPrincipal();
         Resource image = profileImageService.getProfileImage(principal.getUser());
+        
+        com.user.entity.ProfileImage dbImage = profileImageRepo.findByUe_Id(principal.getUser().getId());
+        String contentType = (dbImage != null && dbImage.getPtype() != null) ? dbImage.getPtype() : "image/png";
 
         return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
+                .contentType(MediaType.parseMediaType(contentType))
                 .body(image);
     }
 
@@ -92,8 +97,11 @@ public class UserController {
     public ResponseEntity<Resource> getUserProfileImage(@PathVariable("userId") Long userId) throws MalformedURLException {
         Resource image = profileImageService.getProfileImageByUserId(userId);
         
+        com.user.entity.ProfileImage dbImage = profileImageRepo.findByUe_Id(userId);
+        String contentType = (dbImage != null && dbImage.getPtype() != null) ? dbImage.getPtype() : "image/png";
+        
         return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
+                .contentType(MediaType.parseMediaType(contentType))
                 .body(image);
     }
     
@@ -248,5 +256,72 @@ public class UserController {
         user.setPassword(passwordEncoder.encode(newPassword));
         myUserService.save(user);
         return ResponseEntity.ok("Password updated successfully");
+    }
+
+    /**
+     * Add money to user's wallet
+     */
+    @PostMapping("/users/wallet/add")
+    public ResponseEntity<Double> addWalletMoney(
+            @RequestBody java.util.Map<String, Double> request,
+            Authentication authentication
+    ) {
+        Principal principal = (Principal) authentication.getPrincipal();
+        UserEntity user = principal.getUser();
+        Double amount = request.get("amount");
+        
+        if (amount == null || amount <= 0) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        double currentBalance = user.getWalletBalance() != null ? user.getWalletBalance() : 0.0;
+        user.setWalletBalance(currentBalance + amount);
+        myUserService.save(user);
+        
+        return ResponseEntity.ok(user.getWalletBalance());
+    }
+
+    @Autowired
+    private com.user.repo.UserRepo userRepo;
+
+    @GetMapping("/users/referral-info")
+    public ResponseEntity<?> getReferralInfo(Authentication authentication) {
+        Principal principal = (Principal) authentication.getPrincipal();
+        UserEntity user = principal.getUser();
+        UserEntity dbUser = userRepo.findByUsername(user.getUsername());
+        if (dbUser == null) dbUser = user;
+
+        if (dbUser.getReferralCode() == null || dbUser.getReferralCode().trim().isEmpty()) {
+            dbUser.setReferralCode(signupService.generateUniqueReferralCode(dbUser.getUsername()));
+            userRepo.save(dbUser);
+        }
+
+        List<UserEntity> referredFriends = userRepo.findByReferredBy(dbUser);
+        if (referredFriends == null) {
+            referredFriends = java.util.Collections.emptyList();
+        }
+
+        long successfulCount = referredFriends.stream().filter(UserEntity::isReferralRewardClaimed).count();
+        double totalEarned = referredFriends.stream()
+                .filter(UserEntity::isReferralRewardClaimed)
+                .mapToDouble(u -> 100.0)
+                .sum();
+
+        List<java.util.Map<String, Object>> friendsList = referredFriends.stream().map(f -> {
+            java.util.Map<String, Object> map = new java.util.HashMap<>();
+            map.put("username", f.getUsername());
+            map.put("claimed", f.isReferralRewardClaimed());
+            map.put("rewardAmount", f.isReferralRewardClaimed() ? 100.0 : 0.0);
+            return map;
+        }).collect(java.util.stream.Collectors.toList());
+
+        java.util.Map<String, Object> response = new java.util.HashMap<>();
+        response.put("referralCode", dbUser.getReferralCode());
+        response.put("totalEarned", totalEarned);
+        response.put("successfulReferredCount", successfulCount);
+        response.put("totalFriendsReferred", referredFriends.size());
+        response.put("referredFriends", friendsList);
+
+        return ResponseEntity.ok(response);
     }
 }

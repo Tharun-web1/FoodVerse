@@ -26,6 +26,12 @@ public class RestuarentItems {
     private String category;
     private String type;
     private String serves;
+
+    private double discountPercentage = 0.0;
+    private boolean offerActive = false;
+    private String offerTitle;
+    private java.time.LocalDateTime offerExpiryDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restuarent_id", nullable = false)
     @JsonBackReference
@@ -92,6 +98,30 @@ public class RestuarentItems {
 	}
 	public void setServes(String serves) {
 		this.serves = serves;
+	}
+	public double getDiscountPercentage() {
+		return discountPercentage;
+	}
+	public void setDiscountPercentage(double discountPercentage) {
+		this.discountPercentage = discountPercentage;
+	}
+	public boolean isOfferActive() {
+		return offerActive;
+	}
+	public void setOfferActive(boolean offerActive) {
+		this.offerActive = offerActive;
+	}
+	public String getOfferTitle() {
+		return offerTitle;
+	}
+	public void setOfferTitle(String offerTitle) {
+		this.offerTitle = offerTitle;
+	}
+	public java.time.LocalDateTime getOfferExpiryDate() {
+		return offerExpiryDate;
+	}
+	public void setOfferExpiryDate(java.time.LocalDateTime offerExpiryDate) {
+		this.offerExpiryDate = offerExpiryDate;
 	}
 	public Restuarent getRestuarent() {
 		return restuarent;

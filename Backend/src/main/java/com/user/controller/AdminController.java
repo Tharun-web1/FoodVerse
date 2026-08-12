@@ -315,7 +315,7 @@ public class AdminController {
     }
 
     @PutMapping("/admins/{id}")
-    public ResponseEntity<UserEntity> updateAdmin(@PathVariable Long id, @RequestBody UserEntity userDetails) {
+    public ResponseEntity<?> updateAdmin(@PathVariable Long id, @RequestBody UserEntity userDetails) {
         UserEntity admin = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Admin not found with id: " + id));
 

@@ -171,7 +171,7 @@ export default function Login() {
               <input
                 type="text"
                 name="username"
-                className="form-input"
+                className="form-control"
                 placeholder={loginMode === 'password' ? 'Enter Email, Phone or Name' : 'Enter Email or Phone Number'}
                 value={formData.username}
                 onChange={handleChange}

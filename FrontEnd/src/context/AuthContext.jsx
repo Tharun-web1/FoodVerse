@@ -29,13 +29,17 @@ export const AuthProvider = ({ children }) => {
                 const role = getRole(payload).replace("ROLE_", "").toUpperCase();
                 const storedRole = localStorage.getItem("user_role");
                 
+                const uname = payload.sub || payload.username || payload.name || "User";
+                if (uname && uname !== "User") {
+                    localStorage.setItem("username", uname);
+                }
                 setUser({ 
-                    username: payload.sub || payload.username || "User",
+                    username: uname,
                     role: (role === "USER" && storedRole) ? storedRole : role
                 });
             } catch (e) {
                 console.error("Auth initialization error:", e);
-                setUser({ username: "User", role: localStorage.getItem("user_role") || "USER" });
+                setUser({ username: localStorage.getItem("username") || "User", role: localStorage.getItem("user_role") || "USER" });
             }
             localStorage.setItem("token", token);
         } else {

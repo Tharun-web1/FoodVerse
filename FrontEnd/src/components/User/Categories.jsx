@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import "../UserCss/categories.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import Biryani from "../../assets/images/biryani.jpg";
@@ -18,9 +18,13 @@ import Juice from "../../assets/images/mocktail.jpg";
 const Categories = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { categoryName } = useParams();
   const scrollRef = useRef(null);
 
+  const activeCategory = categoryName || "All";
+
   const categories = [
+    { name: "All", key: "all", img: Starter },
     { name: "Biryani", key: "biryani", img: Biryani },
     { name: "Pizza", key: "pizza", img: Pizza },
     { name: "Burger", key: "burger", img: Burger },
@@ -44,7 +48,7 @@ const Categories = () => {
   return (
     <div className="categories-container">
       <div className="categories-header">
-        <h2>{t("whats_on_mind")}</h2>
+        {/* <h2>{t("whats_on_mind")}</h2> */}
         <div className="scroll-buttons">
           <button className="scroll-btn" onClick={() => scroll("left")}><FiChevronLeft /></button>
           <button className="scroll-btn" onClick={() => scroll("right")}><FiChevronRight /></button>
@@ -53,21 +57,30 @@ const Categories = () => {
 
       <div className="categories-wrapper" ref={scrollRef}>
         <div className="categories-list">
-          {categories.map((cat, index) => (
-            <div
-              className="category-item"
-              key={index}
-              onClick={() =>
-                navigate(`/category/${cat.name}`)
-              }
-            >
-              <div className="image-container">
-                <img src={cat.img} alt={t(cat.key)} />
-                <div className="image-overlay"></div>
+          {categories.map((cat, index) => {
+            const isActive = activeCategory.toLowerCase() === cat.name.toLowerCase();
+            return (
+              <div
+                className={`category-item ${isActive ? "active" : ""}`}
+                key={index}
+                onClick={() => {
+                  if (cat.name === "All") {
+                    navigate("/user");
+                  } else {
+                    navigate(`/category/${cat.name}`);
+                  }
+                }}
+              >
+                <div className="image-container">
+                  <img src={cat.img} alt={cat.key === "all" ? t("all", "All") : t(cat.key)} />
+                  <div className="image-overlay"></div>
+                </div>
+                <span className="category-name">
+                  {cat.key === "all" ? t("all", "All") : t(cat.key)}
+                </span>
               </div>
-              <span className="category-name">{t(cat.key)}</span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

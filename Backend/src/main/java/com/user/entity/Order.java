@@ -55,6 +55,7 @@ public class Order {
 
     private LocalDateTime createdAt = LocalDateTime.now();
     private Integer estimatedPrepTime;
+    private String specialInstructions;
     @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items;
@@ -227,6 +228,12 @@ public class Order {
     }
     public void setEstimatedPrepTime(Integer estimatedPrepTime) {
         this.estimatedPrepTime = estimatedPrepTime;
+    }
+    public String getSpecialInstructions() {
+        return specialInstructions;
+    }
+    public void setSpecialInstructions(String specialInstructions) {
+        this.specialInstructions = specialInstructions;
     }
     
 }

@@ -31,12 +31,20 @@ public class SignupController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Map<String, Object> signupData) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(signupService.signup(signupData));
+        try {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(signupService.signup(signupData));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", e.getMessage()));
+        }
     }
 
     @PostMapping("/adminsignup")
     public ResponseEntity<?> adminsignup(@RequestBody Map<String, Object> signupData) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(signupService.signup(signupData));
+        try {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(signupService.signup(signupData));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", e.getMessage()));
+        }
     }
 
     // 📤 Request OTP

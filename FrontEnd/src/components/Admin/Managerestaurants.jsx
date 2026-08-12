@@ -189,6 +189,8 @@ export default function Managerestaurants() {
         setRequests(requests.filter((r) => r.id !== id));
         fetchRestaurants(); // refresh main list
         showToast("Restaurant approved successfully", "success");
+        setShowViewModal(false);
+        setSelectedRestaurant(null);
       })
       .catch(() => showToast("Failed to approve restaurant", "error"));
   };
@@ -204,6 +206,8 @@ export default function Managerestaurants() {
         setRequests(requests.filter((r) => r.id !== id));
         fetchRestaurants(); // refresh main list
         showToast("Restaurant blocked successfully", "success");
+        setShowViewModal(false);
+        setSelectedRestaurant(null);
       })
       .catch(() => showToast("Failed to block restaurant", "error"));
   };
@@ -556,7 +560,7 @@ export default function Managerestaurants() {
                             <h6 className="text-primary fw-800 text-uppercase extra-small mb-3">Verification Artifacts</h6>
                             <div className="d-flex flex-column gap-2">
                               <a
-                                href={`http://localhost:8083/restaurants/tindoc/${selectedRestaurant.id}`}
+                                href={`${API_BASE_URL}/restaurants/tindoc/${selectedRestaurant.id}`}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="btn btn-light text-primary fw-800 py-2 border-0 rounded-3 d-flex align-items-center justify-content-center gap-2"
@@ -564,7 +568,7 @@ export default function Managerestaurants() {
                                 <FiFileText /> View TIN Document
                               </a>
                               <a
-                                href={`http://localhost:8083/restaurants/licencedoc/${selectedRestaurant.id}`}
+                                href={`${API_BASE_URL}/restaurants/licencedoc/${selectedRestaurant.id}`}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="btn btn-light text-primary fw-800 py-2 border-0 rounded-3 d-flex align-items-center justify-content-center gap-2"
@@ -572,7 +576,7 @@ export default function Managerestaurants() {
                                 <FiShield /> View Licence Registry
                               </a>
                               <a
-                                href={`http://localhost:8083/restaurants/${selectedRestaurant.id}/image`}
+                                href={`${API_BASE_URL}/restaurants/${selectedRestaurant.id}/image`}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="btn btn-light text-secondary fw-800 py-2 border-0 rounded-3 d-flex align-items-center justify-content-center gap-2"

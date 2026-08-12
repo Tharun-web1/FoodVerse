@@ -23,7 +23,7 @@ export default function ViewItem() {
 
   useEffect(() => {
     if (!id) {
-      navigate("/res/menu");
+      navigate("/restaurant/menu");
       return;
     }
 
@@ -33,7 +33,7 @@ export default function ViewItem() {
       }
     })
       .then(res => setItem(res.data))
-      .catch(() => navigate("/res/menu"));
+      .catch(() => navigate("/restaurant/menu"));
 
     let currentImageUrl = null;
     const fetchImage = async () => {
@@ -111,12 +111,12 @@ export default function ViewItem() {
             <div className="view-actions d-flex gap-2 justify-content-center">
               <button
                 className="btn btn-outline-secondary px-4"
-                onClick={() => navigate("/res/menu")}
+                onClick={() => navigate("/restaurant/menu")}
               >
                 Back to Menu
               </button>
               <Link
-                to={`/res/item/edit/${id}`}
+                to={`/restaurant/items/edit/${id}`}
                 className="btn btn-primary px-4"
               >
                 Edit Item

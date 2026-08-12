@@ -7,21 +7,21 @@ const BottomNav = () => {
     // Fixed to bottom
     const navClass = "fixed-bottom bg-white border-top shadow-lg d-md-none d-flex justify-content-around py-2";
 
-    const isActive = (path) => location.pathname === path ? 'text-primary' : 'text-muted';
+    const isActive = (path) => (location.pathname === path || location.pathname.startsWith(path)) ? 'text-primary' : 'text-muted';
 
     return (
         <nav className={navClass} style={{ zIndex: 1030 }}>
-            <Link to="/delivery/earnings" className={`d-flex flex-column align-items-center text-decoration-none ${isActive('/delivery/earnings')}`}>
+            <Link to="/delivery-partner/earnings" className={`d-flex flex-column align-items-center text-decoration-none ${isActive('/delivery-partner/earnings')}`}>
                 <i className="fas fa-wallet fs-5 mb-1"></i>
                 <span style={{ fontSize: '0.75rem', fontWeight: '500' }}>Earnings</span>
             </Link>
 
-            <Link to="/delivery/dash" className={`d-flex flex-column align-items-center text-decoration-none ${isActive('/delivery/dash')}`}>
+            <Link to="/delivery-partner/dashboard" className={`d-flex flex-column align-items-center text-decoration-none ${isActive('/delivery-partner/dashboard')}`}>
                 <i className="fas fa-home fs-5 mb-1"></i>
                 <span style={{ fontSize: '0.75rem', fontWeight: '500' }}>Home</span>
             </Link>
 
-            <Link to="/delivery/profile" className={`d-flex flex-column align-items-center text-decoration-none ${isActive('/delivery/profile')}`}>
+            <Link to="/delivery-partner/profile" className={`d-flex flex-column align-items-center text-decoration-none ${isActive('/delivery-partner/profile')}`}>
                 <i className="fas fa-user fs-5 mb-1"></i>
                 <span style={{ fontSize: '0.75rem', fontWeight: '500' }}>Profile</span>
             </Link>

@@ -62,6 +62,12 @@ public class Restuarent {
 	@jakarta.persistence.Transient
 	private String promoOffer;
 
+	@jakarta.persistence.Transient
+	private Long last24HoursOrders;
+
+	@jakarta.persistence.Transient
+	private Boolean frequentlyReordered;
+
 	@OneToMany(mappedBy = "restuarent", cascade = CascadeType.ALL)
 	@JsonManagedReference
     private List<RestuarentItems> items = new ArrayList<>();
@@ -299,6 +305,22 @@ public class Restuarent {
 
 	public void setPromoOffer(String promoOffer) {
 		this.promoOffer = promoOffer;
+	}
+
+	public Long getLast24HoursOrders() {
+		return last24HoursOrders;
+	}
+
+	public void setLast24HoursOrders(Long last24HoursOrders) {
+		this.last24HoursOrders = last24HoursOrders;
+	}
+
+	public Boolean getFrequentlyReordered() {
+		return frequentlyReordered;
+	}
+
+	public void setFrequentlyReordered(Boolean frequentlyReordered) {
+		this.frequentlyReordered = frequentlyReordered;
 	}
 	
 	

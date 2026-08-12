@@ -113,7 +113,7 @@ export default function EditRestaurant() {
         await uploadImage(`/restaurants/licencedoc/${id}`, files.licenceImage);
 
       alert("✅ Restaurant updated successfully");
-      navigate("/res/dash");
+      navigate("/restaurant/dashboard");
     } catch (err) {
       console.error(err);
       alert("❌ Update failed");
@@ -221,7 +221,7 @@ export default function EditRestaurant() {
               {loading ? "Updating..." : "Update Restaurant"}
             </button>
 
-            <Link className="btn btn-secondary w-100 mt-2" to="/res/dash">
+            <Link className="btn btn-secondary w-100 mt-2" to="/restaurant/dashboard">
               Back
             </Link>
           </form>

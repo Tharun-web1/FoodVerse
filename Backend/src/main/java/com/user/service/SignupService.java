@@ -27,6 +27,9 @@ public class SignupService {
     private RestuarentService restuarentService;
 
     @Autowired
+    private com.user.repo.RestuarentRepo restuarentRepo;
+
+    @Autowired
     private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     private final com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper()
@@ -51,11 +54,38 @@ public class SignupService {
         }
     }
 
+    public String generateUniqueReferralCode(String username) {
+        String base = username != null ? username.replaceAll("[^a-zA-Z0-9]", "").toUpperCase() : "FOODVERSE";
+        if (base.length() > 8) base = base.substring(0, 8);
+        if (base.isEmpty()) base = "USER";
+        
+        java.util.Random rnd = new java.util.Random();
+        String code;
+        do {
+            int num = 1000 + rnd.nextInt(9000);
+            code = base + num;
+        } while (userRepo.findByReferralCode(code) != null);
+        
+        return code;
+    }
+
     public Object signup(java.util.Map<String, Object> data) {
         UserEntity user = objectMapper.convertValue(data, UserEntity.class);
 
-        if (userRepo.findByUsername(user.getUsername()) != null) {
+        if (userRepo.findByUsername(user.getUsername()) != null || restuarentRepo.findByUsername(user.getUsername()) != null) {
             throw new RuntimeException("Username already exists");
+        }
+
+        if (user.getMail() != null && !user.getMail().trim().isEmpty()) {
+            if (userRepo.findByMail(user.getMail()) != null || restuarentRepo.findByMail(user.getMail()) != null) {
+                throw new RuntimeException("Email already exists");
+            }
+        }
+
+        if (user.getPhnno() != null && !user.getPhnno().trim().isEmpty()) {
+            if (userRepo.findByPhnno(user.getPhnno()) != null || restuarentRepo.findByPhnno(user.getPhnno()) != null) {
+                throw new RuntimeException("Phone number already exists");
+            }
         }
 
         validatePassword(user.getPassword());
@@ -63,6 +93,19 @@ public class SignupService {
 
         if (user.getRole() == null) {
             user.setRole(Role.USER);
+        }
+
+        // Generate unique referral code for the new user
+        user.setReferralCode(generateUniqueReferralCode(user.getUsername()));
+
+        // Process referral code if user signed up with a friend's referral code
+        Object refCodeObj = data.get("referralCode") != null ? data.get("referralCode") : data.get("referredByCode");
+        if (refCodeObj != null && !refCodeObj.toString().trim().isEmpty()) {
+            String refCodeInput = refCodeObj.toString().trim().toUpperCase();
+            UserEntity referrer = userRepo.findByReferralCode(refCodeInput);
+            if (referrer != null && !referrer.getUsername().equalsIgnoreCase(user.getUsername())) {
+                user.setReferredBy(referrer);
+            }
         }
 
         UserEntity savedUser = userRepo.save(user);
@@ -85,7 +128,7 @@ public class SignupService {
 		}
 		
 		
-		String token=jwtService.generateToken(dto.getUsername(),dto.getPassword());
+		String token=jwtService.generateToken(authentication.getName(),dto.getPassword());
 		return token;
 			
 	}

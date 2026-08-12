@@ -96,7 +96,7 @@ export default function RestaurantLogin() {
         if (profileRes.data.id) {
           localStorage.setItem("restaurantId", profileRes.data.id);
         }
-        window.location.href = "/res/dash";
+        window.location.href = "/restaurant/dashboard";
       }
     } catch (err) {
       console.error(err);

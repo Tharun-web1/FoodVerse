@@ -3,6 +3,7 @@ import { useAuth } from './AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { useToast } from '../../context/ToastContext';
 import { FaUser, FaEnvelope, FaLock, FaPhone, FaCalendarAlt, FaVenusMars, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FiTruck } from 'react-icons/fi';
 import './Auth.css';
 
 const Register = () => {
@@ -59,14 +60,15 @@ const Register = () => {
         try {
             const cleanData = {
                 ...formData,
-                name: formData.name.trim(),
+                name: (formData.name || formData.username || '').trim(),
                 email: formData.email.trim(),
                 phone: formData.phone.trim(),
-                password: formData.password.trim()
+                password: formData.password.trim(),
+                vehicleType: formData.vehicleType
             };
             await register(cleanData);
             await login(cleanData.email, cleanData.password);
-            navigate('/delivery/vehicle');
+            navigate('/delivery-partner/vehicle');
         } catch (error) {
             const message = error.response?.data?.message || 'Registration failed';
             showToast(message, 'error');
@@ -76,12 +78,16 @@ const Register = () => {
     };
 
     return (
-        <div className="delivery-body">
-            <div className="auth-container">
-                <div className="auth-card1">
-                    <h2 className="auth-title">Join Our Fleet</h2>
-                    <p className="auth-subtitle">Become a delivery partner today</p>
-                    
+        <div className="auth-page">
+            <div className="auth-form-wrapper">
+                <div className="auth-form-card">
+                    <div className="auth-brand-center">
+                        <FiTruck className="brand-icon" />
+                        <span>FoodVerse Logistics</span>
+                    </div>
+                    <h2>Rider Onboarding</h2>
+                    <p className="auth-sub">Create your delivery partner profile</p>
+
                     <form onSubmit={handleSubmit}>
                         <div className="input-group-custom">
                             <span className="input-icon"><FaUser /></span>
@@ -95,7 +101,7 @@ const Register = () => {
                                 required
                             />
                         </div>
-                        
+
                         <div className="input-group-custom">
                             <span className="input-icon"><FaEnvelope /></span>
                             <input
@@ -169,8 +175,8 @@ const Register = () => {
                                 onChange={handleChange}
                                 required
                             />
-                            <span 
-                                className="input-toggle" 
+                            <span
+                                className="input-toggle"
                                 onClick={() => setShowPassword(!showPassword)}
                                 style={{ position: 'absolute', right: '15px', cursor: 'pointer', color: '#888' }}
                             >
@@ -188,8 +194,8 @@ const Register = () => {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
                             />
-                            <span 
-                                className="input-toggle" 
+                            <span
+                                className="input-toggle"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                 style={{ position: 'absolute', right: '15px', cursor: 'pointer', color: '#888' }}
                             >
@@ -202,7 +208,7 @@ const Register = () => {
                         </button>
 
                         <div className="auth-link">
-                            Already have an account? <Link to="/delivery/login">Log in</Link>
+                            Already have an account? <Link to="/delivery-partner/login">Log in</Link>
                         </div>
                     </form>
                 </div>

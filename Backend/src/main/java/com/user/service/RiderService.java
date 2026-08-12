@@ -297,6 +297,17 @@ public class RiderService {
         return withdrawalRepo.findByRiderOrderByRequestTimeDesc(partner);
     }
 
+    public void rateRider(Integer partnerId, Double rating) {
+        if (partnerId == null || rating == null) return;
+        RiderEntity dp = repo.findById(partnerId).orElse(null);
+        if (dp != null) {
+            double currentRating = dp.getRating() != null ? dp.getRating() : 0.0;
+            double newRating = currentRating == 0.0 ? rating : Math.round(((currentRating + rating) / 2.0) * 10.0) / 10.0;
+            dp.setRating(newRating);
+            repo.save(dp);
+        }
+    }
+
     private void checkAndAutoUnblock(RiderEntity partner) {
         if (partner.getStatus() == PartnerStatus.BLOCKED && 
             partner.getBlockedUntil() != null && 

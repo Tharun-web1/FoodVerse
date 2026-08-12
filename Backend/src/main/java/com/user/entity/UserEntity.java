@@ -28,6 +28,16 @@ public class UserEntity {
 	private Double pendingCancellationFee = 0.0;
 	private Double walletBalance = 0.0;
 
+	@jakarta.persistence.Column(unique = true)
+	private String referralCode;
+
+	@jakarta.persistence.ManyToOne(fetch = jakarta.persistence.FetchType.LAZY)
+	@jakarta.persistence.JoinColumn(name = "referred_by_id")
+	@com.fasterxml.jackson.annotation.JsonIgnore
+	private UserEntity referredBy;
+
+	private boolean referralRewardClaimed = false;
+
 	public UserEntity() {
         // JPA requirement
     }
@@ -107,6 +117,22 @@ public class UserEntity {
 	public void setWalletBalance(Double walletBalance) {
 		this.walletBalance = walletBalance;
 	}
-	
-
+	public String getReferralCode() {
+		return referralCode;
+	}
+	public void setReferralCode(String referralCode) {
+		this.referralCode = referralCode;
+	}
+	public UserEntity getReferredBy() {
+		return referredBy;
+	}
+	public void setReferredBy(UserEntity referredBy) {
+		this.referredBy = referredBy;
+	}
+	public boolean isReferralRewardClaimed() {
+		return referralRewardClaimed;
+	}
+	public void setReferralRewardClaimed(boolean referralRewardClaimed) {
+		this.referralRewardClaimed = referralRewardClaimed;
+	}
 }

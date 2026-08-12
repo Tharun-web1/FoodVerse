@@ -846,3 +846,121 @@
     object-fit: cover;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
+
+@media (max-width: 768px) {
+    .search-header {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .back-btn {
+        font-size: 18px;
+        padding: 6px;
+    }
+
+    .search-input-container input {
+        padding: 9px 36px 9px 36px;
+        border-radius: 10px;
+        font-size: 13.5px;
+    }
+
+    .search-icon-overlay {
+        left: 12px;
+        font-size: 14px;
+    }
+
+    .clear-icon-overlay {
+        right: 12px;
+        font-size: 14px;
+    }
+
+    .search-overlay-content {
+        padding: 20px 14px;
+    }
+
+    .section-title-premium {
+        font-size: 11.5px;
+        margin-bottom: 16px;
+    }
+
+    .clear-history-btn {
+        font-size: 11.5px;
+    }
+
+    .history-item {
+        gap: 12px;
+        padding: 10px 0;
+    }
+
+    .history-item span {
+        font-size: 13.5px;
+    }
+
+    .history-icon {
+        font-size: 14.5px;
+    }
+
+    /* Result list and cards mobile overrides */
+    .search-section-premium {
+        margin-bottom: 24px;
+        padding: 0;
+    }
+
+    .search-section-premium .section-title-premium {
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+        padding-left: 12px;
+    }
+
+    .search-section-premium .section-title-premium::before {
+        width: 3px;
+        height: 14px;
+    }
+
+    .results-grid-premium {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 10px;
+    }
+
+    .search-result-card {
+        padding: 12px;
+        border-radius: 14px;
+    }
+
+    .result-card-inner {
+        gap: 12px;
+    }
+
+    .result-name-premium {
+        font-size: 15px;
+        font-weight: 750;
+        margin-bottom: 4px;
+    }
+
+    .result-price-premium {
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    .result-res-meta {
+        font-size: 12px;
+        margin-bottom: 6px;
+        gap: 4px;
+    }
+
+    .result-rating-mini {
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    .result-card-media {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+    }
+}

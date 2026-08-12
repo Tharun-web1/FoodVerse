@@ -40,6 +40,10 @@ public class DeliveryOrderService {
     @Autowired
     private OrderRepo mainOrderRepo;
 
+    @Autowired
+    @org.springframework.context.annotation.Lazy
+    private OrderService orderService;
+
     private final String UPLOAD_DIR = "uploads/delivery_proofs/";
 
     // 📦 Assign Order to Partner (Admin)
@@ -170,6 +174,9 @@ public class DeliveryOrderService {
             Order mainOrder = mainOrderOpt.get();
             mainOrder.setStatus(mainStatus);
             mainOrderRepo.save(mainOrder);
+            if ("DELIVERED".equalsIgnoreCase(mainStatus)) {
+                orderService.processReferralCashback(mainOrder);
+            }
             logger.info("Synced main order {} to {}", dOrder.getOrderId(), mainStatus);
         } else {
             logger.warn("Main order {} not found for sync", dOrder.getOrderId());

@@ -70,6 +70,8 @@ public class OrderService {
         order.setStatus("PLACED");
         order.setPaymentMethod(request.getPaymentMethod());
         order.setPaid(false);
+        order.setSpecialInstructions(request.getSpecialInstructions());
+
  
         // Store customer details at the time of order
         order.setCustomerName(user.getUsername());
@@ -104,14 +106,22 @@ public class OrderService {
         for (OrderItemRequest req : request.getItems()) {
             RestuarentItems item = itemRepo.findById(req.getItemId())
                     .orElseThrow(() -> new RuntimeException("Item not found"));
- 
+
+            boolean isOfferValid = item.isOfferActive()
+                    && item.getDiscountPercentage() > 0
+                    && (item.getOfferExpiryDate() == null || item.getOfferExpiryDate().isAfter(java.time.LocalDateTime.now()));
+
+            double effectivePrice = isOfferValid
+                    ? Math.round(item.getPrice() * (1.0 - item.getDiscountPercentage() / 100.0))
+                    : item.getPrice();
+
             OrderItem oi = new OrderItem();
             oi.setOrder(order);
             oi.setItem(item);
             oi.setQuantity(req.getQty());
-            oi.setPrice(item.getPrice());
- 
-            total += item.getPrice() * req.getQty();
+            oi.setPrice(effectivePrice);
+
+            total += effectivePrice * req.getQty();
             orderItems.add(oi);
         }
  
@@ -120,12 +130,16 @@ public class OrderService {
         final double subtotal = total; 
         double discount = 0;
         if (request.getCouponCode() != null && !request.getCouponCode().isEmpty()) {
-            couponService.validateCoupon(request.getCouponCode(), subtotal, user.getId(), request.getRestaurantId())
-                .ifPresent(coupon -> {
-                    double d = couponService.calculateDiscount(coupon, subtotal);
-                    order.setCouponCode(coupon.getCode());
-                    order.setDiscountAmount(d);
-                });
+            try {
+                couponService.validateCoupon(request.getCouponCode(), subtotal, user.getId(), request.getRestaurantId())
+                    .ifPresent(coupon -> {
+                        double d = couponService.calculateDiscount(coupon, subtotal);
+                        order.setCouponCode(coupon.getCode());
+                        order.setDiscountAmount(d);
+                    });
+            } catch (Exception ex) {
+                // Ignore coupon validation errors on placing order, coupon has already been validated in UI
+            }
             discount = order.getDiscountAmount() != null ? order.getDiscountAmount() : 0;
         }
 
@@ -283,7 +297,49 @@ public class OrderService {
         if ("ACCEPTED".equalsIgnoreCase(status)) {
             createDeliveryOrder(order);
         }
+        if ("DELIVERED".equalsIgnoreCase(status)) {
+            processReferralCashback(updated);
+        }
         return convertToResponseDto(updated);
+    }
+
+    public void processReferralCashback(Order order) {
+        if (order == null || order.getUser() == null) return;
+        UserEntity customer = userRepo.findByUsername(order.getUser().getUsername());
+        if (customer == null || customer.getReferredBy() == null || customer.isReferralRewardClaimed()) {
+            return;
+        }
+
+        // Check if this is the customer's first DELIVERED order
+        List<Order> userOrders = orderRepo.findByUserId(customer.getId());
+        long deliveredCount = userOrders.stream()
+                .filter(o -> "DELIVERED".equalsIgnoreCase(o.getStatus()))
+                .count();
+
+        // If deliveredCount is 1 (this order that just got delivered), calculate and award cashback
+        if (deliveredCount == 1) {
+            double orderTotal = order.getTotalAmount() != null ? order.getTotalAmount() : 0.0;
+            // Cashback up to 100 based on order value: 50% of order value, min 25, max 100
+            double cashback = Math.min(100.0, Math.max(25.0, Math.round(orderTotal * 0.50)));
+            if (orderTotal < 25.0) cashback = Math.round(orderTotal);
+
+            // Award to referred new user (customer)
+            double customerBal = customer.getWalletBalance() != null ? customer.getWalletBalance() : 0.0;
+            customer.setWalletBalance(customerBal + cashback);
+            customer.setReferralRewardClaimed(true);
+            userRepo.save(customer);
+
+            // Award to referrer
+            UserEntity referrer = customer.getReferredBy();
+            if (referrer != null) {
+                UserEntity referrerDb = userRepo.findById(referrer.getId()).orElse(referrer);
+                double referrerBal = referrerDb.getWalletBalance() != null ? referrerDb.getWalletBalance() : 0.0;
+                referrerDb.setWalletBalance(referrerBal + cashback);
+                userRepo.save(referrerDb);
+            }
+
+            System.out.println("🎉 Referral Cashback Awarded! Customer " + customer.getUsername() + " and Referrer " + (referrer != null ? referrer.getUsername() : "N/A") + " received ₹" + cashback + " Bitezy wallet cashback.");
+        }
     }
 
     public OrderResponseDto cancelOrder(Long orderId, String username) {
@@ -430,6 +486,7 @@ public class OrderService {
             dto.setStatus(order.getStatus());
             dto.setCreatedAt(order.getCreatedAt());
             dto.setTransaction_id(order.getTransactionId() != null ? order.getTransactionId() : order.getRazorpayPaymentId());
+            dto.setWalletAmountDeducted(order.getWalletAmountDeducted() != null ? order.getWalletAmountDeducted() : 0.0);
             dto.setDeliveryAddress(order.getDeliveryAddress());
 
             dto.setCustomerName(order.getCustomerName());
@@ -480,6 +537,7 @@ public class OrderService {
                     if (doOpt.isPresent()) {
                         DeliveryOrder dOrder = doOpt.get();
                         if (dOrder.getPartner() != null) {
+                            dto.setDeliveryPartnerId(dOrder.getPartner().getId());
                             dto.setDeliveryPartnerName(dOrder.getPartner().getName());
                             dto.setDeliveryPartnerPhone(dOrder.getPartner().getPhone());
                         }

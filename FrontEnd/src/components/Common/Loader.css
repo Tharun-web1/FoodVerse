@@ -104,3 +104,27 @@
 [data-theme='dark'] .modern-loader-container.full-page {
     background: rgba(15, 15, 15, 0.9);
 }
+
+@media (max-width: 768px) {
+    .premium-loader-orbit {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .loader-overlay-content {
+        gap: 16px;
+    }
+    
+    .loader-center-icon {
+        font-size: 1.3rem;
+    }
+    
+    .premium-loader-text {
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .orbit-ring {
+        border-width: 2.5px;
+    }
+}

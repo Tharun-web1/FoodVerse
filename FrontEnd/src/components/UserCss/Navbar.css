@@ -381,8 +381,7 @@
     }
 
     .navbar-brand1 {
-        order: 3;
-        margin-left: 8px;
+        display: none !important;
     }
 
     .brand-name1 {
@@ -394,35 +393,52 @@
     }
 
     .nav-wallet-btn-mobile1 {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255, 255, 255, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        border-radius: 100px;
-        padding: 6px 12px;
-        color: white;
-        height: 36px;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        width: 36px !important;
+        height: 36px !important;
+        color: #475569 !important;
         cursor: pointer;
         transition: all 0.2s ease;
         order: 2;
         margin-left: 10px;
-        gap: 6px;
+    }
+
+    .nav-profile-btn-mobile1 {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        width: 36px !important;
+        height: 36px !important;
+        color: #475569 !important;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        order: 3;
+        margin-left: 10px;
+    }
+
+    .wallet-mini-icon1,
+    .profile-mini-icon1 {
+        font-size: 18px !important;
+        color: #475569 !important;
     }
 
     .wallet-mini-icon1 {
-        font-size: 16px;
+        color: #ff5630 !important;
     }
 
-    .wallet-balance-text1 {
-        font-size: 13px;
-        font-weight: 800;
-        font-family: 'Outfit', sans-serif;
-    }
-
-    .nav-wallet-btn-mobile1:active {
-        background: white;
-        color: var(--nav-bg);
+    .nav-wallet-btn-mobile1:active,
+    .nav-profile-btn-mobile1:active {
+        background: #e2e8f0 !important;
     }
 
     .nav-lang-btn-mobile1 {
@@ -453,9 +469,10 @@
     }
 }
 
-/* Ensure mobile search icon is hidden on desktop */
+/* Ensure mobile search icon/wallet/profile is hidden on desktop */
 @media (min-width: 769px) {
-    .nav-wallet-btn-mobile1 {
+    .nav-wallet-btn-mobile1,
+    .nav-profile-btn-mobile1 {
         display: none !important;
     }
 }
@@ -472,5 +489,95 @@
     .navbar1.mobile-hidden1 {
         display: none !important;
         pointer-events: none;
+    }
+
+    /* Mobile premium transparent header overlay */
+    .navbar1 {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: transparent !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    .navbar-location1 .location-display-btn {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        height: auto !important;
+        color: white !important; /* White text for dark slide overlay */
+        gap: 8px !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+    }
+
+    .navbar-location1 .location-title {
+        color: white !important;
+    }
+
+    .navbar-location1 .location-chevron {
+        color: white !important;
+    }
+
+    .navbar-location1 .location-subtitle {
+        color: rgba(255, 255, 255, 0.75) !important;
+    }
+
+    .navbar-location1 .location-pin-wrapper svg {
+        color: #ff5630 !important; /* Keep red marker */
+    }
+
+    .nav-wallet-btn-mobile1 {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        color: white !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+    }
+
+    .wallet-mini-icon1 {
+        color: #ff5630 !important;
+    }
+
+    .nav-lang-btn-mobile1 {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+    }
+
+    .nav-profile-btn-mobile1 {
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        color: white !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+    }
+
+    .profile-mini-img1 {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+    }
+
+    .profile-mini-fallback-avatar {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-family: 'Outfit', sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 800 !important;
+        color: white !important;
+        background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
+        text-transform: uppercase !important;
     }
 }

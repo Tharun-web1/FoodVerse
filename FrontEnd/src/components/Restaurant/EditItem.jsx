@@ -21,6 +21,97 @@ export default function EditItem() {
   const [loading, setLoading] = useState(false);
   const [itemImage, setItemImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [customCategoryInput, setCustomCategoryInput] = useState("");
+  const [isCustomServes, setIsCustomServes] = useState(false);
+  const [customServesInput, setCustomServesInput] = useState("");
+
+  const STANDARD_CATEGORIES = [
+    "Starters",
+    "Desserts",
+    "Biryani",
+    "Pizza",
+    "Ice Cream",
+    "Chinese",
+    "South Indian",
+    "Juice",
+    "Burger",
+    "Cake",
+    "Refresheners & Beverages",
+    "Cool Drinks",
+    "Main Course",
+    "Soups & Salads",
+    "Snacks & Fast Food",
+    "Combos & Thalis",
+    "Others"
+  ];
+
+  const getCategoryQuantityOptions = (category) => {
+    const cat = (category || "").toLowerCase();
+    if (cat.includes("biryani") || cat.includes("rice") || cat.includes("thali")) {
+      return ["Single", "Full", "Family Pack", "Jumbo", "Half"];
+    }
+    if (cat.includes("pizza")) {
+      return ['Small (7")', 'Medium (10")', 'Large (12")', 'Personal / Regular'];
+    }
+    if (cat.includes("beverage") || cat.includes("refreshener") || cat.includes("drink") || cat.includes("juice") || cat.includes("soda")) {
+      return ["Small (250ml)", "Medium (350ml)", "Large (500ml)", "Can (300ml)", "Bottle (1 Litre)", "Glass"];
+    }
+    if (cat.includes("burger") || cat.includes("sandwich")) {
+      return ["Single / Regular", "Double", "Combo / Meal"];
+    }
+    if (cat.includes("cake") || cat.includes("ice cream") || cat.includes("dessert")) {
+      return ["Single Scoop / Slice", "Double Scoop", "Tub (500ml)", "250 Grams", "500 Grams", "1 Kg"];
+    }
+    if (cat.includes("starter") || cat.includes("chinese") || cat.includes("snack") || cat.includes("south indian") || cat.includes("main course")) {
+      return ["Half", "Full", "1 Portion", "2 Pcs", "4 Pcs", "6 Pcs", "Family Pack"];
+    }
+    return ["Single", "Half", "Full", "Small", "Medium", "Large", "1 Portion", "2 Pcs", "4 Pcs", "Family Pack", "Jumbo"];
+  };
+
+  // Dynamic unique categories list including the current item's category if custom
+  const allCategories = Array.from(
+    new Set([...STANDARD_CATEGORIES, ...(item.category ? [item.category] : [])])
+  );
+
+  const baseQuantityOptions = getCategoryQuantityOptions(item.category);
+  const quantityOptions = Array.from(
+    new Set([...baseQuantityOptions, ...(item.serves ? [item.serves] : [])])
+  );
+
+  const handleCategorySelectChange = (e) => {
+    const val = e.target.value;
+    if (val === "CUSTOM_NEW") {
+      setIsCustomCategory(true);
+      setItem(prev => ({ ...prev, category: customCategoryInput }));
+    } else {
+      setIsCustomCategory(false);
+      setItem(prev => ({ ...prev, category: val }));
+    }
+  };
+
+  const handleCustomCategoryInputChange = (e) => {
+    const val = e.target.value;
+    setCustomCategoryInput(val);
+    setItem(prev => ({ ...prev, category: val }));
+  };
+
+  const handleServesSelectChange = (e) => {
+    const val = e.target.value;
+    if (val === "CUSTOM_SERVES_NEW") {
+      setIsCustomServes(true);
+      setItem(prev => ({ ...prev, serves: customServesInput }));
+    } else {
+      setIsCustomServes(false);
+      setItem(prev => ({ ...prev, serves: val }));
+    }
+  };
+
+  const handleCustomServesInputChange = (e) => {
+    const val = e.target.value;
+    setCustomServesInput(val);
+    setItem(prev => ({ ...prev, serves: val }));
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -33,7 +124,7 @@ export default function EditItem() {
   /* ✅ SAFETY GUARD */
   useEffect(() => {
     if (!id) {
-      navigate("/res/menu");
+      navigate("/restaurant/menu");
       return;
     }
 
@@ -41,7 +132,7 @@ export default function EditItem() {
       .then(res => {
         setItem(res.data);
       })
-      .catch(() => navigate("/res/menu"));
+      .catch(() => navigate("/restaurant/menu"));
 
     let currentImageUrl = null;
     const fetchImage = async () => {
@@ -80,6 +171,12 @@ export default function EditItem() {
 
   const handleSubmit = e => {
     e.preventDefault();
+
+    if (!item.category || !item.category.trim()) {
+      alert("Please select or enter a category");
+      return;
+    }
+
     setLoading(true);
 
     api.put(`/restaurants/my-items/${id}`, item, {
@@ -105,7 +202,7 @@ export default function EditItem() {
           }
         }
         alert("Item updated successfully!");
-        navigate("/res/menu");
+        navigate("/restaurant/menu");
       })
       .catch((err) => {
         console.error(err);
@@ -161,15 +258,32 @@ export default function EditItem() {
                   />
                 </div>
                 <div className="col-md-6 form-group">
-                  <label>Serves</label>
-                  <input
-                    type="text"
-                    name="serves"
-                    className="form-control"
-                    placeholder="e.g. 1-2 people"
-                    value={item.serves}
-                    onChange={handleChange}
-                  />
+                  <label>Quantity / Portion</label>
+                  <select
+                    name="servesSelect"
+                    className="form-select"
+                    value={isCustomServes ? "CUSTOM_SERVES_NEW" : item.serves}
+                    onChange={handleServesSelectChange}
+                  >
+                    <option value="">Select Quantity / Size</option>
+                    {quantityOptions.map((opt, idx) => (
+                      <option key={idx} value={opt}>{opt}</option>
+                    ))}
+                    <option value="CUSTOM_SERVES_NEW" style={{ fontWeight: "bold", color: "#e11d48" }}>
+                      + Add Custom Size...
+                    </option>
+                  </select>
+
+                  {isCustomServes && (
+                    <input 
+                      type="text" 
+                      className="form-control mt-2" 
+                      placeholder="e.g. 250ml, 500g, 6 Pcs, 10 inch..." 
+                      value={customServesInput} 
+                      onChange={handleCustomServesInputChange} 
+                      required 
+                    />
+                  )}
                 </div>
               </div>
 
@@ -186,20 +300,32 @@ export default function EditItem() {
               <div className="row">
                 <div className="col-md-6 form-group">
                   <label>Category</label>
-                  <select name="category" className="form-select" onChange={handleChange} value={item.category}>
+                  <select 
+                    name="categorySelect" 
+                    className="form-select" 
+                    onChange={handleCategorySelectChange} 
+                    value={isCustomCategory ? "CUSTOM_NEW" : item.category}
+                    required={!isCustomCategory}
+                  >
                     <option value="">Select Category</option>
-                    <option value="Starters">Starters</option>
-                    <option value="Desserts">Desserts</option>
-                    <option value="Biryani">Biryani</option>
-                    <option value="Pizza">Pizza</option>
-                    <option value="Ice Cream">Ice Cream</option>
-                    <option value="Chinese">Chinese</option>
-                    <option value="South Indian">South Indian</option>
-                    <option value="Juice">Juice</option>
-                    <option value="Burger">Burger</option>
-                    <option value="Cake">Cake</option>
-                    <option value="Others">Others</option>
+                    {allCategories.map((cat, idx) => (
+                      <option key={idx} value={cat}>{cat}</option>
+                    ))}
+                    <option value="CUSTOM_NEW" style={{ fontWeight: "bold", color: "#e11d48" }}>
+                      + Add Custom Category...
+                    </option>
                   </select>
+
+                  {isCustomCategory && (
+                    <input 
+                      type="text" 
+                      className="form-control mt-2" 
+                      placeholder="e.g. Refresheners, Cool Drinks, Mocktails..." 
+                      value={customCategoryInput} 
+                      onChange={handleCustomCategoryInputChange} 
+                      required 
+                    />
+                  )}
                 </div>
 
                 <div className="col-md-6 form-group">
@@ -228,7 +354,7 @@ export default function EditItem() {
                 <button
                   type="button"
                   className="btn-custom btn-cancel"
-                  onClick={() => navigate("/res/menu")}
+                  onClick={() => navigate("/restaurant/menu")}
                   disabled={loading}
                 >
                   Cancel

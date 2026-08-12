@@ -16,7 +16,7 @@ const PaymentPage = () => {
     const { clearCart } = useCart();
     const { showToast } = useToast();
     const { t } = useTranslation();
-    const [paymentMethod, setPaymentMethod] = useState("ONLINE"); 
+    const [paymentMethod, setPaymentMethod] = useState("ONLINE");
     const [processing, setProcessing] = useState(false);
     const [orderData, setOrderData] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
@@ -33,8 +33,18 @@ const PaymentPage = () => {
 
         if (location.state && location.state.orderData) {
             setOrderData(location.state.orderData);
+            sessionStorage.setItem("current_order_data", JSON.stringify(location.state.orderData));
         } else {
-            navigate("/cart");
+            const savedOrder = sessionStorage.getItem("current_order_data");
+            if (savedOrder) {
+                try {
+                    setOrderData(JSON.parse(savedOrder));
+                } catch (e) {
+                    navigate("/cart");
+                }
+            } else {
+                navigate("/cart");
+            }
         }
 
         // Fetch wallet balance
@@ -56,6 +66,14 @@ const PaymentPage = () => {
     // Calculations for partial payment
     const walletContribution = useWallet ? Math.min(walletBalance, orderData?.totalAmount || 0) : 0;
     const remainingToPay = (orderData?.totalAmount || 0) - walletContribution;
+
+    const handlePaymentBack = () => {
+        if (window.history.state && window.history.state.idx > 0) {
+            navigate(-1);
+        } else {
+            navigate("/cart");
+        }
+    };
 
     const handlePayment = async () => {
         setProcessing(true);
@@ -80,7 +98,8 @@ const PaymentPage = () => {
                 longitude: orderData.longitude,
                 couponCode: orderData.couponCode || null,
                 discountAmount: orderData.discountAmount || 0,
-                useWallet: useWallet
+                useWallet: useWallet,
+                specialInstructions: orderData.specialInstructions || null
             };
 
             const response = await axios.post(`${API_BASE_URL}/orders/place`, orderPayload, {
@@ -164,8 +183,8 @@ const PaymentPage = () => {
         return (
             <div className="confetti-container">
                 {[...Array(50)].map((_, i) => (
-                    <div 
-                        key={i} 
+                    <div
+                        key={i}
                         className="confetti-piece"
                         style={{
                             left: `${Math.random() * 100}%`,
@@ -188,7 +207,7 @@ const PaymentPage = () => {
 
             <div className="payment-container">
                 <div className="payment-header">
-                    <button className="back-btn" onClick={() => navigate("/cart")}>
+                    <button className="back-btn" onClick={handlePaymentBack}>
                         <FiArrowLeft />
                     </button>
                     <h1>Payment Methods</h1>
@@ -196,17 +215,6 @@ const PaymentPage = () => {
 
                 <div className="payment-content">
                     <div className="payment-left-col">
-                        {/* Delivery Address Summary */}
-                        <div className="delivery-summary-card">
-                            <div className="summary-header">
-                                <FiMapPin className="pin-icon" />
-                                <h2 className="section-title">Delivery Address</h2>
-                            </div>
-                            <div className="address-display">
-                                <p>{orderData.displayAddress || "Saved Address"}</p>
-                            </div>
-                        </div>
-
                         {/* Payment Options */}
                         <div className="payment-options">
                             <h2 className="section-title">Select Payment Method</h2>
@@ -223,8 +231,8 @@ const PaymentPage = () => {
                                         <h3>Use Bitezy Wallet</h3>
                                         <span className="wallet-balance-tag">Balance: ₹{walletBalance.toFixed(2)}</span>
                                     </div>
-                                    <p>{walletBalance <= 0 
-                                        ? "No balance available in your wallet" 
+                                    <p>{walletBalance <= 0
+                                        ? "No balance available in your wallet"
                                         : `Apply ₹${Math.min(walletBalance, orderData.totalAmount).toFixed(2)} to this order`}
                                     </p>
                                 </div>
@@ -278,16 +286,26 @@ const PaymentPage = () => {
                             <div className="summary-details">
                                 <div className="summary-row">
                                     <span>Subtotal</span>
-                                    <span>₹{orderData.subtotal}</span>
+                                    <span>₹{orderData.subtotal || 0}</span>
                                 </div>
                                 <div className="summary-row">
                                     <span>Delivery Fee</span>
-                                    <span>₹{orderData.deliveryFee}</span>
+                                    {orderData.deliveryFee === 0 || !orderData.deliveryFee ? (
+                                        <span style={{ color: '#000000ff' }}>FREE</span>
+                                    ) : (
+                                        <span>₹{orderData.deliveryFee}</span>
+                                    )}
                                 </div>
                                 <div className="summary-row">
                                     <span>Taxes & Charges</span>
-                                    <span>₹{orderData.taxes}</span>
+                                    <span>₹{orderData.taxes || 0}</span>
                                 </div>
+                                {orderData.discountAmount > 0 && (
+                                    <div className="summary-row discount" style={{ color: '#10b981' }}>
+                                        <span>Discount {orderData.couponCode ? `(${orderData.couponCode})` : ''}</span>
+                                        <span style={{ fontWeight: '700' }}>-₹{orderData.discountAmount}</span>
+                                    </div>
+                                )}
                                 {orderData.pendingCancellationFee > 0 && (
                                     <div className="summary-row" style={{ color: '#ff5630', fontWeight: '600' }}>
                                         <span>Late Cancellation Fee</span>
@@ -296,7 +314,7 @@ const PaymentPage = () => {
                                 )}
                                 <div className="summary-row total">
                                     <span>Total Amount</span>
-                                    <span>₹{orderData.totalAmount}</span>
+                                    <span>₹{orderData.totalAmount || 0}</span>
                                 </div>
                                 {useWallet && (
                                     <div className="summary-row wallet-deduction animate__animated animate__fadeIn">
@@ -317,9 +335,9 @@ const PaymentPage = () => {
                                 onClick={handlePayment}
                                 disabled={processing}
                             >
-                                {processing ? "Processing..." : 
-                                 remainingToPay <= 0 ? `Pay ₹${orderData.totalAmount} with Wallet` : 
-                                 `Pay ₹${remainingToPay.toFixed(2)}`}
+                                {processing ? "Processing..." :
+                                    remainingToPay <= 0 ? `Pay ₹${orderData.totalAmount} with Wallet` :
+                                        `Pay ₹${remainingToPay.toFixed(2)}`}
                             </button>
                         </div>
                     </div>

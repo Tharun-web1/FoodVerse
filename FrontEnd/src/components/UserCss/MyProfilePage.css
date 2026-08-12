@@ -124,12 +124,27 @@
     min-height: auto;
     height: auto;
   }
+
+  .my-profile-page.address-only-view {
+    margin-top: 15px !important;
+  }
+
+  .my-profile-page.address-only-view .profile-content {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
 }
 
 @media (max-width: 640px) {
   .my-profile-page {
     margin-top: 70px;
     padding: 0 12px;
+  }
+
+  .my-profile-page.address-only-view {
+    margin-top: 15px !important;
   }
 
   .profile-menu {

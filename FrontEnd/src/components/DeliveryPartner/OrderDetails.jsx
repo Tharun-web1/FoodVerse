@@ -28,7 +28,7 @@ const OrderDetails = () => {
         const fetchOrderDetails = async () => {
             if (!id) {
                 showToast('Order not found', 'error');
-                navigate('/delivery/dash');
+                navigate('/delivery-partner/dashboard');
                 return;
             }
             try {
@@ -39,7 +39,7 @@ const OrderDetails = () => {
                     setStatus(foundOrder.status);
                 } else {
                     showToast('Order not found in your assigned tasks', 'error');
-                    navigate('/delivery/dash');
+                    navigate('/delivery-partner/dashboard');
                 }
             } catch (err) {
                 console.error("Error fetching order details", err);
@@ -68,7 +68,7 @@ const OrderDetails = () => {
             setStatus(res.data.status);
             showToast(`Order marked as ${nextStatus.replace('_', ' ')}`, 'success');
             if (nextStatus === 'DELIVERED') {
-                setTimeout(() => navigate('/delivery/dash'), 2000);
+                setTimeout(() => navigate('/delivery-partner/dashboard'), 2000);
             }
         } catch (err) {
             console.error("Status update failed", err);

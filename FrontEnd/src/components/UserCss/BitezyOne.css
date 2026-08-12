@@ -1,0 +1,772 @@
+/* Bitezy One Subscription Page Stylesheet */
+
+.bitezy-one-page {
+    min-height: 100vh;
+    background: #0f172a;
+    color: #f8fafc;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding-bottom: 80px;
+}
+
+/* Hero VIP Header */
+.one-hero {
+    position: relative;
+    background: linear-gradient(135deg, #090d16 0%, #1e1b4b 50%, #31103f 100%);
+    padding: 32px 20px 48px 20px;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.one-hero-glow {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.one-hero-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.one-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+    margin-bottom: 24px;
+}
+
+.one-back-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-3px);
+}
+
+.one-brand-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #d4af37 0%, #f59e0b 100%);
+    color: #0f172a;
+    font-weight: 900;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 100px;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.one-title-block h1 {
+    font-size: 32px;
+    font-weight: 900;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ffffff 0%, #ffd700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.one-title-block p {
+    font-size: 14.5px;
+    color: #cbd5e1;
+    margin: 0 0 24px 0;
+    max-width: 500px;
+}
+
+/* Savings Counter Banner */
+.one-savings-banner {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(225, 29, 72, 0.15) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 18px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 600px;
+}
+
+.savings-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.savings-icon-box {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: #d4af37;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.savings-text h4 {
+    margin: 0 0 2px 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.savings-text p {
+    margin: 0;
+    font-size: 12px;
+    color: #d1d5db;
+}
+
+.active-status-pill {
+    background: #10b981;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.5px;
+}
+
+/* Main Container */
+.one-container {
+    max-width: 900px;
+    margin: 32px auto 0 auto;
+    padding: 0 16px;
+}
+
+/* Pricing Grid */
+.pricing-section-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 16px;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 36px;
+}
+
+.plan-card {
+    background: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 20px;
+    padding: 22px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.plan-card:hover {
+    border-color: #d4af37;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px -6px rgba(212, 175, 55, 0.2);
+}
+
+.plan-card.selected {
+    background: linear-gradient(180deg, #1e293b 0%, #17102b 100%);
+    border-color: #d4af37;
+    box-shadow: 0 12px 30px -4px rgba(212, 175, 55, 0.3);
+}
+
+.plan-card.popular {
+    border-color: #e11d48;
+}
+
+.plan-card.popular.selected {
+    border-color: #e11d48;
+    box-shadow: 0 12px 30px -4px rgba(225, 29, 72, 0.35);
+}
+
+.plan-badge {
+    position: absolute;
+    top: -12px;
+    right: 16px;
+    background: #e11d48;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.5px;
+}
+
+.plan-header h3 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.plan-header p {
+    margin: 0 0 16px 0;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.plan-price-block {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.plan-price-block .price {
+    font-size: 32px;
+    font-weight: 900;
+    color: #ffd700;
+}
+
+.plan-price-block .period {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.plan-price-block .regular-price {
+    font-size: 13px;
+    color: #64748b;
+    text-decoration: line-through;
+    margin-left: 4px;
+}
+
+.plan-select-btn {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.plan-card.selected .plan-select-btn {
+    background: linear-gradient(135deg, #d4af37 0%, #f59e0b 100%);
+    color: #0f172a;
+    border: none;
+    box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+}
+
+.plan-card.popular.selected .plan-select-btn {
+    background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(225, 29, 72, 0.4);
+}
+
+/* Benefits Grid */
+.benefits-section {
+    margin-bottom: 40px;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 14px;
+}
+
+.benefit-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 18px 16px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.benefit-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.benefit-icon.gold { background: rgba(212, 175, 55, 0.15); color: #ffd700; }
+.benefit-icon.red { background: rgba(225, 29, 72, 0.15); color: #f43f5e; }
+.benefit-icon.green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.benefit-icon.purple { background: rgba(124, 58, 237, 0.15); color: #a78bfa; }
+
+.benefit-text h4 {
+    margin: 0 0 3px 0;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.benefit-text p {
+    margin: 0;
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.4;
+}
+
+/* Savings Calculator Box */
+.calc-box {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid #334155;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 40px;
+}
+
+.calc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calc-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.calc-slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.calc-slider-group label {
+    font-size: 13px;
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+.calc-slider {
+    width: 100%;
+    accent-color: #ffd700;
+    cursor: pointer;
+}
+
+.calc-result-row {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.calc-result-left p {
+    margin: 0;
+    font-size: 12px;
+    color: #cbd5e1;
+}
+
+.calc-result-left h4 {
+    margin: 2px 0 0 0;
+    font-size: 22px;
+    font-weight: 900;
+    color: #ffd700;
+}
+
+/* Sticky Action Footer Bar */
+.one-action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    padding: 14px 20px;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+}
+
+.one-action-inner {
+    max-width: 900px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.action-plan-summary {
+    display: flex;
+    flex-direction: column;
+}
+
+.action-plan-name {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.action-plan-price {
+    font-size: 20px;
+    font-weight: 900;
+    color: #ffd700;
+}
+
+.activate-btn {
+    background: linear-gradient(135deg, #d4af37 0%, #f59e0b 100%);
+    color: #0f172a;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+    transition: all 0.2s ease;
+}
+
+.activate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .one-title-block h1 { font-size: 24px; }
+    .one-savings-banner { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .calc-result-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+/* Plan Benefits Preview List */
+.plan-benefits-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 12px 0 20px 0;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.plan-benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12.5px;
+    color: #e2e8f0;
+    line-height: 1.3;
+}
+
+.plan-benefit-item .check-icon {
+    color: #10b981;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.perk-plan-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    margin-top: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.perk-plan-tag.highlight {
+    color: #ffd700;
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+/* Checkout Activation Modal */
+.one-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.one-modal-content {
+    background: #1e293b;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 24px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    animation: modalPopIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+}
+
+@keyframes modalPopIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.modal-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #ffffff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+}
+
+.modal-close-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.modal-plan-summary-card {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(30, 41, 59, 1) 100%);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modal-plan-left h4 {
+    margin: 0 0 2px 0;
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.modal-plan-left p {
+    margin: 0;
+    font-size: 12px;
+    color: #cbd5e1;
+}
+
+.modal-plan-price span {
+    font-size: 24px;
+    font-weight: 900;
+    color: #ffd700;
+}
+
+.modal-strike-price {
+    font-size: 13px;
+    color: #64748b;
+    text-decoration: line-through;
+    margin-left: 6px;
+}
+
+.modal-payment-section h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #cbd5e1;
+    margin: 0 0 12px 0;
+}
+
+.payment-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.payment-option-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 14px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.payment-option-card:hover {
+    border-color: #64748b;
+}
+
+.payment-option-card.active {
+    border-color: #ffd700;
+    background: rgba(212, 175, 55, 0.08);
+}
+
+.payment-option-card.insufficient {
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.insufficient-funds-tag {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.payment-option-card input[type="radio"] {
+    accent-color: #ffd700;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.option-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+}
+
+.option-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+}
+
+.option-text-wrap {
+    min-width: 0;
+}
+
+.option-icon {
+    font-size: 20px;
+    color: #ffd700;
+    flex-shrink: 0;
+}
+
+.option-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.option-sub {
+    display: block;
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.confirm-pay-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #d4af37 0%, #f59e0b 100%);
+    color: #0f172a;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+    transition: all 0.2s ease;
+}
+
+.confirm-pay-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+}
+
+@media (max-width: 600px) {
+    .one-modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .one-modal-content {
+        border-radius: 24px 24px 0 0;
+        max-height: 85vh;
+        padding: 20px 16px 28px;
+        border-bottom: none;
+    }
+
+    .modal-header {
+        margin-bottom: 14px;
+    }
+
+    .modal-header h3 {
+        font-size: 18px;
+    }
+
+    .modal-plan-summary-card {
+        padding: 12px 14px;
+        margin-bottom: 18px;
+    }
+
+    .payment-option-card {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .option-title {
+        font-size: 13px;
+    }
+
+    .option-sub {
+        font-size: 10.5px;
+    }
+
+    .confirm-pay-btn {
+        padding: 13px;
+        font-size: 14px;
+        margin-top: 12px;
+    }
+}
+

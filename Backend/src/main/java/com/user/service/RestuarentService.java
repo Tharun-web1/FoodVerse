@@ -39,6 +39,48 @@ public class RestuarentService {
         if (list != null) list.forEach(this::populatePromoOffer);
     }
 
+    @Autowired
+    private com.user.repo.OrderRepo orderRepo;
+
+    @Autowired
+    private MyUserService myUserService;
+
+    private void populateOrdersLast24Hours(Restuarent r) {
+        if (r == null) return;
+        java.time.LocalDateTime since = java.time.LocalDateTime.now().minusHours(24);
+        long count = orderRepo.countOrdersSince(r.getId(), since);
+        r.setLast24HoursOrders(count);
+    }
+
+    private void populateOrdersLast24Hours(List<Restuarent> list) {
+        if (list != null) list.forEach(this::populateOrdersLast24Hours);
+    }
+
+    private void populateFrequentlyReordered(Restuarent r) {
+        if (r == null) return;
+        try {
+            org.springframework.security.core.Authentication auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getName())) {
+                String identifier = auth.getName();
+                com.user.entity.UserEntity user = myUserService.getCurrentUser(identifier);
+                if (user != null) {
+                    long count = orderRepo.countByUserIdAndRestaurantId(user.getId(), r.getId());
+                    r.setFrequentlyReordered(count >= 2);
+                } else {
+                    r.setFrequentlyReordered(false);
+                }
+            } else {
+                r.setFrequentlyReordered(false);
+            }
+        } catch (Exception e) {
+            r.setFrequentlyReordered(false);
+        }
+    }
+
+    private void populateFrequentlyReordered(List<Restuarent> list) {
+        if (list != null) list.forEach(this::populateFrequentlyReordered);
+    }
+
     
     public Restuarent addRestuarent(Restuarent restuarent) {
         if (restuarent.getRating() == null) restuarent.setRating(0.0);
@@ -48,12 +90,16 @@ public class RestuarentService {
     public List<Restuarent> getAllRestuarents() {
         List<Restuarent> list = restuarentRepository.findAll();
         populatePromoOffers(list);
+        populateOrdersLast24Hours(list);
+        populateFrequentlyReordered(list);
         return list;
     }
     
     public Restuarent getRestuarentByUsername(String username) {
         Restuarent res = restuarentRepository.findByUsername(username);
         populatePromoOffer(res);
+        populateOrdersLast24Hours(res);
+        populateFrequentlyReordered(res);
         return res;
     }
 
@@ -61,6 +107,8 @@ public class RestuarentService {
         Pageable pageable = PageRequest.of(page, size);
         List<Restuarent> list = restuarentRepository.findActiveWithItems(pageable).getContent();
         populatePromoOffers(list);
+        populateOrdersLast24Hours(list);
+        populateFrequentlyReordered(list);
         return list;
     }
     
@@ -68,12 +116,16 @@ public class RestuarentService {
         Restuarent res = restuarentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
         populatePromoOffer(res);
+        populateOrdersLast24Hours(res);
+        populateFrequentlyReordered(res);
         return res;
     }
 
     public List<Restuarent> searchRestaurants(String query) {
         List<Restuarent> list = restuarentRepository.searchActiveRestaurants(query);
         populatePromoOffers(list);
+        populateOrdersLast24Hours(list);
+        populateFrequentlyReordered(list);
         return list;
     }
 

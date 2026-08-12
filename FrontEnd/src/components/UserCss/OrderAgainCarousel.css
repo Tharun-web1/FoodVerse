@@ -1,0 +1,168 @@
+/* Order Again Quick Carousel Stylesheet */
+
+.order-again-section {
+    padding: 16px 0 24px 0;
+    width: 100%;
+}
+
+.order-again-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.order-again-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.order-again-header .title-badge {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #e11d48;
+    background: #ffe4e6;
+    padding: 3px 10px;
+    border-radius: 100px;
+}
+
+.order-again-scroll-container {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+}
+
+.order-again-scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome / Safari */
+}
+
+.order-again-card {
+    min-width: 220px;
+    max-width: 240px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+    cursor: pointer;
+}
+
+.order-again-card:hover {
+    border-color: #e11d48;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px -6px rgba(225, 29, 72, 0.15);
+}
+
+.oa-thumb-box {
+    position: relative;
+    width: 100%;
+    height: 110px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f1f5f9;
+}
+
+.oa-thumb-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.oa-date-tag {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 100px;
+}
+
+.oa-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.oa-dish-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.oa-res-name {
+    font-size: 11.5px;
+    color: #64748b;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.oa-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2px;
+}
+
+.oa-price {
+    font-size: 13px;
+    font-weight: 800;
+    color: #10b981;
+}
+
+.oa-reorder-btn {
+    background: #ffe4e6;
+    color: #e11d48;
+    border: none;
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 11.5px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+}
+
+.oa-reorder-btn:hover {
+    background: #e11d48;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] .order-again-header h3 {
+    color: #f8fafc;
+}
+
+[data-theme="dark"] .order-again-card {
+    background: #111827;
+    border-color: #1f2937;
+}
+
+[data-theme="dark"] .oa-dish-name {
+    color: #f8fafc;
+}

@@ -336,5 +336,75 @@ public class RestuarentController {
         couponRepo.delete(coupon);
         return ResponseEntity.ok("Coupon deleted successfully");
     }
+
+    // --- ITEM OFFERS MANAGEMENT (5% - 100% OFF) ---
+
+    @PostMapping("/apply-item-offer")
+    public ResponseEntity<?> applyItemOffer(@RequestBody java.util.Map<String, Object> payload) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Restuarent current = restuarentService.getRestuarentByUsername(username);
+        if (current == null) throw new RuntimeException("Restaurant profile not found");
+
+        Object itemIdsObj = payload.get("itemIds");
+        Object discountObj = payload.get("discountPercentage");
+        if (itemIdsObj == null || discountObj == null) {
+            throw new RuntimeException("Missing itemIds or discountPercentage");
+        }
+
+        List<?> itemIdsRaw = (List<?>) itemIdsObj;
+        Double discountPercentage = Double.parseDouble(discountObj.toString());
+        String offerTitle = payload.get("offerTitle") != null ? payload.get("offerTitle").toString() : ((int) Math.round(discountPercentage) + "% OFF");
+        
+        Object expiryObj = payload.get("offerExpiryDate");
+        java.time.LocalDateTime expiryDate = null;
+        if (expiryObj != null && !expiryObj.toString().trim().isEmpty()) {
+            try {
+                expiryDate = java.time.LocalDateTime.parse(expiryObj.toString());
+            } catch (Exception e) {
+                // Ignore parse errors, leave as null
+            }
+        }
+
+        if (discountPercentage < 5.0 || discountPercentage > 100.0) {
+            throw new RuntimeException("Discount percentage must be between 5% and 100%");
+        }
+
+        for (Object idObj : itemIdsRaw) {
+            Long itemId = Long.parseLong(idObj.toString());
+            RestuarentItems item = rir.findById(itemId).orElse(null);
+            if (item != null && item.getRestuarent().getId().equals(current.getId())) {
+                item.setDiscountPercentage(discountPercentage);
+                item.setOfferActive(true);
+                item.setOfferTitle(offerTitle);
+                item.setOfferExpiryDate(expiryDate);
+                rir.save(item);
+            }
+        }
+        return ResponseEntity.ok("Offer applied successfully");
+    }
+
+    @PostMapping("/remove-item-offer")
+    public ResponseEntity<?> removeItemOffer(@RequestBody java.util.Map<String, Object> payload) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Restuarent current = restuarentService.getRestuarentByUsername(username);
+        if (current == null) throw new RuntimeException("Restaurant profile not found");
+
+        Object itemIdsObj = payload.get("itemIds");
+        if (itemIdsObj != null) {
+            List<?> itemIdsRaw = (List<?>) itemIdsObj;
+            for (Object idObj : itemIdsRaw) {
+                Long itemId = Long.parseLong(idObj.toString());
+                RestuarentItems item = rir.findById(itemId).orElse(null);
+                if (item != null && item.getRestuarent().getId().equals(current.getId())) {
+                    item.setDiscountPercentage(0.0);
+                    item.setOfferActive(false);
+                    item.setOfferTitle(null);
+                    item.setOfferExpiryDate(null);
+                    rir.save(item);
+                }
+            }
+        }
+        return ResponseEntity.ok("Offer removed successfully");
+    }
 }
 

@@ -116,6 +116,11 @@ export default function OrderTable({ orders, updateStatus, showActions = true })
                                             </li>
                                         ))}
                                     </ul>
+                                    {order.specialInstructions && (
+                                        <div className="mt-2 text-danger fw-bold small">
+                                            📝 Req: "{order.specialInstructions}"
+                                        </div>
+                                    )}
                                 </td>
                                 <td className="text-end fw-bold order-total-amount">₹{order.totalAmount}</td>
                                 <td className="text-center">
@@ -193,6 +198,11 @@ export default function OrderTable({ orders, updateStatus, showActions = true })
                                     </li>
                                 ))}
                             </ul>
+                            {order.specialInstructions && (
+                                <div className="mt-2 text-danger fw-bold small p-2 bg-light rounded">
+                                    📝 Request: "{order.specialInstructions}"
+                                </div>
+                            )}
                             <div className="order-total-mobile">
                                 <span>TotalBill</span>
                                 <span>₹{order.totalAmount}</span>

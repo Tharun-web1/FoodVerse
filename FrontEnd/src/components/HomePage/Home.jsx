@@ -52,10 +52,10 @@ const Home = () => {
               <Link to="/login/user" className="btn-hero btn-hero-primary">
                 {t('home_hero_cta_user')} <FiArrowRight />
               </Link>
-              <Link to="/signup/res" className="btn-hero btn-hero-outline">
+              <Link to="/restaurant/signup" className="btn-hero btn-hero-outline">
                 {t('home_hero_cta_res')}
               </Link>
-              <Link to="/delivery/login" className="btn-hero btn-hero-outline">
+              <Link to="/delivery-partner/login" className="btn-hero btn-hero-outline">
                 {t('home_hero_cta_delivery')}
               </Link>
             </div>
@@ -95,7 +95,7 @@ const Home = () => {
               </div>
               <h3>{t('home_partner_res_title')}</h3>
               <p>{t('home_partner_res_desc')}</p>
-              <Link to="/signup/res" className="btn-partner">
+              <Link to="/restaurant/signup" className="btn-partner">
                 {t('home_register_btn')}
               </Link>
             </div>
@@ -107,7 +107,7 @@ const Home = () => {
               </div>
               <h3>{t('home_partner_delivery_title')}</h3>
               <p>{t('home_partner_delivery_desc')}</p>
-              <Link to="/delivery/register" className="btn-partner">
+              <Link to="/delivery-partner/register" className="btn-partner">
                 {t('home_register_btn')}
               </Link>
             </div>

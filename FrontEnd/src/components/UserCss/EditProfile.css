@@ -1,8 +1,63 @@
 .edit-profile h2 {
   font-size: 24px;
   font-weight: 800;
-  margin-bottom: 30px;
+  margin: 0;
   color: var(--text-heading);
+}
+
+.profile-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 16px;
+}
+
+.profile-title-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-btn-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: white;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 20px;
+}
+
+.back-btn-profile:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.edit-profile-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.edit-profile-toggle-btn:hover {
+  background: var(--primary);
+  color: white;
 }
 
 .bitezy-wallet-card {
@@ -19,6 +74,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  box-sizing: border-box;
 }
 
 .bitezy-wallet-card::after {
@@ -90,11 +146,27 @@
   box-shadow: 0 0 0 4px var(--primary-light);
 }
 
-.edit-profile-form button {
-  margin-top: 20px;
-  padding: 16px;
-  width: 100%;
-  border-radius: 12px;
+.disabled-input {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+  cursor: not-allowed !important;
+  border-color: var(--border) !important;
+}
+
+.input-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.save-profile-btn {
+  flex: 2;
   border: none;
   background: var(--primary);
   color: white;
@@ -103,16 +175,75 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(255, 51, 89, 0.2);
+  padding: 14px;
+  border-radius: 12px;
 }
 
-.edit-profile-form button:hover:not(:disabled) {
+.save-profile-btn:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(255, 51, 89, 0.3);
 }
 
-.edit-profile-form button:disabled {
+.save-profile-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.cancel-profile-btn {
+  flex: 1;
+  padding: 14px;
+  background: var(--bg-sub);
+  border: none;
+  border-radius: 12px;
+  color: var(--text-sub);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-profile-btn:hover {
+  background: var(--border);
+}
+
+.profile-details-display {
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: white;
+  padding: 24px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
+}
+
+.display-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 14px;
+}
+
+.display-group:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.display-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.display-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-main);
 }
 
 .form-message {
@@ -134,19 +265,90 @@
   color: #dc2626;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .profile-details-header h2,
   .edit-profile h2 {
-    font-size: 20px;
-    margin-bottom: 24px;
+    font-size: 16px !important;
+    font-weight: 750;
+  }
+
+  .back-btn-profile {
+    width: 32px;
+    height: 32px;
+    font-size: 15px;
+    border-width: 1px;
+  }
+
+  .profile-title-container {
+    gap: 10px;
+  }
+
+  .edit-profile-toggle-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  .profile-details-display {
+    padding: 16px;
+    border-radius: 16px;
+    gap: 16px;
+  }
+
+  .display-group {
+    gap: 4px;
+    padding-bottom: 10px;
+  }
+
+  .display-value {
+    font-size: 13.5px;
+  }
+
+  .form-group {
+    margin-bottom: 16px !important;
+  }
+
+  .form-group label {
+    font-size: 11px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .form-group input {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+  }
+
+  .input-hint {
+    font-size: 10px !important;
+    margin-top: 4px !important;
+  }
+
+  .cancel-profile-btn, .save-profile-btn {
+    padding: 10px !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .bitezy-wallet-card {
+    padding: 16px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    box-shadow: 0 6px 15px rgba(212, 175, 55, 0.2);
+  }
+
+  .wallet-header {
+    font-size: 12px;
+  }
+
+  .balance-amount {
+    font-size: 28px;
   }
 
   .form-group input {
     padding: 12px 14px;
     font-size: 14px;
-  }
-
-  .edit-profile-form button {
-    padding: 14px;
-    font-size: 15px;
   }
 }

@@ -221,7 +221,7 @@ export default function RestaurantDashboard() {
       <div className="rd-container">
         {/* TOP STATS */}
         <div className="rd-stats mt-5">
-          <div className="rd-card" onClick={() => navigate('/res/orders/today')} style={{ cursor: 'pointer' }}>
+          <div className="rd-card" onClick={() => navigate('/restaurant/orders/today')} style={{ cursor: 'pointer' }}>
             <div className="rd-icon">🧾</div>
             <div>
               <h2>{stats.todayOrders}</h2>
@@ -229,7 +229,7 @@ export default function RestaurantDashboard() {
             </div>
           </div>
 
-          <div className="rd-card" onClick={() => navigate('/res/orders/delivered')} style={{ cursor: 'pointer' }}>
+          <div className="rd-card" onClick={() => navigate('/restaurant/orders/delivered')} style={{ cursor: 'pointer' }}>
             <div className="rd-icon">✅</div>
             <div>
               <h2>{stats.delivered}</h2>
@@ -237,7 +237,7 @@ export default function RestaurantDashboard() {
             </div>
           </div>
 
-          <div className="rd-card" onClick={() => navigate('/res/orders/pending')} style={{ cursor: 'pointer' }}>
+          <div className="rd-card" onClick={() => navigate('/restaurant/orders/pending')} style={{ cursor: 'pointer' }}>
             <div className="rd-icon">🚚</div>
             <div>
               <h2>{stats.pending}</h2>
@@ -245,7 +245,7 @@ export default function RestaurantDashboard() {
             </div>
           </div>
 
-          <div className="rd-card" onClick={() => navigate('/res/order')} style={{ cursor: 'pointer' }}>
+          <div className="rd-card" onClick={() => navigate('/restaurant/orders/total')} style={{ cursor: 'pointer' }}>
             <div className="rd-icon">🥡</div>
             <div>
               <h2>{stats.totalOrders}</h2>
@@ -253,7 +253,7 @@ export default function RestaurantDashboard() {
             </div>
           </div>
 
-          <div className="rd-card" onClick={() => navigate('/res/revenue/today')} style={{ cursor: 'pointer' }}>
+          <div className="rd-card" onClick={() => navigate('/restaurant/revenue/today')} style={{ cursor: 'pointer' }}>
             <div className="rd-icon">₹</div>
             <div>
               <h2>{stats.todayRevenue.toFixed(2)}</h2>
@@ -261,7 +261,7 @@ export default function RestaurantDashboard() {
             </div>
           </div>
 
-          <div className="rd-card" onClick={() => navigate('/res/revenue')} style={{ cursor: 'pointer' }}>
+          <div className="rd-card" onClick={() => navigate('/restaurant/revenue')} style={{ cursor: 'pointer' }}>
             <div className="rd-icon">₹</div>
             <div>
               <h2>{stats.revenue.toFixed(2)}</h2>

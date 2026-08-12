@@ -1,85 +1,247 @@
-/* ================= FLOATING CART SUMMARY BAR ================= */
-.floating-cart-summary {
+/* ================= FLOATING CARTS STACK CONTAINER ================= */
+.floating-carts-container {
   position: fixed;
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
-  max-width: 760px;
-  background: #b3a13e;
-  /* Premium Green */
-  /* background: linear-gradient(135deg, #1ba672 0%, #118c5e 100%); */
-  color: white;
-  padding: 14px 24px;
-  border-radius: 16px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column-reverse; /* Display newest at the bottom of the stack */
+  gap: 12px;
+  z-index: 10002; /* Above options overlay and bottom sheet */
+  pointer-events: none;
+}
+
+.floating-carts-container .floating-cart-summary {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  transform: none;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 100px;
+  padding: 8px 10px 8px 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 10px 30px rgba(27, 166, 114, 0.3);
-  z-index: 1000;
-  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  pointer-events: auto;
 }
 
-.cart-bar-info {
+/* Left part: Res image and texts */
+.cart-summary-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.cart-summary-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.cart-summary-text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
+  min-width: 0;
 }
 
-.cart-bar-info span:first-child {
-  font-size: 12px;
-  font-weight: 700;
+.cart-summary-res-name {
+  font-size: 13.5px;
+  font-weight: 750;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-summary-view-menu {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  text-transform: capitalize;
+}
+
+.red-arrow {
+  color: #e53e3e;
+  font-size: 11.5px;
+  line-height: 1;
+}
+
+/* Right part: Red button and Dismiss cross */
+.cart-summary-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.view-cart-pill-btn {
+  background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+  border: none;
+  color: #ffffff;
+  padding: 8px 20px;
+  border-radius: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.25);
+  transition: all 0.2s ease;
+}
+
+.view-cart-pill-btn:hover {
+  opacity: 0.94;
+  transform: translateY(-1px);
+}
+
+.view-cart-pill-btn:active {
+  transform: scale(0.97);
+}
+
+.view-cart-btn-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.view-cart-title {
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.2px;
+}
+
+.view-cart-count {
+  font-size: 9.5px;
+  font-weight: 600;
+  opacity: 0.95;
+  line-height: 1.2;
+}
+
+.view-cart-arrow {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.clear-cart-remove-btn {
+  background: none;
+  border: none;
+  color: #ef4444; /* Premium red accent for removal action */
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  padding: 6px 10px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.clear-cart-remove-btn:hover {
+  color: #dc2626;
   opacity: 0.9;
 }
 
-.cart-total-amount {
-  font-size: 18px;
-  font-weight: 900;
-  font-family: 'Outfit', sans-serif;
-}
-
-.view-cart-action-btn {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: 800;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.view-cart-action-btn:hover {
-  background: white;
-  color: #1ba672;
-  transform: translateY(-2px);
-}
-
-.view-cart-action-btn:active {
+.clear-cart-remove-btn:active {
   transform: scale(0.95);
 }
 
+.clear-cart-dismiss-btn {
+  background: #f1f5f9;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.clear-cart-dismiss-btn:hover {
+  background: #e2e8f0;
+  color: #64748b;
+}
+
+.clear-cart-dismiss-btn:active {
+  transform: scale(0.9);
+}
+
+/* Mobile responsive */
 @media (max-width: 768px) {
-  .floating-cart-summary {
-    bottom: 85px;
-    /* Above BottomNav */
+  .floating-carts-container {
+    bottom: 16px;
     width: 92%;
-    padding: 12px 18px;
-    border-radius: 14px;
-    z-index: 1002;
+    max-width: 440px;
+    gap: 8px;
   }
 
-  .cart-total-amount {
-    font-size: 16px;
+  .floating-carts-container .floating-cart-summary {
+    padding: 6px 8px 6px 6px;
   }
 
-  .view-cart-action-btn {
-    padding: 8px 16px;
-    font-size: 13px;
+  .cart-summary-thumb {
+    width: 38px;
+    height: 38px;
+  }
+
+  .cart-summary-res-name {
+    font-size: 12.5px;
+  }
+
+  .cart-summary-view-menu {
+    font-size: 10px;
+  }
+
+  .view-cart-pill-btn {
+    padding: 6px 18px;
+  }
+
+  .view-cart-title {
+    font-size: 11.5px;
+  }
+
+  .view-cart-count {
+    font-size: 9px;
+  }
+
+  .clear-cart-remove-btn {
+    font-size: 10px;
+    padding: 4px 6px;
+  }
+
+  .clear-cart-dismiss-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
   }
 }
+
+/* Hide floating carts during full screen searches */
+body.search-overlay-open .floating-carts-container {
+  display: none !important;
+}

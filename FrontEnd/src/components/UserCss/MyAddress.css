@@ -2,13 +2,39 @@
     font-family: 'Inter', sans-serif;
 }
 
+.address-title-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.back-btn-address {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: white;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 20px;
+}
+
+.back-btn-address:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
 .address-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
     gap: 16px;
-    
 }
 
 .address-header-actions {
@@ -227,13 +253,57 @@
 }
 
 @media (max-width: 768px) {
+    .back-btn-address {
+        width: 32px;
+        height: 32px;
+        font-size: 15px;
+        border-width: 1px;
+    }
+
+    .address-title-container {
+        gap: 10px;
+    }
+
+    .add-address-form {
+        padding: 16px;
+        border-radius: 16px;
+        margin-bottom: 20px;
+    }
+
+    .add-address-form .form-group label {
+        font-size: 11px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .add-address-form .form-group input,
+    .add-address-form .form-group select {
+        padding: 10px 12px !important;
+        font-size: 13px !important;
+        border-radius: 8px !important;
+    }
+
     .address-header h2 {
-        font-size: 24px;
+        font-size: 16px !important;
+        font-weight: 750;
     }
 
     .add-address-btn {
-        padding: 10px 18px;
-        font-size: 14px;
+        padding: 8px 16px !important;
+        font-size: 12px !important;
+        border-radius: 8px !important;
+    }
+
+    .address-header-actions .location-display-btn {
+        padding: 8px 14px !important;
+        border-radius: 8px !important;
+    }
+
+    .address-header-actions .location-title {
+        font-size: 13px !important;
+    }
+
+    .address-header-actions .location-subtitle {
+        font-size: 10px !important;
     }
 
     .addr-form-grid {
@@ -246,8 +316,45 @@
 
     .save-btn,
     .cancel-btn {
-        padding: 12px;
-        font-size: 14px;
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .address-card {
+        padding: 14px !important;
+        border-radius: 14px !important;
+    }
+
+    .address-type-badge {
+        font-size: 9px !important;
+        padding: 3px 6px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .address-line {
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        line-height: 1.4 !important;
+        margin-bottom: 6px !important;
+    }
+
+    .address-details {
+        font-size: 11px !important;
+        margin-bottom: 12px !important;
+        line-height: 1.4 !important;
+    }
+
+    .default-tag {
+        font-size: 11px !important;
+    }
+
+    .delete-addr-btn {
+        padding: 6px !important;
+        border-radius: 6px !important;
+    }
+
+    .my-address-section {
+        /* padding: 20px 14px 20px !important; */
     }
 }
 
@@ -262,12 +369,13 @@
     .address-header {
         flex-direction: column;
         align-items: stretch;
-        gap: 20px;
+        gap: 16px;
     }
 
     .address-header-actions {
         flex-direction: column;
         width: 100%;
+        gap: 10px;
     }
 
     .add-address-btn,
@@ -281,6 +389,10 @@
     }
 
     .address-card {
-        padding: 20px;
+        padding: 14px !important;
+    }
+
+    .add-address-form {
+        padding: 16px;
     }
 }

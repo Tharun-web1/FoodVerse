@@ -24,7 +24,7 @@ public class CouponService {
     private OrderRepo orderRepo;
 
     public Optional<Coupon> validateCoupon(String code, double orderTotal, Long userId, Long restaurantId) {
-        Optional<Coupon> couponOpt = couponRepo.findByCodeAndActiveTrue(code);
+        Optional<Coupon> couponOpt = couponRepo.findByCode(code);
         
         Coupon coupon;
         if (couponOpt.isEmpty()) {
@@ -44,34 +44,36 @@ public class CouponService {
                 coupon.setMinOrderAmount(149.0);
                 coupon.setActive(true);
             } else {
-                return Optional.empty();
+                throw new IllegalArgumentException("invalid_coupon");
             }
         } else {
             coupon = couponOpt.get();
         }
         
         // Check if active
-        if (!coupon.getActive()) return Optional.empty();
+        if (coupon.getActive() != null && !coupon.getActive()) {
+            throw new IllegalArgumentException("expired_coupon");
+        }
         
         // Ownership Check: Coupon must be global (null) or match the provided restaurantId
         if (coupon.getRestuarent() != null && (restaurantId == null || !coupon.getRestuarent().getId().equals(restaurantId))) {
-            return Optional.empty();
+            throw new IllegalArgumentException("invalid_coupon");
         }
 
         // Check expiry
         if (coupon.getExpiryDate() != null && coupon.getExpiryDate().isBefore(LocalDateTime.now())) {
-            return Optional.empty();
+            throw new IllegalArgumentException("expired_coupon");
         }
         
         // Check minimum order amount
         if (coupon.getMinOrderAmount() != null && orderTotal < coupon.getMinOrderAmount()) {
-            return Optional.empty();
+            throw new IllegalArgumentException("min_order_not_met");
         }
 
         // First Order Logic
         if ("WELCOME40".equals(code) || "NEW30".equals(code)) {
             if (userId == null || orderRepo.countByUserId(userId) > 0) {
-                return Optional.empty();
+                throw new IllegalArgumentException("first_order_only");
             }
         }
         
@@ -89,6 +91,7 @@ public class CouponService {
                 c.put("code", "WELCOME40");
                 c.put("discountAmount", 40.0);
                 c.put("description", "First Order special ₹40 off on ₹199+");
+                c.put("minOrderAmount", 199.0);
                 available.add(c);
             }
             if (showAll || orderTotal >= 149.0) {
@@ -96,6 +99,7 @@ public class CouponService {
                 c.put("code", "NEW30");
                 c.put("discountAmount", 30.0);
                 c.put("description", "First Order special ₹30 off on ₹149+");
+                c.put("minOrderAmount", 149.0);
                 available.add(c);
             }
         }
@@ -112,6 +116,7 @@ public class CouponService {
                 map.put("code", c.getCode());
                 map.put("discountAmount", showAll ? ( "FIXED".equals(c.getDiscountType()) ? c.getDiscountValue() : 0.0 ) : calculateDiscount(c, orderTotal));
                 map.put("description", c.getDiscountType() + " " + ( "PERCENTAGE".equals(c.getDiscountType()) ? (c.getDiscountValue() + "%") : ("₹" + c.getDiscountValue()) ) + (c.getMinOrderAmount() != null ? " on ₹" + c.getMinOrderAmount() + "+" : ""));
+                map.put("minOrderAmount", c.getMinOrderAmount() != null ? c.getMinOrderAmount() : 0.0);
                 available.add(map);
             }
         }

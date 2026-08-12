@@ -90,7 +90,7 @@ const Profile = () => {
                             <button
                                 className="btn border-0 py-2 px-3 fw-bold shadow-none"
                                 style={{ color: '#800080', fontSize: '0.9rem' }}
-                                onClick={() => navigate('/delivery/details')}
+                                onClick={() => navigate('/delivery-partner/details')}
                             >
                                 View Details <i className="fas fa-arrow-right ms-1"></i>
                             </button>
@@ -99,12 +99,12 @@ const Profile = () => {
 
                     <div className="bg-white shadow-sm border-0 mb-4" style={{ borderRadius: '12px', overflow: 'hidden' }}>
                         <div className="list-group list-group-flush">
-                            <MenuListItem icon="fas fa-file" title="Documents" color="#ea8614ff" onClick={() => navigate('/delivery/documents')} />
-                            <MenuListItem icon="fas fa-shopping-bag" title="Order History" color="#ea8614ff" onClick={() => navigate('/delivery/history')} />
-                            <MenuListItem icon="fas fa-inr" title="Cash Balance" color="#ea8614ff" onClick={() => navigate('/delivery/earnings')} />
-                            <MenuListItem icon="far fa-bell" title="Message Centre" color="#ea8614ff" onClick={() => navigate('/delivery/message')} />
-                            <MenuListItem icon="far fa-question-circle" title="Help & Support" color="#ea8614ff" onClick={() => navigate('/delivery/help')} />
-                            <MenuListItem icon="fas fa-info-circle" title="About" color="#ea8614ff" onClick={() => navigate('/delivery/about')} />
+                            <MenuListItem icon="fas fa-file" title="Documents" color="#ea8614ff" onClick={() => navigate('/delivery-partner/documents')} />
+                            <MenuListItem icon="fas fa-shopping-bag" title="Order History" color="#ea8614ff" onClick={() => navigate('/delivery-partner/history')} />
+                            <MenuListItem icon="fas fa-inr" title="Cash Balance" color="#ea8614ff" onClick={() => navigate('/delivery-partner/earnings')} />
+                            <MenuListItem icon="far fa-bell" title="Message Centre" color="#ea8614ff" onClick={() => navigate('/delivery-partner/message')} />
+                            <MenuListItem icon="far fa-question-circle" title="Help & Support" color="#ea8614ff" onClick={() => navigate('/delivery-partner/help')} />
+                            <MenuListItem icon="fas fa-info-circle" title="About" color="#ea8614ff" onClick={() => navigate('/delivery-partner/about')} />
                         </div>
                     </div>
 

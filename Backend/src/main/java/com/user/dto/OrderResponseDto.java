@@ -21,6 +21,7 @@ public class OrderResponseDto {
     private Double taxAmount;
     private String deliveryPartnerName;
     private String deliveryPartnerPhone;
+    private Integer deliveryPartnerId;
     private List<OrderItemResponseDto> items;
     
     private Double deliveryLatitude;
@@ -31,6 +32,8 @@ public class OrderResponseDto {
     private String couponCode;
     private Double discountAmount;
     private Integer estimatedPrepTime;
+
+    private Double walletAmountDeducted;
 
     public OrderResponseDto() {}
 
@@ -246,5 +249,21 @@ public class OrderResponseDto {
 
     public void setEstimatedPrepTime(Integer estimatedPrepTime) {
         this.estimatedPrepTime = estimatedPrepTime;
+    }
+
+    public Double getWalletAmountDeducted() {
+        return walletAmountDeducted;
+    }
+
+    public void setWalletAmountDeducted(Double walletAmountDeducted) {
+        this.walletAmountDeducted = walletAmountDeducted;
+    }
+
+    public Integer getDeliveryPartnerId() {
+        return deliveryPartnerId;
+    }
+
+    public void setDeliveryPartnerId(Integer deliveryPartnerId) {
+        this.deliveryPartnerId = deliveryPartnerId;
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.List;
 
 import com.user.filter.JwtFilter;
 
@@ -38,9 +39,9 @@ public class Security {
 	{
 		
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-			
+		
 		http.authorizeHttpRequests(req->req
-				.requestMatchers("/auth/**","/error","/getimage/*","/restaurants/contactform", "/delivery-orders/**", "/partner/auth/**").permitAll()
+				.requestMatchers("/auth/**","/error","/getimage/*","/restaurants/contactform", "/delivery-orders/**", "/partner/auth/**", "/admin/add-admin").permitAll()
 				.requestMatchers(HttpMethod.GET, 
 						"/restaurants", "/restaurants/*", "/restaurants/*/itemimg", 
 						"/restaurants/*/items", "/restaurants/category/*", 
@@ -56,6 +57,20 @@ public class Security {
 		http.cors(Customizer.withDefaults());
 	
 		return http.build();
+	}
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173", "http://127.0.0.1:3000"));
+		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+		configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Cache-Control", "Accept", "X-Requested-With"));
+		configuration.setExposedHeaders(List.of("Authorization"));
+		configuration.setAllowCredentials(true);
+		
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 
 	@Bean
